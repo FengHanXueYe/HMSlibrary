@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="base::base"></div>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+<br>
+<br>
+<br>
+<form class="form-inline text-center">
+    <div class="form-group">
+        <label for="exampleInputName2">食品名称</label>
+        <input type="text" class="form-control" id="exampleInputName2" placeholder="请输入食品名称">
+    </div>
+    <div class="form-group">
+        <label>菜品状态</label>
+        <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
+        <select class="form-control">
+            <option value="-1">请选择</option>
+            <option value="1">充足</option>
+            <option value="2">缺少</option>
+            <option value="3">暂无</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>菜品类型</label>
+        <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
+        <select class="form-control">
+            <option value="-1">请选择</option>
+            <option value="1">热菜</option>
+            <option value="2">凉菜</option>
+            <option value="3">米饭</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-default">查询</button>
+</form>
+<br>
+<br>
+<p>
+    <button class="btn btn-info">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true" id="addInfo">新增食品</span>
+    </button>
+</p>
+<table class="table table-bordered text-center">
+    <tr>
+        <td>ID</td>
+        <td>食品名称</td>
+        <td>食品图片</td>
+        <td>食品类型</td>
+        <td>价格</td>
+        <td>食品状态</td>
+        <td>操作</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>
+            <a href="#"><img src="/images/1.png" alt="找不到图片路径" class="img-circle"></a>
+        </td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    操作 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">查看</a></li>
+                    <li><a href="#">修改</a></li>
+                    <li><a href="#">删除</a></li>
+                    <li><a href="#">审核</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</table>
+<br>
+<nav aria-label="Page navigation" class="text-center">
+    <ul class="pagination">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
