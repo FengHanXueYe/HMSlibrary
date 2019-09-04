@@ -3,9 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Operator</title>
-    <div th:include="includeJsCss::jscss"></div>
+    <div th:include="base::base"></div>
 </head>
 <body>
 
+    <div class="container">
+        <div class="row">
+            <br>
+            <div>
+            <form class="form-inline">
+                <div class="form-group col-md-4">
+                    <label for="exampleInputName2">工作人员名称：</label>
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="exampleInputEmail2">操作人员部门：</label>
+                    <select class="form-control" id="exampleInputEmail2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="status">工作状态：</label>
+                    <select class="form-control" id="status">
+                        <option>正常</option>
+                        <option>不正常</option>
+                        <option>请假</option>
+                    </select>
+                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
+                </div>
+
+                <div class="form-group col-md-2">
+                    <label for="gender">性别：</label>
+                    <select class="form-control" id="gender">
+                        <option>男</option>
+                        <option>女</option>
+                        <option>其它</option>
+                    </select>
+                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
+                </div>
+
+
+
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    查询
+                </button>
+
+            </form>
+            </div>
+            <br>
+            <div >
+
+                <table class="table table-striped table-hover">
+                    <tr class="info">
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr>
+                        <td>q</td>
+                        <td>w</td>
+                        <td>e</td>
+                        <td>r</td>
+                        <td>d</td>
+                        <td>f</td>
+                        <td class="col-md-1 ">
+                            <a href=""><span class="glyphicon glyphicon-eye-open " title="查看" aria-hidden="true"></span></a>
+                            <a href=""><span class="glyphicon glyphicon-pencil " title="编辑" aria-hidden="true"></span></a>
+                            <a href=""><span class="glyphicon glyphicon-trash" title="删除" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-xs-10">
+                <!--<nav aria-label="...">-->
+                    <!--<ul class="pagination">-->
+                        <!--<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>-->
+                        <!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+                        <!--...-->
+                    <!--</ul>-->
+                <!--</nav>-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="disabled">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+<script type="text/javascript">
+    $(function () {
+    })
+</script>
 </body>
 </html>
