@@ -26,5 +26,5 @@ public class Operator implements Serializable {
     private String oAddress; // 住址
     private String oGender; // 性别
     private Date oCreateTime; // 入职时间
-
+    private String oHotelUserNum; // 操作人员所属酒店编号
 }
