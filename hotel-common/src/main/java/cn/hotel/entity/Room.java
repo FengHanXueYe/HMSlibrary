@@ -2,7 +2,7 @@ package cn.hotel.entity;
 
 import java.io.Serializable;
 
-public class RoomNumber implements Serializable {
+public class Room implements Serializable {
     private Integer id;
     private String roomNumber;
     private Integer roomType;
