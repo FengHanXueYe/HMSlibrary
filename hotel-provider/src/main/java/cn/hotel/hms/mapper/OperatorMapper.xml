@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.OperatorMapper">
+
+    <resultMap id="oMap" type="cn.hotel.vo.OperatorVO" autoMapping="true">
+        <id column="oId" property="oId"></id>
+    </resultMap>
+    <select id="queryAllOperators" parameterType="cn.hotel.entity.Operator" resultMap="oMap">
+        SELECT
+        oId, oName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_DEPARTMENTS' AND valueId=oDepartment) oDepartment,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`
+        FROM `operator`
+        <where>
+            <if test="oName!=null and oName!=''"> oName like concat('%',#{oName},'%')</if>
+            <if test="oDepartment!=null and oDepartment!=-1">and oDepartment=#{oDepartment}</if>
+            <if test="oWorkStatus!=null and oWorkStatus!=-1">and oWorkStatus=#{oWorkStatus}</if>
+            <if test="oGender!=null and oGender!=''">and oGender=#{oGender}</if>
+            <if test="oHotelUserNum!=null and oHotelUserNum!=''">and oHotelUserNum=#{oHotelUserNum}</if>
+        </where>
+    </select>
+
+    <select id="detailOperator" parameterType="cn.hotel.entity.Operator" resultMap="oMap">
+        SELECT
+        oId, oName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_DEPARTMENTS' AND valueId=oDepartment) oDepartment,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`
+        FROM `operator`
+        where oId = #{oId}
+    </select>
+
+    <update id="updateOperator" parameterType="cn.hotel.entity.Operator">
+        update Operator
+        <set>
+            <if test="oName!=null and oName!=''">oName = #{oName},</if>
+            <if test="oDepartment!=null and oDepartment!=-1">oDepartment = #{oDepartment},</if>
+            <if test="oStatus!=null and oStatus!=-1">oStatus = #{oStatus},</if>
+            <if test="oSalary!=null and oSalary!=-1">oSalary = #{oSalary},</if>
+            <if test="oWorkStatus!=null and oWorkStatus!=-1">oWorkStatus = #{oWorkStatus},</if>
+            <if test="oTel!=null and oTel!=''">oTel = #{oTel},</if>
+            <if test="oSFZ!=null and oSFZ!=''">oSFZ = #{oSFZ},</if>
+            <if test="oGender!=null and oGender!=''">oGender = #{oGender},</if>
+            <if test="oAddress!=null and oAddress!=''">oAddress = #{oAddress}</if>
+        </set>
+        where oId = #{oId}
+    </update>
+
+    <insert id="insertOperator" parameterType="cn.hotel.entity.Operator">
+        insert into Operator value(null, #{oName}, #{oDepartment}, #{oStatus}, #{oSalary}, #{oWorkStatus}, #{oTel}, #{oSFZ}, #{oAddress}, #{oGender}, NOW(), #{oHotelUserNum})
+    </insert>
+
+    <delete id="deleteOperator" parameterType="integer">
+        delete from Operator where oId = #{oId}
+    </delete>
+
+
+</mapper>
