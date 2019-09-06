@@ -9,14 +9,16 @@
     <select id="queryAllFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
         SELECT `foodid`,`foodname`,`foodimgone`,
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
-       `foodprice`,`foodstatus`,`foodDetail`
+       (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_STATUS' AND `valueId`=`foodstatus`) foodstat,
+       `foodprice`,`foodDetail`
        FROM `deliciousfood`
     </select>
 
     <select id="detailDeliciousFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
         SELECT `foodid`,`foodname`,`foodimgone`,
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
-       `foodprice`,`foodstatus`,`foodDetail`
+       (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_STATUS' AND `valueId`=`foodstatus`) foodstat,
+       `foodprice`,`foodDetail`
        FROM `deliciousfood` where foodid=#{foodid}
     </select>
 </mapper>

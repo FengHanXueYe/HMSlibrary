@@ -14,6 +14,6 @@ public class DeliciousFoodVo implements Serializable {
     private String foodimgone; //美食的图片 1
     private String foodtypes;  //美食类型
     private double foodprice; //价格
-    private Integer foodstatus;//菜品状态（1.充足，2.缺少 3.暂无）
+    private String foodstat;//菜品状态
     private String foodDetail;//菜品详情
 }

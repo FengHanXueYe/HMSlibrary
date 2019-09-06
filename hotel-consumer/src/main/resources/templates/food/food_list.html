@@ -70,21 +70,26 @@
     // 加载分页
     function pageInfoUtil(result) {
         $("ul[id='fengye']").html("");
-        var pagePre = Number(result.pageNumF)-1;
+        var pagePre = 1;
+        if(result.pageNo<=1){
+            pagePre = 1;
+        }else{
+            pagePre = Number(result.pageNo)-1;
+        }
         var pageHtml = "";
-        pageHtml+="<li no='"+result.pageNumF+"'>"
+        pageHtml+="<li no='"+result.pageNo+"'>"
             +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
             +"<span aria-hidden='true'>&laquo;</span>"
             +"</a>"
             +"</li>";
-        $.each(result.navIgtePageNumbers, function (index,item) {
-            if(result.pageNumF==item){
+        $.each(result.navigatepageNums, function (index,item) {
+            if(result.pageNo==item){
                 pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
             }else{
                 pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
             }
         })
-        pageHtml+="<li th:no='"+result.pagesF+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.pagesF+")'>"
+        pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
             +"<span aria-hidden='true'>&raquo;</span>"
             +"</a>"
             +"</li>";
@@ -97,7 +102,7 @@
         // 表单序列化
         var data = $("form").serialize();
         $.post("/queryAllDelicious",data+"&pageNum="+pageNum,function (result) {
-            var list = result.listF;
+            var list = result.list;
             // 加载分页
             pageInfoUtil(result);
             $("#hahahahahah").html("");
@@ -119,7 +124,7 @@
                     +"<td><a href=''><img src='"+item.foodimgone+"' alt='找不到图片路径' class='img-circle'></a></td>"
                     +"<td>"+item.foodtypes+"</td>"
                     +"<td>"+item.foodprice+"</td>"
-                    +"<td>"+item.foodstatus+"</td>"
+                    +"<td>"+item.foodstat+"</td>"
                     +"<td class='col-md-1 '>"
                     +"<a href=''><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
                     +"<a href=''><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
@@ -129,11 +134,6 @@
             })
             html += "</table>";
             $("#hahahahahah").html(html);
-
-
-
-
-
         })
     }
 
