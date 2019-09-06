@@ -12,6 +12,16 @@ public class DataStatus implements Serializable {
     private Date creationDate;
     private Integer modifyBy;
     private Date modifyDate;
+    private String risorse;
+
+
+    public String getRisorse() {
+        return risorse;
+    }
+
+    public void setRisorse(String risorse) {
+        this.risorse = risorse;
+    }
 
     public Integer getId() {
         return id;

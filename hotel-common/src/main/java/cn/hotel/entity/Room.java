@@ -11,6 +11,19 @@ public class Room implements Serializable {
     private Integer roomBed;
     private double roomDeposit;
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", roomType=" + roomType +
+                ", roomStatus=" + roomStatus +
+                ", roomPrice=" + roomPrice +
+                ", roomBed=" + roomBed +
+                ", roomDeposit=" + roomDeposit +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }
