@@ -2,7 +2,8 @@ package cn.hotel.hms.controller;
 
 import cn.hotel.entity.Operator;
 import cn.hotel.service.OperatorService;
-import cn.hotel.utils.PageInfoUtil;
+import cn.hotel.utils.PageUtil;
+import cn.hotel.vo.OperatorVO;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class OperatorController {
         if (pageNum==-1){
             pageNum = null;
         }
-        PageInfoUtil<Operator> pageInfoUtil = operatorService.queryAllOperatorPage(operator, pageNum, pageSize);
+        PageUtil<OperatorVO> pageInfoUtil = operatorService.queryAllOperatorPage(operator, pageNum, pageSize);
         return JSON.toJSONString(pageInfoUtil);
     }
 
@@ -59,22 +60,15 @@ public class OperatorController {
     }
 
     /**
-     * 去编辑页面
-     */
-    @RequestMapping(value = "toUpdateOperator")
-    public String toUpdateOperator(){
-        return "updateOperator";
-    }
-
-    /**
      * 执行编辑操作
      * @param operator
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "doUpdateOperator")
-    public String doUpdateOperator(Operator operator){
+    public boolean doUpdateOperator(Operator operator){
         Integer integer = operatorService.updateOperator(operator);
-        return "redirect:toOperator";
+        return integer>0?true:false;
     }
 
     /**
@@ -86,7 +80,17 @@ public class OperatorController {
         return "redirect:toOperator";
     }
 
-
+    /**
+     * ajax查询操作人员详情
+     * @param oId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "doDetailOperator", method = RequestMethod.POST, produces = {"application/json;charset=utf-8"})
+    public String doDetailOperator(Integer oId){
+        OperatorVO operator = operatorService.detailOperator(oId);
+        return JSON.toJSONString(operator);
+    }
 
 
 }

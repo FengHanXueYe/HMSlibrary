@@ -11,7 +11,7 @@
         <div class="row">
             <br>
             <div>
-            <form class="form-inline">
+            <form class="form-inline" id="selectForm">
                 <div class="form-group col-md-4">
                     <label for="exampleInputName2">工作人员名称：</label>
                     <input type="text" name="oName" class="form-control" id="exampleInputName2" placeholder="姓名">
@@ -20,13 +20,11 @@
                     <label for="exampleInputEmail2">操作人员部门：</label>
                     <select class="form-control" name="oDepartment" id="exampleInputEmail2">
                     </select>
-                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
                 </div>
                 <div class="form-group col-md-3">
                     <label for="status">工作状态：</label>
                     <select class="form-control" name="oWorkStatus" id="status">
                     </select>
-                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
                 </div>
 
                 <div class="form-group col-md-2">
@@ -36,46 +34,25 @@
                         <option value="男">男</option>
                         <option value="女">女</option>
                     </select>
-                    <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">-->
                 </div>
 
                 <button type="button" id="submitForm" class="btn btn-info btn-block">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     查询
                 </button>
+                <button type="button"  class="btn btn-default btn-block">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    增加
+                </button>
 
             </form>
             </div>
             <br>
+            <!--人员列表-->
             <div id="listOperator">
-
-                <!--<table class="table table-striped table-hover">
-                    <tr class="info">
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>操作</th>
-                    </tr>
-                    <tr>
-                        <td>q</td>
-                        <td>w</td>
-                        <td>e</td>
-                        <td>r</td>
-                        <td>d</td>
-                        <td>f</td>
-                        <td class="col-md-1 ">
-                            <a href=""><span class="glyphicon glyphicon-eye-open " title="查看" aria-hidden="true"></span></a>
-                            <a href=""><span class="glyphicon glyphicon-pencil " title="编辑" aria-hidden="true"></span></a>
-                            <a href=""><span class="glyphicon glyphicon-trash" title="删除" aria-hidden="true"></span></a>
-                        </td>
-                    </tr>
-
-                </table>-->
             </div>
 
+            <!--分页-->
             <div class="col-xs-10">
                 <nav aria-label="Page navigation">
                     <ul class="pagination" id="fengye">
@@ -84,78 +61,102 @@
                 </nav>
             </div>
 
-        </div>
+
+            <!--查看模态框-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="detailOperator">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">操作人员详情</h4>
+                        </div>
+                        <div class="modal-body" id="detailOperators">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <!--编辑模态框-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="updateOperator">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">编辑操作人员信息</h4>
+                        </div>
+                        <div class="modal-body" id="updateOperators">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+            </div>
     </div>
 <script type="text/javascript">
     $(function () {
         // 加载人员列表
         operatorLoad(-1);
-
-        // 点击分页
-        // $("a[no]").click(function () {
-        //     alert();
-        //     var pageNum = $(this).attr("no");
-        //     alert(pageNum);
-        //     operatorLoad(pageNum);
-        // })
-
-        // $("ul li").click(function () {
-        //     alert();
-        // })
-
         // 查询按钮
         $("button[id='submitForm']").click(function () {
             operatorLoad(-1);
         })
-
         // 加载部门
         loadSelect("OPERATOR_DEPARTMENTS", $("select[name='oDepartment']"));
         // 加载工作状态
         loadSelect("OPERATOR_WORK_STATUS", $("select[name='oWorkStatus']"));
-
-
-
     })
 
+    // 点击分页事件
     function clickPage(pageNum) {
-         // alert(pageNum);
         operatorLoad(pageNum);
     }
-
 
     // 加载分页
     function pageInfoUtil(result) {
         $("ul[id='fengye']").html("");
-        var pagePre = Number(result.pageNumF)-1;
+        var pagePre = 1;
+        if(result.pageNo<=1){
+            pagePre = 1;
+        }else{
+            pagePre = Number(result.pageNo)-1;
+        }
         var pageHtml = "";
-         pageHtml+="<li no='"+result.pageNumF+"'>"
+         pageHtml+="<li no='"+result.pageNo+"'>"
                         +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
                         +"<span aria-hidden='true'>&laquo;</span>"
                     +"</a>"
                     +"</li>";
-        $.each(result.navIgtePageNumbers, function (index,item) {
-            if(result.pageNumF==item){
+        $.each(result.navigatepageNums, function (index,item) {
+            if(result.pageNo==item){
                 pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
             }else{
                 pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
             }
         })
-        pageHtml+="<li th:no='"+result.pagesF+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.pagesF+")'>"
+        pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
             +"<span aria-hidden='true'>&raquo;</span>"
             +"</a>"
             +"</li>";
         $("ul[id='fengye']").html(pageHtml);
 
     }
-    
-    
+
     // 加载操作人员列表
     function operatorLoad(pageNum){
-
         // 表单序列化
-        var data = $("form").serialize();
+        var data = $("#selectForm").serialize();
         $.post("ajaxQueryOperators",data+"&pageNum="+pageNum,function (result) {
-            var list = result.listF;
+            var list = result.list;
             // 加载分页
             pageInfoUtil(result);
             $("#listOperator").html("");
@@ -179,15 +180,14 @@
                     +"<td>"+item.oAddress+"</td>"
                     +"<td>"+item.oDepartment+"</td>"
                     +"<td class='col-md-1 '>"
-                    +"<a href=''><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
-                    +"<a href=''><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                    +"<a href=''><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='detailOperator("+item.oId+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='updateOperator("+item.oId+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                    +"<a th:href='@{doDeleteOperator(oId="+item.oId+")}'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                     +"</td>"
                     +"</tr>";
             })
             html += "</table>";
             $("#listOperator").html(html);
-            
         })
     }
 
@@ -201,7 +201,134 @@
         })
     }
 
+    // js ajax加载下拉框
+    function jsLoadSelect(code,k){
 
-</script>
+        var  z = "";
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            html += "<option value='-1'>--请选择--</option>";
+            $.each(result, function (index,item) {
+                if(k==item.valueName){
+                    html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }else{
+                    html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }
+            })
+            alert(html)
+            z = html;
+        })
+        alert(z);
+        return z;
+    }
+
+    // 查看操作人员详情
+    function detailOperator(oId) {
+        $("#detailOperator").modal("show");
+
+        $.post("doDetailOperator","oId="+oId,function (result) {
+            var src = "";
+            var title = "";
+        // <img src="../../static/images/nan.png" height="32" width="32"/>
+            if(result.oGender=="男"){
+                src = "images/nan.png"
+                title = "男";
+            }else{
+                src = "images/nv1.png";
+                title = "女";
+            }
+            $("#detailOperators").html("");
+            var html = "";
+            html="<table class='table table-striped'>"
+                    +"<tr class=''>"
+                        +"<th>编号</th>"
+                        +"<td>"+result.oId+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>姓名</th>"
+                        +"<td>"+result.oName+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>操作人员部门</th>"
+                        +"<td>"+result.oDepartment+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>操作人员权限等级</th>"
+                        +"<td>"+result.oStatus+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>工资等级</th>"
+                        +"<td>"+result.oSalary+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>工作状态</th>"
+                        +"<td>"+result.oWorkStatus+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>电话</th>"
+                        +"<td>"+result.oTel+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>身份证</th>"
+                        +"<td>"+result.oSFZ+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>住址</th>"
+                        +"<td>"+result.oAddress+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>性别</th>"
+                        +"<td><img src='"+src+"' alt='' title='"+title+"'></td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>入职时间</th>"
+                        +"<td>"+result.oCreateTime+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                        +"<th>所属酒店编号</th>"
+                        +"<td>"+result.oHotelUserNumName+"</td>"
+                    +"</tr></table>";
+            $("#detailOperators").html(html);
+        })
+
+    }
+
+    // 编辑操作人员
+    function updateOperator(oId) {
+        $("#updateOperator").modal("show");
+        $("#updateOperators").html("");
+
+        $.post("doDetailOperator","oId="+oId,function (result) {
+            alert(">>>>>>>>"+jsLoadSelect("OPERATOR_DEPARTMENTS",result.oDepartment));
+            var html = "<form class='form-horizontal'>"
+                +"<div class='form-group'>"
+                    +"<label for='inputEmail3' class='col-sm-4 control-label'>操作人员姓名：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='email' class='form-control' id='inputEmail3' placeholder='操作人员姓名'><input type='hidden' name='oId' value='"+oId+"'>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='od' class='col-sm-4 control-label'>操作人员部门：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<select class='form-control' name='oDepartment' id='od'></select>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='radio' name='oGender' id='genderNan' value='男'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                        +"<input type='radio' name='oGender' id='genderNv' value='女'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                    +"</div>"
+                +"</div>"
+
+                +"</form>";
+            $("#updateOperators").html(html);
+
+        })
+
+    }
+
+
+    </script>
 </body>
 </html>

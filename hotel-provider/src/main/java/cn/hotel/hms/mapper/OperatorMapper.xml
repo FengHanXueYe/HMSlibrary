@@ -32,7 +32,8 @@
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
         (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
-        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`,
+        (SELECT  huName FROM `hoteluser` WHERE huNumber=oHotelUserNum) oHotelUserNumName
         FROM `operator`
         where oId = #{oId}
     </select>
