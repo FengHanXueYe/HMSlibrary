@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <div th:replace="base::base"></div>
+    <div th:include="base::base"></div>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
@@ -19,7 +19,7 @@
     <div class="form-group">
         <label>菜品状态</label>
         <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
-        <select class="form-control">
+        <select class="form-control" id="status">
             <option value="-1">请选择</option>
             <option value="1">充足</option>
             <option value="2">缺少</option>
@@ -36,7 +36,7 @@
             <option value="3">米饭</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-default">查询</button>
+    <button type="button" class="btn btn-default">查询</button>
 </form>
 <br>
 <br>
@@ -45,51 +45,99 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true" id="addInfo">新增食品</span>
     </button>
 </p>
-<table class="table table-bordered text-center">
-    <tr>
-        <td>ID</td>
-        <td>食品名称</td>
-        <td>食品图片</td>
-        <td>食品类型</td>
-        <td>价格</td>
-        <td>食品状态</td>
-        <td>操作</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>
-            <a href="#"><img src="/images/1.png" alt="找不到图片路径" class="img-circle"></a>
-        </td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td class="col-md-1 ">
-            <a href=""><span class="glyphicon glyphicon-eye-open " title="查看" aria-hidden="true"></span></a>
-            <a href=""><span class="glyphicon glyphicon-pencil " title="编辑" aria-hidden="true"></span></a>
-            <a href=""><span class="glyphicon glyphicon-trash" title="删除" aria-hidden="true"></span></a>
-        </td>
-    </tr>
-</table>
+        <div id="hahahahahah">
+
+        </div>
 <br>
-<nav aria-label="Page navigation" class="text-center">
-    <ul class="pagination">
-        <li>
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+        <div class="col-xs-10">
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination text-center " id="fengye">
+
+                </ul>
+            </nav>
+        </div>
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        operatorLoad(-1);
+    });
+    function clickPage(pageNum) {
+        operatorLoad(pageNum);
+    }
+    // 加载分页
+    function pageInfoUtil(result) {
+        $("ul[id='fengye']").html("");
+        var pagePre = Number(result.pageNumF)-1;
+        var pageHtml = "";
+        pageHtml+="<li no='"+result.pageNumF+"'>"
+            +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
+            +"<span aria-hidden='true'>&laquo;</span>"
+            +"</a>"
+            +"</li>";
+        $.each(result.navIgtePageNumbers, function (index,item) {
+            if(result.pageNumF==item){
+                pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
+            }else{
+                pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
+            }
+        })
+        pageHtml+="<li th:no='"+result.pagesF+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.pagesF+")'>"
+            +"<span aria-hidden='true'>&raquo;</span>"
+            +"</a>"
+            +"</li>";
+        $("ul[id='fengye']").html(pageHtml);
+
+    }
+
+    function operatorLoad(pageNum){
+
+        // 表单序列化
+        var data = $("form").serialize();
+        $.post("/queryAllDelicious",data+"&pageNum="+pageNum,function (result) {
+            var list = result.listF;
+            // 加载分页
+            pageInfoUtil(result);
+            $("#hahahahahah").html("");
+            var html = "";
+            html +=  "<table class='table table-bordered text-center'>"
+                +"<tr class='info'>"
+                +"<th>ID</th>"
+                +"<th>食品名称</th>"
+                +"<th>食品图片</th>"
+                +"<th>食品类型</th>"
+                +"<th>价格</th>"
+                +"<th>食品状态</th>"
+                +"<th>操作</th>"
+                +"</tr>";
+            $.each(list,function (index,item) {
+                html += "<tr >"
+                    +"<td>"+item.foodid+"</td>"
+                    +"<td>"+item.foodname+"</td>"
+                    +"<td><a href=''><img src='"+item.foodimgone+"' alt='找不到图片路径' class='img-circle'></a></td>"
+                    +"<td>"+item.foodtypes+"</td>"
+                    +"<td>"+item.foodprice+"</td>"
+                    +"<td>"+item.foodstatus+"</td>"
+                    +"<td class='col-md-1 '>"
+                    +"<a href=''><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                    +"<a href=''><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                    +"<a href=''><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"</td>"
+                    +"</tr>";
+            })
+            html += "</table>";
+            $("#hahahahahah").html(html);
+
+
+
+
+
+        })
+    }
+
+
+</script>
 </body>
 </html>

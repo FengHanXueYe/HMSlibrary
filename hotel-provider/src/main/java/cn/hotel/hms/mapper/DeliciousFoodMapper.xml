@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.DeliciousFoodMapper">
+    <resultMap id="foodMap" type="cn.hotel.vo.DeliciousFoodVo" autoMapping="true">
+        <id column="foodid" property="foodid"></id>
+    </resultMap>
+    <select id="queryAllFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
+        SELECT `foodid`,`foodname`,`foodimgone`,
+       (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
+       `foodprice`,`foodstatus`,`foodDetail`
+       FROM `deliciousfood`
+    </select>
+
+    <select id="detailDeliciousFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
+        SELECT `foodid`,`foodname`,`foodimgone`,
+       (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
+       `foodprice`,`foodstatus`,`foodDetail`
+       FROM `deliciousfood` where foodid=#{foodid}
+    </select>
+</mapper>
