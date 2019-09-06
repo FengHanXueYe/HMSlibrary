@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Operator</title>
     <div th:include="base::base"></div>
+    <script src="/js/dateJS.js"></script>
+
 </head>
 <body>
 
@@ -102,6 +104,7 @@
 
             </div>
     </div>
+    <div id="yanshi"></div>
 <script type="text/javascript">
     $(function () {
         // 加载人员列表
@@ -202,12 +205,9 @@
     }
 
     // js ajax加载下拉框
-    function jsLoadSelect(code,k){
-
-        var  z = "";
+    function jsLoadSelect(code,k,e){
         $.get("dataStatus/queryByCode","code="+code,function(result){
             var html = "";
-            html += "<option value='-1'>--请选择--</option>";
             $.each(result, function (index,item) {
                 if(k==item.valueName){
                     html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
@@ -215,11 +215,19 @@
                     html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
                 }
             })
-            alert(html)
-            z = html;
+            if(e==1){
+                $("select[id='od']").html(html);
+            }else if(e==2){
+                $("select[id='os']").html(html);
+            }else if(e==3){
+                $("select[id='osa']").html(html);
+            }else if(e==4){
+                $("select[id='ows']").html(html);
+            }
+
         })
-        alert(z);
-        return z;
+        // alert(z);
+        // return z;
     }
 
     // 查看操作人员详情
@@ -282,7 +290,7 @@
                     +"</tr>"
                     +"<tr class=''>"
                         +"<th>入职时间</th>"
-                        +"<td>"+result.oCreateTime+"</td>"
+                        +"<td>"+getDateTime(result.oCreateTime,1)+"</td>"
                     +"</tr>"
                     +"<tr class=''>"
                         +"<th>所属酒店编号</th>"
@@ -299,12 +307,28 @@
         $("#updateOperators").html("");
 
         $.post("doDetailOperator","oId="+oId,function (result) {
-            alert(">>>>>>>>"+jsLoadSelect("OPERATOR_DEPARTMENTS",result.oDepartment));
+            // if(result.oGender=="男"){
+            //     $("input[id='genderNan']").attr("checked","checked");
+            // }else{
+            //     $("input[id='genderNv']").attr("checked");
+            // }
+            var c;
+            var v;
+            if(result.oGender=="男"){
+                c = "checked";
+            }
+            if(result.oGender=="女"){
+                v = "checked";
+            }
+            jsLoadSelect("OPERATOR_DEPARTMENTS",result.oDepartment,1);
+            jsLoadSelect("OPERATOR_PERRMISSION_LEVEL",result.oStatus,2);
+            jsLoadSelect("WAGE_SCALE",result.oSalary,3);
+            jsLoadSelect("OPERATOR_WORK_STATUS",result.oWorkStatus,4);
             var html = "<form class='form-horizontal'>"
                 +"<div class='form-group'>"
-                    +"<label for='inputEmail3' class='col-sm-4 control-label'>操作人员姓名：</label>"
+                    +"<label for='on' class='col-sm-4 control-label'>操作人员姓名：</label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='email' class='form-control' id='inputEmail3' placeholder='操作人员姓名'><input type='hidden' name='oId' value='"+oId+"'>"
+                        +"<input type='text' name='oName' class='form-control' value='"+result.oName+"' id='on' placeholder='操作人员姓名'><input type='hidden' name='oId' value='"+oId+"'>"
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
@@ -314,19 +338,56 @@
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
-                    +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
+                +"<label for='os' class='col-sm-4 control-label'>操作人员权限等级：</label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='radio' name='oGender' id='genderNan' value='男'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
-                        +"<input type='radio' name='oGender' id='genderNv' value='女'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                        +"<select class='form-control' name='oStatus' id='os'></select>"
                     +"</div>"
                 +"</div>"
-
+                +"<div class='form-group'>"
+                +"<label for='osa' class='col-sm-4 control-label'>工资等级：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<select class='form-control' name='oSalary' id='osa'></select>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='ows' class='col-sm-4 control-label'>工作状态：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<select class='form-control' name='oWorkStatus' id='ows'></select>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='radio' "+c+" name='oGender' id='genderNan' value='男'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                        +"<input type='radio' "+v+" name='oGender' id='genderNv' value='女'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='ot' class='col-sm-4 control-label'>电话：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='text' class='form-control' name='oTel' value='"+result.oTel+"' id='ot'>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='oa' class='col-sm-4 control-label'>住址：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='text' class='form-control' name='oAddress' value='"+result.oAddress+"' id='oa'>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='oc' class='col-sm-4 control-label'>入职时间：</label>"
+                    +"<div class='col-sm-6'>"
+                        +"<input type='text' class='form-control' name='oCreateTime' value='"+getDateTime(result.oCreateTime,1)+"' id='oc'>"
+                    +"</div>"
+                +"</div>"
                 +"</form>";
             $("#updateOperators").html(html);
 
         })
 
     }
+
+
 
 
     </script>
