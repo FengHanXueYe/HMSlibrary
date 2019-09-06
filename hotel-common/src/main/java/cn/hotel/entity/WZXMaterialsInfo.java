@@ -13,7 +13,7 @@ import java.util.Date;
  * @date: 2019-09-03 16:14
  */
 public class WZXMaterialsInfo implements Serializable {
-    private Integer materialsId,isStockAlam,supplierNumber,materialsDisable;
+    private Integer materialsId,isStockAlam,supplierNumber,materialsDisable,materialsStatus;
     private String materialsBarCode,materialsName,materialsStandard,materialsModel,materialsProducts,typeCode,materialsNumber;
     private Double materialsUnitPrice,materialsPrices;
     private Date materialsStartDate,materialsEndDate;
