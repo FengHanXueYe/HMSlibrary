@@ -14,29 +14,21 @@
 <form class="form-inline text-center">
     <div class="form-group">
         <label for="exampleInputName2">食品名称</label>
-        <input type="text" class="form-control" id="exampleInputName2" placeholder="请输入食品名称">
+        <input type="text" class="form-control" id="exampleInputName2" placeholder="请输入食品名称" name="foodname">
     </div>
     <div class="form-group">
         <label>菜品状态</label>
         <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
-        <select class="form-control" id="status">
-            <option value="-1">请选择</option>
-            <option value="1">充足</option>
-            <option value="2">缺少</option>
-            <option value="3">暂无</option>
+        <select class="form-control"  name="foodstatus">
         </select>
     </div>
     <div class="form-group">
         <label>菜品类型</label>
         <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
-        <select class="form-control">
-            <option value="-1">请选择</option>
-            <option value="1">热菜</option>
-            <option value="2">凉菜</option>
-            <option value="3">米饭</option>
+        <select class="form-control" name="foodtype">
         </select>
     </div>
-    <button type="button" class="btn btn-default">查询</button>
+    <button type="button" id="submitForm" class="btn btn-default">查询</button>
 </form>
 <br>
 <br>
@@ -63,6 +55,13 @@
 <script type="text/javascript">
     $(function () {
         operatorLoad(-1);
+        $("button[id='submitForm']").click(function () {
+            operatorLoad(-1);
+        })
+        // 加载菜品状态
+        loadSelect("FOOD_STATUS", $("select[name='foodstatus']"));
+        // 加载菜品类型
+        loadSelect("FOOD_TYPE", $("select[name='foodtype']"));
     });
     function clickPage(pageNum) {
         operatorLoad(pageNum);
@@ -137,6 +136,15 @@
         })
     }
 
+    // 加载下拉框
+    function loadSelect(code, e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            e.append("<option value='-1'>--请选择--</option>");
+            $.each(result, function (index,item) {
+                e.append("<option value='"+item.valueId+"'>"+item.valueName+"</option>");
+            })
+        })
+    }
 
 </script>
 </body>

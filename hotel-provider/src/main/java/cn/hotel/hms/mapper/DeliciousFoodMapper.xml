@@ -7,11 +7,23 @@
         <id column="foodid" property="foodid"></id>
     </resultMap>
     <select id="queryAllFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
-        SELECT `foodid`,`foodname`,`foodimgone`,
+        SELECT `foodid`,`foodname`,`foodimgone`,foodtype,
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
+        foodstatus,
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_STATUS' AND `valueId`=`foodstatus`) foodstat,
        `foodprice`,`foodDetail`
        FROM `deliciousfood`
+       <where>
+            <if test="foodname!=null and foodname!=''">
+                foodname like concat('%',#{foodname},'%')
+            </if>
+            <if test="foodstatus!=null and foodstatus!=-1">
+                and foodstatus=#{foodstatus}
+            </if>
+           <if test="foodtype!=null and foodtype!=-1">
+                and foodtype=#{foodtype}
+           </if>
+       </where>
     </select>
 
     <select id="detailDeliciousFood" resultMap="foodMap" parameterType="cn.hotel.entity.DeliciousFood">
