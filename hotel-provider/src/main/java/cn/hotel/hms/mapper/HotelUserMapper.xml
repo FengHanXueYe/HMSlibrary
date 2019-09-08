@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.HotelUserMapper">
+    <select id="detailHotelUser" resultType="cn.hotel.entity.HotelUser" parameterType="cn.hotel.entity.HotelUser">
+        select * from hotelUser
+        <where>
+            <if test="huId!=null and huId!=-1"> huId = #{huId}</if>
+            <if test="huNumber!=null and huNumber!=''"> huNumber = #{huNumber}</if>
+        </where>
+    </select>
+</mapper>

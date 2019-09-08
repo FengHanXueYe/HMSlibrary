@@ -39,7 +39,7 @@
     </select>
 
     <update id="updateOperator" parameterType="cn.hotel.entity.Operator">
-        update Operator
+        update operator
         <set>
             <if test="oName!=null and oName!=''">oName = #{oName},</if>
             <if test="oDepartment!=null and oDepartment!=-1">oDepartment = #{oDepartment},</if>
@@ -49,17 +49,18 @@
             <if test="oTel!=null and oTel!=''">oTel = #{oTel},</if>
             <if test="oSFZ!=null and oSFZ!=''">oSFZ = #{oSFZ},</if>
             <if test="oGender!=null and oGender!=''">oGender = #{oGender},</if>
-            <if test="oAddress!=null and oAddress!=''">oAddress = #{oAddress}</if>
+            <if test="oAddress!=null and oAddress!=''">oAddress = #{oAddress},</if>
+            <if test="oHotelUserNum!=null and oHotelUserNum!=''">oHotelUserNum = #{oHotelUserNum}</if>
         </set>
         where oId = #{oId}
     </update>
 
     <insert id="insertOperator" parameterType="cn.hotel.entity.Operator">
-        insert into Operator value(null, #{oName}, #{oDepartment}, #{oStatus}, #{oSalary}, #{oWorkStatus}, #{oTel}, #{oSFZ}, #{oAddress}, #{oGender}, NOW(), #{oHotelUserNum})
+        insert into operator value(null, #{oName}, #{oDepartment}, #{oStatus}, #{oSalary}, #{oWorkStatus}, #{oTel}, #{oSFZ}, #{oAddress}, #{oGender}, NOW(), #{oHotelUserNum})
     </insert>
 
     <delete id="deleteOperator" parameterType="integer">
-        delete from Operator where oId = #{oId}
+        delete from operator where oId = #{oId}
     </delete>
 
 

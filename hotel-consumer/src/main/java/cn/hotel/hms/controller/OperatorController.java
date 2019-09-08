@@ -74,10 +74,11 @@ public class OperatorController {
     /**
      * 执行删除操作人员
      */
-    @RequestMapping(value = "doDeleteOperator")
-    public String doDeleteOperator(Integer oId){
+    @ResponseBody
+    @RequestMapping(value = "doDeleteOperator", method = RequestMethod.POST)
+    public boolean doDeleteOperator(Integer oId){
         Integer integer = operatorService.deleteOperator(oId);
-        return "redirect:toOperator";
+        return integer>0?true:false;
     }
 
     /**

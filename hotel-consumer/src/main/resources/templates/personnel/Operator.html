@@ -5,7 +5,13 @@
     <title>Operator</title>
     <div th:include="base::base"></div>
     <script src="/js/dateJS.js"></script>
-
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -94,7 +100,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-primary" id="alertLeft" onclick="updateOperatorForm()">保存修改</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div><!-- /.modal-content -->
@@ -104,7 +110,44 @@
 
             </div>
     </div>
-    <div id="yanshi"></div>
+
+
+
+
+    <!--alert弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="alerttishi">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--confirm弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="confirmtishi">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 <script type="text/javascript">
     $(function () {
         // 加载人员列表
@@ -185,7 +228,7 @@
                     +"<td class='col-md-1 '>"
                     +"<a href='javascript:void(0)' onclick='detailOperator("+item.oId+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
                     +"<a href='javascript:void(0)' onclick='updateOperator("+item.oId+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                    +"<a th:href='@{doDeleteOperator(oId="+item.oId+")}'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='deleteOperator("+item.oId+",\""+item.oName+"\")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                     +"</td>"
                     +"</tr>";
             })
@@ -230,6 +273,22 @@
         // return z;
     }
 
+    // ajax加载下拉框酒店
+    function loadHotelUser(ohun) {
+        $.post("ajaxQueryAllHotelUser",function (result) {
+            var html = "";
+            $.each(result, function (index,item) {
+                if(ohun==item.huNumber){
+                    html+= "<option selected value='"+item.huNumber+"'>"+item.huName+"</option>";
+                }else{
+                    html+= "<option value='"+item.huNumber+"'>"+item.huName+"</option>";
+                }
+            })
+            $("select[id='ohun']").html(html);
+        })
+    }
+    
+    
     // 查看操作人员详情
     function detailOperator(oId) {
         $("#detailOperator").modal("show");
@@ -307,11 +366,6 @@
         $("#updateOperators").html("");
 
         $.post("doDetailOperator","oId="+oId,function (result) {
-            // if(result.oGender=="男"){
-            //     $("input[id='genderNan']").attr("checked","checked");
-            // }else{
-            //     $("input[id='genderNv']").attr("checked");
-            // }
             var c;
             var v;
             if(result.oGender=="男"){
@@ -324,11 +378,12 @@
             jsLoadSelect("OPERATOR_PERRMISSION_LEVEL",result.oStatus,2);
             jsLoadSelect("WAGE_SCALE",result.oSalary,3);
             jsLoadSelect("OPERATOR_WORK_STATUS",result.oWorkStatus,4);
-            var html = "<form class='form-horizontal'>"
+            loadHotelUser(result.oHotelUserNum);
+            var html = "<form class='form-horizontal' id='updateOperatorForm'>"
                 +"<div class='form-group'>"
-                    +"<label for='on' class='col-sm-4 control-label'>操作人员姓名：</label>"
+                    +"<label for='on' class='col-sm-4 control-label'>操作人员姓名：<span id='nameTiShi'></span></label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='text' name='oName' class='form-control' value='"+result.oName+"' id='on' placeholder='操作人员姓名'><input type='hidden' name='oId' value='"+oId+"'>"
+                        +"<input type='text' name='oName' maxlength='5' oninput='checkNumber()' class='form-control' value='"+result.oName+"' id='on' placeholder='操作人员姓名'><input type='hidden' name='oId' value='"+result.oId+"'>"
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
@@ -363,9 +418,9 @@
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
-                    +"<label for='ot' class='col-sm-4 control-label'>电话：</label>"
+                    +"<label for='ot' class='col-sm-4 control-label'>电话：<span id='telTiShi'></span></label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='text' class='form-control' name='oTel' value='"+result.oTel+"' id='ot'>"
+                        +"<input type='number' oninput='checkLength(1)' class='form-control' name='oTel' value='"+result.oTel+"' id='ot'>"
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
@@ -375,19 +430,89 @@
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
-                    +"<label for='oc' class='col-sm-4 control-label'>入职时间：</label>"
+                    +"<label for='ohun' class='col-sm-4 control-label'>所在酒店：</label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='text' class='form-control' name='oCreateTime' value='"+getDateTime(result.oCreateTime,1)+"' id='oc'>"
+                        +"<select class='form-control' name='oHotelUserNum' id='ohun'></select>"
                     +"</div>"
                 +"</div>"
                 +"</form>";
             $("#updateOperators").html(html);
-
         })
+    }
+    
+    // 编辑保存操作
+    function updateOperatorForm() {
+        if (checkLength(1) && checkNumber()){
+            var data = $("#updateOperatorForm").serialize();
+            $.post("doUpdateOperator",data,function (resutl) {
+                if(resutl){
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
 
+            })
+        }else{
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+        }
+        $("#alertModel").modal("show");
+    }
+    
+    // 检查字符串长度
+    function checkLength(r){
+        if(r==1){
+            var telLength = $("input[name='oTel']").val().length;
+            if(telLength>11){
+                $("#telTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                return false;
+            }else{
+                $("#telTiShi").html("");
+                return true;
+            }
+        }
     }
 
+    // 检查是否包含数字
+    function checkNumber() {
+        var oName = $("input[name='oName'][id='on']").val();
+        var reg = /^(?=.*\d.*\b)/;
+        if(reg.test(oName)){
+            // 包含nameTiShi
+            $("#nameTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+            return false;
+        }else{
+            // 不包含
+            $("#nameTiShi").html("");
+            return true;
+        }
+    }
 
+    // 判断是否点击的变量
+    var isClick = false;
+    // 点击确认删除
+    function OkNo() {
+        isClick = true;
+        var oId = $("input[name='hiddenOId']").val();
+        if(isClick){
+            $("#confirmModel").modal("hide");
+            $.post("doDeleteOperator","oId="+oId, function (result) {
+                if(result){
+                    operatorLoad(-1);
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    $("#alertModel").modal("show");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+
+            })
+        }
+    }
+
+    // 删除操作人员操作
+    function deleteOperator(oId,name){
+        $("#confirmtishi").html("确定删除操作人员<strong>"+name+"</strong>的信息吗?<input type='hidden' value='"+oId+"' name='hiddenOId'>");
+        $("#confirmModel").modal("show");
+    }
 
 
     </script>
