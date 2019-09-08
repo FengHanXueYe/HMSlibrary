@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.MemberMapper">
+    <select id="detailMember" parameterType="cn.hotel.entity.Member" resultType="cn.hotel.entity.Member">
+        select * from member
+        <where>
+            <if test="mId!=null and mId!=-1">mId = #{mId}</if>
+            <if test="mName!=null and mName!=''">and mName = #{mName}</if>
+            <if test="mSFZtype!=null and mSFZtype!=-1">and mSFZtype = #{mSFZtype}</if>
+            <if test="mSFZ!=null and mSFZ!=''">and mSFZ = #{mSFZ}</if>
+        </where>
+    </select>
+</mapper>

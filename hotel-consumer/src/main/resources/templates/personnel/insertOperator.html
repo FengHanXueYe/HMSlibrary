@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>insertOperator</title>
+    <div th:include="base::base"></div>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal" id="updateOperatorForm">
+                <div class="form-group">
+                    <label for="on" class="col-sm-4 control-label">操作人员姓名：<span id="nameTiShi"></span></label>
+                    <div class="col-sm-6">
+                        <input type="text" name="oName" maxlength="5" oninput="checkNumber()" class="form-control"  id="on" placeholder="操作人员姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="od" class="col-sm-4 control-label">操作人员部门：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="oDepartment" id="od"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="os" class="col-sm-4 control-label">操作人员权限等级：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="oStatus" id="os"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="osa" class="col-sm-4 control-label">工资等级：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="oSalary" id="osa"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ows" class="col-sm-4 control-label">工作状态：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="oWorkStatus" id="ows"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-4 control-label">性别：</label>
+                    <div class="col-sm-6">
+                        <input type="radio"  c  name="oGender" id="genderNan" value="男"><label for="genderNan"><img  src="images/nan.png" alt="" title="男"></label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio"  v  name="oGender" id="genderNv" value="女"><label for="genderNv"><img  src="images/nv1.png" alt="" title="女"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ot" class="col-sm-4 control-label">电话：<span id="telTiShi"></span></label>
+                    <div class="col-sm-6">
+                        <input type="number" oninput="checkLength(1)" class="form-control" name="oTel" id="ot">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="oa" class="col-sm-4 control-label">住址：</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="oAddress" id="oa">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ohun" class="col-sm-4 control-label">所在酒店：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="oHotelUserNum" id="ohun"></select>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+<script type="text/javascript">
+
+    // 检查是否包含数字
+    function checkNumber() {
+        var oName = $("input[name='oName'][id='on']").val();
+        var reg = /^(?=.*\d.*\b)/;
+        if(reg.test(oName)){
+            // 包含nameTiShi
+            $("#nameTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+            return false;
+        }else{
+            // 不包含
+            $("#nameTiShi").html("");
+            return true;
+        }
+    }
+
+    $(function () {
+
+        jsLoadSelect("OPERATOR_DEPARTMENTS",result.oDepartment,1);
+        jsLoadSelect("OPERATOR_PERRMISSION_LEVEL",result.oStatus,2);
+        jsLoadSelect("WAGE_SCALE",result.oSalary,3);
+        jsLoadSelect("OPERATOR_WORK_STATUS",result.oWorkStatus,4);
+
+    })
+
+    // js ajax加载下拉框
+    function jsLoadSelect(code,k,e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            $.each(result, function (index,item) {
+                if(k==item.valueName){
+                    html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }else{
+                    html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }
+            })
+            if(e==1){
+                $("select[id='od']").html(html);
+            }else if(e==2){
+                $("select[id='os']").html(html);
+            }else if(e==3){
+                $("select[id='osa']").html(html);
+            }else if(e==4){
+                $("select[id='ows']").html(html);
+            }
+
+        })
+        // alert(z);
+        // return z;
+    }
+
+
+
+</script>
+
+
+</body>
+</html>

@@ -19,6 +19,7 @@ public class Member implements Serializable {
     private String mNumber; // 会员编号
     private String mName; // 会员姓名
     private String mGender; // 会员性别
+    private Integer mSFZtype; // 身份证号
     private String mSFZ; // 身份证
     private String mAddress; // 住址
     private String mTel; // 电话
