@@ -3,9 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hotel.hms.mapper.RoomMapper">
-    <select id="queryAll" parameterType="Room" resultType="Room">
-        select * from `room`
-        <where>
+    <select id="queryAll" parameterType="Room" resultType="cn.hotel.vo.RoomVO">
+        select r.*,sta.risorse as roomStatusRisorse,stb.valueName as roomNumberValue from `room` as r,datastatus as sta,datastatus as stb where r.`roomStatus` = sta.`valueId` and stb.valueId = r.roomType and sta.typeCode='ROOM_STATUS' and stb.typeCode = 'ROMM_TYPE'
             <if test="roomType != null and roomType != -1">
                 and roomType = #{roomType}
             </if>
@@ -21,6 +20,9 @@
             <if test="roomBed != null">
                 and roomBed = #{roomBed}
             </if>
-        </where>
+    </select>
+
+    <select id="queryByNumber" resultType="cn.hotel.vo.RoomVO" parameterType="String">
+         SELECT r.*,sta.valueName AS roomTypeName FROM `room` AS r,`datastatus` AS sta WHERE r.roomType = sta.valueId AND sta.typeCode = 'ROMM_TYPE' AND r.roomNumber = #{no}
     </select>
 </mapper>
