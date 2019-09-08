@@ -48,7 +48,7 @@
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     查询
                 </button>
-                <button type="button"  class="btn btn-default btn-block">
+                <button type="button" id="toInsertOperator" class="btn btn-default btn-block">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     增加
                 </button>
@@ -160,6 +160,11 @@
         loadSelect("OPERATOR_DEPARTMENTS", $("select[name='oDepartment']"));
         // 加载工作状态
         loadSelect("OPERATOR_WORK_STATUS", $("select[name='oWorkStatus']"));
+        // 去增加页面
+        $("#toInsertOperator").click(function () {
+            location.href="toInsertOperator";
+        })
+
     })
 
     // 点击分页事件
@@ -450,7 +455,7 @@
                 }else{
                     $("#alerttishi").html("<font color='red'>操作错误！</font>");
                 }
-
+                $("#updateOperator").modal("hide");
             })
         }else{
             $("#alerttishi").html("<font color='red'>操作错误！</font>");

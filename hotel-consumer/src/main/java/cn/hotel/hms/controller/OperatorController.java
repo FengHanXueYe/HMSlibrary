@@ -45,7 +45,7 @@ public class OperatorController {
      */
     @RequestMapping(value = "toInsertOperator")
     public String toInsertOperator(){
-        return "insertOperator";
+        return "personnel/insertOperator";
     }
 
     /**
@@ -53,10 +53,11 @@ public class OperatorController {
      * @param operator
      * @return
      */
-    @RequestMapping(value = "doInsertOperator")
-    public String doInsertOperator(Operator operator){
+    @ResponseBody
+    @RequestMapping(value = "doInsertOperator", method = RequestMethod.POST)
+    public boolean doInsertOperator(Operator operator){
         Integer integer = operatorService.insertOperator(operator);
-        return "redirect:toOperator";
+        return integer>0?true:false;
     }
 
     /**
@@ -92,6 +93,7 @@ public class OperatorController {
         OperatorVO operator = operatorService.detailOperator(oId);
         return JSON.toJSONString(operator);
     }
+
 
 
 }

@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <title>insertOperator</title>
     <div th:include="base::base"></div>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <form class="form-horizontal" id="updateOperatorForm">
+            <div class="page-header">
+                <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>操作人员信息 </small></h1>
+            </div>
+            <form class="form-horizontal" id="insertOperatorForm">
                 <div class="form-group">
                     <label for="on" class="col-sm-4 control-label">操作人员姓名：<span id="nameTiShi"></span></label>
                     <div class="col-sm-6">
@@ -42,20 +52,26 @@
                 <div class="form-group">
                     <label  class="col-sm-4 control-label">性别：</label>
                     <div class="col-sm-6">
-                        <input type="radio"  c  name="oGender" id="genderNan" value="男"><label for="genderNan"><img  src="images/nan.png" alt="" title="男"></label>&nbsp;&nbsp;&nbsp;
-                        <input type="radio"  v  name="oGender" id="genderNv" value="女"><label for="genderNv"><img  src="images/nv1.png" alt="" title="女"></label>
+                        <input type="radio" checked  name="oGender" id="genderNan" value="男"><label for="genderNan"><img  src="images/nan.png" alt="" title="男"></label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio"   name="oGender" id="genderNv" value="女"><label for="genderNv"><img  src="images/nv1.png" alt="" title="女"></label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="ot" class="col-sm-4 control-label">电话：<span id="telTiShi"></span></label>
                     <div class="col-sm-6">
-                        <input type="number" oninput="checkLength(1)" class="form-control" name="oTel" id="ot">
+                        <input type="number" oninput="checkLength(1)" placeholder="操作人电话号码" class="form-control" name="oTel" id="ot">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="osfz" class="col-sm-4 control-label">身份证号：<span id="sfzTiShi"></span></label>
+                    <div class="col-sm-6">
+                        <input type="number" oninput="checkLength(2)" placeholder="操作人身份证号" class="form-control" name="oSFZ" id="osfz">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="oa" class="col-sm-4 control-label">住址：</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="oAddress" id="oa">
+                        <input type="text" class="form-control" placeholder="操作人住址" name="oAddress" id="oa">
                     </div>
                 </div>
                 <div class="form-group">
@@ -64,8 +80,29 @@
                         <select class="form-control" name="oHotelUserNum" id="ohun"></select>
                     </div>
                 </div>
+                <div class="col-sm-10 control-label">
+                    <button type="button" class="btn btn-info" id="alertLeft" onclick="insertOperatorForm()">
+                        <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 添加
+                    </button>
+                </div>
             </form>
 
+
+
+            <!--alert弹框样式-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">系统提示</h4>
+                        </div>
+                        <div class="modal-body" id="alerttishi">
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
     </div>
 <script type="text/javascript">
@@ -85,25 +122,46 @@
         }
     }
 
+    // 检查字符串长度
+    function checkLength(r){
+        if(r==1){
+            var telLength = $("input[name='oTel']").val().length;
+            if(telLength!=11){
+                $("#telTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                return false;
+            }else{
+                $("#telTiShi").html("");
+                return true;
+            }
+        }else if(r==2){
+            var sfzLength = $("input[name='oSFZ']").val().length;
+            if(sfzLength!=18){
+                $("#sfzTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                return false;
+            }else{
+                $("#sfzTiShi").html("");
+                return true;
+            }
+        }
+    }
+
+
     $(function () {
 
-        jsLoadSelect("OPERATOR_DEPARTMENTS",result.oDepartment,1);
-        jsLoadSelect("OPERATOR_PERRMISSION_LEVEL",result.oStatus,2);
-        jsLoadSelect("WAGE_SCALE",result.oSalary,3);
-        jsLoadSelect("OPERATOR_WORK_STATUS",result.oWorkStatus,4);
-
+        jsLoadSelect("OPERATOR_DEPARTMENTS",1);
+        jsLoadSelect("OPERATOR_PERRMISSION_LEVEL",2);
+        jsLoadSelect("WAGE_SCALE",3);
+        jsLoadSelect("OPERATOR_WORK_STATUS",4);
+        loadHotelUser();
     })
 
     // js ajax加载下拉框
-    function jsLoadSelect(code,k,e){
+    function jsLoadSelect(code,e){
         $.get("dataStatus/queryByCode","code="+code,function(result){
             var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
             $.each(result, function (index,item) {
-                if(k==item.valueName){
-                    html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
-                }else{
-                    html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
-                }
+                html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
             })
             if(e==1){
                 $("select[id='od']").html(html);
@@ -119,6 +177,68 @@
         // alert(z);
         // return z;
     }
+
+    // ajax加载下拉框酒店
+    function loadHotelUser() {
+        $.post("ajaxQueryAllHotelUser",function (result) {
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
+            $.each(result, function (index,item) {
+                html+= "<option value='"+item.huNumber+"'>"+item.huName+"</option>";
+            })
+            $("select[id='ohun']").html(html);
+        })
+    }
+
+    // 增加操作
+    function insertOperatorForm() {
+        var oName = $("input[name='oName']").val();
+        if(oName==""){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+        var oTel = $("input[name='oTel']").val();
+        if(oTel==""){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+        var oAddress = $("input[name='oAddress']").val();
+        if(oAddress==""){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+        var oHotelUserNum = $("select[name='oHotelUserNum']").val();
+        var oWorkStatus = $("select[name='oWorkStatus']").val();
+        var oSalary = $("select[name='oSalary']").val();
+        var  oStatus = $("select[name='oStatus']").val();
+        var oDepartment = $("select[name='oDepartment']").val();
+        if(oHotelUserNum==-1 || oWorkStatus==-1 || oSalary==-1 || oStatus==-1 || oDepartment==-1){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+
+        if(checkNumber()&&checkLength(1)&&checkLength(2)){
+            var data = $("#insertOperatorForm").serialize();
+            $.post("doInsertOperator",data,function (resutl) {
+                if(resutl){
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+                $("#alertModel").modal("show");
+            })
+        }else{
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+        }
+
+
+    }
+
 
 
 
