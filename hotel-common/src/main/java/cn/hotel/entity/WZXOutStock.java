@@ -1,6 +1,7 @@
 package cn.hotel.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -73,7 +74,14 @@ public class WZXOutStock implements Serializable {
         return osTime;
     }
 
-    public void setOsTime(Date osTime) {
-        this.osTime = osTime;
+    public void setOsTime(String osTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
+        Date date;
+        try {
+            date = sdf.parse(osTime);
+        } catch (Exception e) {
+            date = null;
+        }
+        this.osTime = date;
     }
 }

@@ -18,6 +18,14 @@ public class WZXMaterialsInfo implements Serializable {
     private Double materialsUnitPrice,materialsPrices;
     private Date materialsStartDate,materialsEndDate;
 
+    public Integer getMaterialsStatus() {
+        return materialsStatus;
+    }
+
+    public void setMaterialsStatus(Integer materialsStatus) {
+        this.materialsStatus = materialsStatus;
+    }
+
     public Double getMaterialsPrices() {
         return materialsPrices;
     }
