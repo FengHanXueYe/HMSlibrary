@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.ActualsStockMapper">
+
+    <resultMap id="materialsInfoMap" type="cn.hotel.entity.WZXMaterialsInfo" autoMapping="true">
+        <id column="materialsId" property="materialsId"></id>
+    </resultMap>
+    <resultMap id="stockInfoMap" type="cn.hotel.entity.WZXStockInfo" autoMapping="true">
+        <id column="stockId" property="stockId"></id>
+    </resultMap>
+    <resultMap id="materialsLocationMap" type="cn.hotel.entity.WZXMaterialsLocation" autoMapping="true">
+        <id column="goodsLocationNumber" property="goodsLocationNumber"></id>
+    </resultMap>
+    <resultMap id="ActualsStockVoMap" type="cn.hotel.vo.ActualsStockVO" autoMapping="true">
+        <id column="asNumber" property="asNumber"></id>
+        <association property="materialsInfo" resultMap="materialsInfoMap"></association>
+        <association property="stockInfo" resultMap="stockInfoMap"></association>
+        <association property="materialsLocation" resultMap="materialsLocationMap"></association>
+    </resultMap>
+    <delete id="delActualStockByasNumber">
+        DELETE FROM roomdb.wzxactualstock
+	WHERE
+	asNumber = #{asNumber} ;
+    </delete>
+    <select id="queryAll"  resultMap="ActualsStockVoMap">
+        SELECT * FROM wzxactualstock a,wzxmaterialsinfo m,wzxstockinfo s,wzxmaterialslocation g
+          WHERE a.materialsNumber=m.materialsId AND a.stockNumber=s.stockId AND a.goodsLocationNumber=g.goodsLocationNumber
+        <if test="stockInfo!=null">
+            <if test="stockInfo.stockId!=null and stockInfo.stockId">
+                AND s.stockId=#{stockInfo.stockId}
+            </if>
+        </if>
+        <if test="materialsInfo!=null">
+            <if test="materialsInfo.materialsName!=null and materialsInfo.materialsName!=''">
+                AND m.materialsId IN(SELECT materialsId FROM wzxmaterialsinfo WHERE materialsName LIKE CONCAT('%',#{materialsInfo.materialsName},'%'))
+            </if>
+            <if test="materialsInfo.materialsDisable!=null and materialsInfo.materialsDisable>0">
+                AND m.materialsDisable=#{materialsDisable}
+            </if>
+            <if test="materialsInfo.materialsBarCode!=null and materialsInfo.materialsBarCode!=''">
+                AND m.materialsBarCode=#{materialsBarCode}
+            </if>
+        </if>
+        <if test="materialss!=null">
+            <if test="materialss=50">
+
+                AND a.materialss<![CDATA[>=]]>50
+            </if>
+            <if test="materialss=20">
+                AND a.materialss<![CDATA[<=]]>20
+            </if>
+            <if test="materialss=0">
+                AND a.materialss<![CDATA[=]]>0
+            </if>
+        </if>
+    </select>
+    <select id="queryActualStockByasNumber" resultType="cn.hotel.entity.WZXActualStock">
+        select * from wzxactualstock where asNumber=#{asNumber}
+    </select>
+</mapper>

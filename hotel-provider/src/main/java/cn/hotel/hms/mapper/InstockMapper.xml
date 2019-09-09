@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.InstockMapper">
+
+	<resultMap id="MaterialsInfoMap" type="cn.hotel.entity.WZXMaterialsInfo" autoMapping="true">
+		<id column="materialsId" property="materialsId"></id>
+	</resultMap>
+	<resultMap id="stockInfoMap" type="cn.hotel.entity.WZXStockInfo" autoMapping="true">
+		<id column="stockId" property="stockId"></id>
+	</resultMap>
+	<resultMap id="InstockMap" type="cn.hotel.vo.InstockVO" autoMapping="true">
+		<id column="isId" property="isId"></id>
+		<association property="wzxMaterialsInfo" resultMap="MaterialsInfoMap"></association>
+		<association property="wzxStockInfo" resultMap="stockInfoMap"></association>
+	</resultMap>
+
+
+
+    <insert id="addInstock">
+        INSERT INTO roomdb.wzxinstock
+	(isId,
+	stockNumber,
+	isPerson,
+	isTime,
+	materialsCount,
+	remark,
+	materialsId,
+	isNumber,
+	isMoney,
+	isMoneyCapitalization
+	)
+	VALUES
+	(null,
+	#{stockNumber},
+	#{isPerson},
+	#{isTime},
+	#{materialsCount},
+	#{remark},
+	#{materialsId},
+	#{isNumber},
+	#{isMoney},
+	#{isMoneyCapitalization}
+	);
+    </insert>
+    <select id="queryAllInstockVOByInstock" resultMap="InstockMap">
+		SELECT * FROM wzxinstock i,wzxstockinfo s,wzxmaterialsinfo m
+           WHERE i.stockNumber=s.stockId AND i.materialsId=m.materialsId
+           <if test="wzxStockInfo.stockId!=null and wzxStockInfo.stockId!=-1">
+			   AND i.stockNumber=#{wzxStockInfo.stockId}
+		   </if>
+		   <if test="wzxMaterialsInfo.materialsName!=null and wzxMaterialsInfo.materialsName!=''">
+			   AND m.materialsName=#{materialsName}
+		   </if>
+		   <if test="isPerson!=null and isPerson!=''">
+			   AND i.isPerson=#{isPerson}
+		   </if>
+
+
+;
+
+	</select>
+</mapper>
