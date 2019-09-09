@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>客房入住</title>
+    <div th:replace="base::base"></div>
+    <script type="text/javascript">
+        $(function () {
+            //初始化
+            queryByCode('DOCUMENT_TYPE', $("select[name='documentType']"))
+
+            $("#VIPyanzheng").click(function () {
+                var name = $("input[name='cName']").val();
+                var documentNo = $("input[name='documentNo']").val();
+                var documentType = $("select[name='documentType']").val();
+                if(name == null || name == ''){
+                    alert("验证需填写姓名");
+                    return false;
+                }
+                if(documentType == -1){
+                    alert("验证需填写证件类型")
+                    return;
+                }
+                if(documentNo == null || documentNo == ''){
+                    alert("验证需填写证件号码");
+                    return false;
+                }
+
+                $.get("/room/verificationVIP",{"mName":name,"mSFZ":documentNo,"mSFZtype":documentType},function (result) {
+                    if(result == null){
+                        alert("该顾客还不是本店会有哦");
+                    }
+                    var fag  = confirm("该顾客是本店会员哦，需要导入信息吗？");
+                    if(fag){
+                        //更改性别
+                        $("select[name='cSex'] option").each(function () {
+                            var val = $(this).val();
+                            if(val == result.mGender){
+                                $(this).attr("selected","selected");
+                            }
+                        })
+                        //更改客户类型
+                        $("select[name='ctype'] option").each(function () {
+                            var val = $(this).val();
+                            if(val == 1){
+                                $(this).attr("selected","selected");
+                            }
+                        })
+                        //更改地址
+                        $("input[name='rIaddress']").val(result.mAddress);
+                    }
+                })
+            })
+            
+            //自动计算金额
+            $("input[name='preDays']").change(function () {
+                
+            })
+            
+        })
+
+        //获取类型方法
+        function queryByCode(code, ele) {
+
+            $.get("/dataStatus/queryByCode", {"code": code}, function (result) {
+                /*清除子标签*/
+                $(ele).empty();
+                /*追加默认选项*/
+                ele.append("<option value='-1'>请选择</option>");
+                var codea;
+                /*判断是哪个下拉框并获取相对应的值*/
+                switch (code) {
+                    case 'ROMM_TYPE':
+                        codea = [[${room.roomType}]];
+                        break;
+                    case 'ROOM_STATUS':
+                        codea = [[${room.roomStatus}]];
+                        break;
+                    default:
+                        break;
+                }
+                $.each(result, function (i, e) {
+                    var tr = "<option value='" + e.valueId + "'>" + e.valueName + "</option>";
+                    if (codea == e.valueId) {
+                        tr = "<option selected value='" + e.valueId + "'>" + e.valueName + "</option>";
+                    }
+                    ele.append(tr);
+                })
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2" >
+            <form class="form-inline">
+                <table class="table table-bordered">
+                    <tr>
+                        <td align="center">房间号</td>
+                        <td><input type="text" class="form-control" th:value="${room.roomNumber}" name="roomNumber"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">房间类型</td>
+                        <td>
+                            <input class="form-control" type="text" th:value="${room.roomTypeName}">
+                            <input class="form-control" type="hidden" th:value="${room.roomType}" name="roomType">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">入住状态</td>
+                        <td>
+                            <select name="roomStatus" class="form-control">
+                                <option value="2">入住</option>
+                                <option value="5">预约</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">客户姓名</td>
+                        <td><input class="form-control" type="text" name="cName"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">证件类型</td>
+                        <td>
+                            <select name="documentType" class="form-control">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">证件编号</td>
+                        <td><input  class="form-control" type="text" name="documentNo">&nbsp;&nbsp;<button id="VIPyanzheng" type="button" class="btn btn-info">验证</button></td>
+                    </tr>
+                    <tr>
+                        <td align="center">客户类型</td>
+                        <td>
+                            <select class="form-control" name="ctype">
+                                <option value="2">普通</option>
+                                <option value="1">会员</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center">性别</td>
+                        <td>
+                            <select name="cSex" class="form-control">
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">地址</td>
+                        <td><input class="form-control" type="text" name="rIaddress"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">入住时间</td>
+                        <td><input class="form-control" type="datetime-local" name="checkInTime"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">入住人数</td>
+                        <td><input class="form-control" type="text" name="rINumber"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">入住天数</td>
+                        <td><input class="form-control" type="text" name="preDays"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">消费金额</td>
+                        <td><input class="form-control" type="text" name=""></td>
+                    </tr>
+                    <tr>
+                        <td align="center">押金</td>
+                        <td><input class="form-control" type="text" th:value="${room.roomDeposit}" name="rIDeposit"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">备注</td>
+                        <td>
+                        <textarea class="form-control" name="rIRemarks" rows="5" cols="22">
+                        </textarea>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
