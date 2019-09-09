@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.MaterialsInfoMapper">
+
+	<resultMap id="SupplierInfoMap" type="cn.hotel.entity.WZXSupplierInfo" autoMapping="true">
+		<id column="supplierNumber" property="supplierNumber"></id>
+	</resultMap>
+	<resultMap id="MaterialsInfoMap" type="cn.hotel.vo.MaterialsInfoVO" autoMapping="true">
+		<id column="materialsId" property="materialsId"></id>
+		<association property="wzxSupplierInfo" resultMap="SupplierInfoMap"></association>
+	</resultMap>
+
+    <insert id="addMaterialsInfo" useGeneratedKeys="true"  keyProperty="materialsId">
+        INSERT INTO roomdb.wzxmaterialsinfo
+	(materialsId,
+	materialsBarCode,
+	materialsName,
+	materialsStandard,
+	materialsModel,
+	materialsProducts,
+	materialsUnitPrice,
+	supplierNumber,
+	typeCode,
+	isStockAlam,
+	materialsStartDate,
+	materialsEndDate,
+	materialsNumber,
+	materialsDisable,
+	materialsPrices,
+	materialsStatus
+	)
+	VALUES
+	(null,
+	#{materialsBarCode},
+	#{materialsName},
+	#{materialsStandard},
+	#{materialsModel},
+	#{materialsProducts},
+	#{materialsUnitPrice},
+	#{supplierNumber},
+	#{typeCode},
+	#{isStockAlam},
+	#{materialsStartDate},
+	#{materialsEndDate},
+	#{materialsNumber},
+	#{materialsDisable},
+	#{materialsPrices},
+	#{materialsStatus}
+	);
+
+    </insert>
+    <update id="UpdateMaterialsInfoByMaterialsId">
+		UPDATE wzxactualstock SET materialss=materialss+#{materialsCount}
+           WHERE materialsNumber=#{materialsId}
+	</update>
+
+	<update id="UpdatedelMaterialsInfoByMaterialsId">
+		UPDATE wzxactualstock SET materialss=materialss-#{materialsCount}
+           WHERE materialsNumber=#{materialsId}
+	</update>
+
+	<select id="queryMaterialsInfoBymaterialsBarCode" resultType="cn.hotel.entity.WZXMaterialsInfo">
+        SELECT * FROM wzxmaterialsinfo w WHERE w.materialsBarCode=#{materialsBarCode}
+    </select>
+
+    <select id="queryMaterialsInfoByMaterialsId" resultType="cn.hotel.entity.WZXMaterialsInfo">
+        SELECT * FROM wzxmaterialsinfo w WHERE w.materialsId=#{materialsId}
+    </select>
+
+    <select id="queryAllMaterialsInfoVO" resultMap="MaterialsInfoMap">
+		SELECT * FROM wzxmaterialsinfo w,wzxsupplierinfo s WHERE w.supplierNumber=s.supplierNumber
+		   <if test="materialsName!=null and materialsName!=''">
+			   AND w.materialsName=#{materialsName}
+		   </if>
+		   <if test="isStockAlam!=null and isStockAlam!=-1">
+			   AND w.isStockAlam=#{isStockAlam}
+		   </if>
+		   <if test="supplierNumber!=null and supplierNumber!=-1">
+			   AND w.supplierNumber=#{supplierNumber}
+		   </if>
+		   <if test="materialsBarCode!=null and materialsBarCode!=''">
+			   AND w.materialsBarCode=#{materialsBarCode}
+		   </if>
+	</select>
+</mapper>
