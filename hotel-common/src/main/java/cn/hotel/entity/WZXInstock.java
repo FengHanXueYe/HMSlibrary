@@ -1,6 +1,7 @@
 package cn.hotel.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -90,7 +91,14 @@ public class WZXInstock implements Serializable {
         return isTime;
     }
 
-    public void setIsTime(Date isTime) {
-        this.isTime = isTime;
+    public void setIsTime(String isTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
+        Date date;
+        try {
+            date = sdf.parse(isTime);
+        } catch (Exception e) {
+            date = null;
+        }
+        this.isTime = date;
     }
 }
