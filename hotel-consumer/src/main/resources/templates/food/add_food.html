@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加食品</title>
+    <div th:include="base::base"></div>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css"
+          href="/js/webuploader.css">
+    <script type="text/javascript"
+            src="/js/webuploader.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>操作人员信息 </small></h1>
+        </div>
+        <form class="form-horizontal" action="/doAddDelicious">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">食品名称：<span id="nameTiShi"></span></label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodname" maxlength="5"  class="form-control"  placeholder="食品名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">食品图片：</label>
+                <div class="col-sm-6">
+                    <!--<select class="form-control" name="foodstatus" id="od"></select>-->
+                    <div id="uploader-demo" class="wu-example">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker" class="webuploader-container">选择图片</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ft" class="col-sm-4 control-label">食品类型：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="foodtype" id="ft"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">价格：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodprice" maxlength="5"  class="form-control"   placeholder="食品价格">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fs" class="col-sm-4 control-label">食品状态：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="foodstatus" id="fs"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">菜品详情：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodDetail" maxlength="5"  class="form-control"  placeholder="菜品详情">
+                </div>
+            </div>
+            <div class="col-sm-10 control-label">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 添加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        jsLoadSelect("FOOD_TYPE",1);
+        jsLoadSelect("FOOD_STATUS",2);
+    })
+    // js ajax加载下拉框
+    function jsLoadSelect(code,e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
+            $.each(result, function (index,item) {
+                html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+            })
+            if(e==1){
+                $("select[id='ft']").html(html);
+            }else if(e==2){
+                $("select[id='fs']").html(html);
+            }
+        })
+    }
+    $(function(){
+        //初始化Web Uploader
+        var uploader = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto : true,
+
+            // swf文件路径
+            swf : '${pageContext.request.contextPath }/js/Uploader.swf',
+
+            // 文件接收服务端。
+            server : 'fileController',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick : '#filePicker',
+
+            // 只允许选择图片文件。
+            accept : {
+                title : 'Images',
+                extensions : 'gif,jpg,jpeg,bmp,png',
+                mimeTypes : 'image/*'
+            }
+        });
+
+
+        uploader
+            .on(
+                'fileQueued',
+                function(file) {
+                    var $list = $("#fileList");
+                    var $li = $('<div id="' + file.id + '" class="file-item thumbnail">'
+                        + '<img>'), $img = $li.find('img');
+
+                    // $list为容器jQuery实例
+                    $list.append($li);
+
+                    // 创建缩略图
+                    // 如果为非图片文件，可以不用调用此方法。
+                    // thumbnailWidth x thumbnailHeight 为 100 x 100
+                    uploader.makeThumb(file, function(error, src) {
+                        if (error) {
+                            $img.replaceWith('<span>不能预览</span>');
+                            return;
+                        }
+                        $img.attr('src', src);
+                    }, 150, 150);
+                });
+
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress .progress-bar');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo( $li ).find('.progress-bar');
+            }
+
+            $li.find('p.state').text('上传中');
+            $percent.css('width', percentage * 100 + '%' );
+        });
+
+
+        uploader.on( 'uploadSuccess', function( file ) {
+            $( '#'+file.id ).find('p.state').text('已上传');
+        });
+
+        uploader.on( 'uploadError', function( file ) {
+            $( '#'+file.id ).find('p.state').text('上传出错');
+        });
+
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').fadeOut();
+        });
+
+        uploader.on('uploadSuccess', function(file, response) {
+            $('#' + file.id).addClass('upload-state-done');
+            var imgurl = response._raw; //上传文件的路径
+            var $list = $("#fileList");
+            var $li = $('<input type="text" class="hide" name="foodimgone" value="'+imgurl+'">')
+            $list.append($li);
+            alert(imgurl);
+        });
+
+        $("#ctlBtn").click(function(){
+            uploader.upload();
+        });
+
+    })
+</script>
+</body>
+</html>
