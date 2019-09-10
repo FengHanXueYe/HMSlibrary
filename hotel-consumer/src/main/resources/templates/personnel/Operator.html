@@ -11,6 +11,9 @@
             -webkit-appearance: none !important;
             margin: 0;
         }
+        div .row{
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -186,6 +189,12 @@
         }else{
             pagePre = Number(result.pageNo)-1;
         }
+        var pageNext;
+        if(result.pageNo>=result.totalPageCount){
+            pageNext = result.totalPageCount;
+        }else{
+            pageNext = Number(result.pageNo)+1;
+        }
         var pageHtml = "";
          pageHtml+="<li no='"+result.pageNo+"'>"
                         +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
@@ -199,7 +208,7 @@
                 pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
             }
         })
-        pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
+        pageHtml+="<li th:no='"+pageNext+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+pageNext+")'>"
             +"<span aria-hidden='true'>&raquo;</span>"
             +"</a>"
             +"</li>";

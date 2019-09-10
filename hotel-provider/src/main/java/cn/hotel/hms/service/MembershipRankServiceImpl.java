@@ -6,6 +6,8 @@ import cn.hotel.service.MembershipRankService;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Service
 public class MembershipRankServiceImpl implements MembershipRankService {
 
@@ -15,5 +17,10 @@ public class MembershipRankServiceImpl implements MembershipRankService {
     @Override
     public MembershipRank detailMembershipRank(Integer mrId) {
         return membershipRankMapper.detailMembershipRank(mrId);
+    }
+
+    @Override
+    public List<MembershipRank> queryAllMembershipRank() {
+        return membershipRankMapper.queryAllMembershipRank();
     }
 }

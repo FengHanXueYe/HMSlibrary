@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Members</title>
+    <div th:include="base::base"></div>
+    <script src="/js/dateJS.js"></script>
+    <script src="/js/pageInfoJS.js"></script>
+    <style type="text/css">
+        div .row{
+
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-inline" id="selectForm">
+                    <div class="form-group">
+                        <label for="mName">会员名称：</label>
+                        <input type="text" name="mName" class="form-control" id="mName" placeholder="会员姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="mSFZtype">证件类型：</label>
+                        <select class="form-control" name="mSFZtype" id="mSFZtype">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mrId">会员等级：</label>
+                        <select class="form-control" name="mMembershipRank" id="mrId">
+                        </select>
+                    </div>
+
+                    <button type="button" id="submitForm" class="btn btn-info">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        查询
+                    </button>
+
+                    <button type="button" id="toInsertOperator" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        增加
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <!--人员列表-->
+            <div class="row" id="listContainer">
+
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <!--分页-->
+            <div class="col-xs-10">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="fengye">
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+<script type="text/javascript">
+    $(function () {
+        // 加载会员信息列表
+        // "ajaxQueryAllMember" selectForm
+        var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
+        loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz);
+
+        // 查询按钮
+        $("button[id='submitForm']").click(function () {
+            loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz);
+        })
+        // 加载证件类型下拉框
+        loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='mSFZtype']"));
+        // 加载会员等级
+        loadH("ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
+    })
+
+
+</script>
+</body>
+</html>
