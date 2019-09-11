@@ -42,6 +42,7 @@ public class FileUtil {
             //apk
             filePath=getFileName();
         }
+
 //        else{
 //            //log
 //            //截取源文件名的后缀

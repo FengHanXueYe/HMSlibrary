@@ -22,6 +22,7 @@ public class SetMealController {
         return "food/meal_list";
     }
 
+
     @ResponseBody
     @RequestMapping(value = "queryAllSetMeal", method = RequestMethod.POST, produces = {"application/json;charset=utf-8"})
     public String queryAllSetMeal(SetMeal setMeal, Integer pageNum, Integer pageSize){

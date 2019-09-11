@@ -83,6 +83,7 @@ public class DeliciousFoodController {
         return "redirect:queryAllFood";
     }
 
+
     private String path="images";//要保存的文件夹的名字,需修改
     @RequestMapping(value="fileController",produces = "text/html;charset=UTF-8")//解决返回中文乱码
     @ResponseBody//设置ajax 返回保存路径
