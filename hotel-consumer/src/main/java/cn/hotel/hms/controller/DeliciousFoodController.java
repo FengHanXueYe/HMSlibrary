@@ -68,17 +68,16 @@ public class DeliciousFoodController {
     }
 
 
-    private String path="images";//要保存的文件夹的名字,需修改
+    private String path="img";//要保存的文件夹的名字,需修改
     @RequestMapping(value="fileController",produces = "text/html;charset=UTF-8")//解决返回中文乱码
     @ResponseBody//设置ajax 返回保存路径
-    //
-    public String fileController(MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public String fileController(MultipartFile file,HttpServletRequest request,HttpServletResponse response) {
         response.setCharacterEncoding("utf-8");
         //寻找要保存的文件夹(保存路径)
         String savePath = request.getSession().getServletContext().getRealPath("/"+path+"/");
         try {
             file.transferTo(new File(savePath+"/"+file.getOriginalFilename()));
-        //在"/"后面可以自行拼接name或加入随机数(以免不同用户上传替换)
+            //在"/"后面可以自行拼接name或加入随机数(以免不同用户上传替换)
         } catch (Exception e) {
             e.printStackTrace();
         }

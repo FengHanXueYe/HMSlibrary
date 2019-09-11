@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:include="base::base"></div>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+<form class="form-inline text-center">
+    <div class="form-group">
+        <label for="exampleInputName2">套餐名称</label>
+        <input type="text" class="form-control" id="exampleInputName2" placeholder="请输入套餐名称" name="mealname">
+    </div>
+    <div class="form-group">
+        <label>套餐状态</label>
+        <!--<input type="email" class="form-control" id="exampleInputEmail2" placeholder="请输入内容">-->
+        <select class="form-control"  name="mealstatus">
+        </select>
+    </div>
+    <button type="button" id="submitForm" class="btn btn-default">查询</button>
+</form>
+<br>
+<br>
+<p>
+    <button class="btn btn-info" id="toAddDelicious">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true" id="addInfo">新增套餐</span>
+    </button>
+</p>
+<div id="hahahahahah">
+
+</div>
+<br>
+<div class="col-xs-10">
+    <nav aria-label="Page navigation" class="text-center">
+        <ul class="pagination text-center " id="fengye">
+
+        </ul>
+    </nav>
+</div>
+<script type="text/javascript">
+    $(function () {
+        operatorLoad(-1);
+        $("button[id='submitForm']").click(function () {
+            operatorLoad(-1);
+        })
+        // 加载菜品状态
+        loadSelect("MEAL_STATUS", $("select[name='mealstatus']"));
+        // 去增加页面
+        $("#toAddDelicious").click(function () {
+            location.href="toAddDelicious";
+        })
+    });
+    function clickPage(pageNum) {
+        operatorLoad(pageNum);
+    }
+    // 加载分页
+    function pageInfoUtil(result) {
+        $("ul[id='fengye']").html("");
+        var pagePre = 1;
+        if(result.pageNo<=1){
+            pagePre = 1;
+        }else{
+            pagePre = Number(result.pageNo)-1;
+        }
+        var pageHtml = "";
+        pageHtml+="<li no='"+result.pageNo+"'>"
+            +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
+            +"<span aria-hidden='true'>&laquo;</span>"
+            +"</a>"
+            +"</li>";
+        $.each(result.navigatepageNums, function (index,item) {
+            if(result.pageNo==item){
+                pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
+            }else{
+                pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
+            }
+        })
+        pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
+            +"<span aria-hidden='true'>&raquo;</span>"
+            +"</a>"
+            +"</li>";
+        $("ul[id='fengye']").html(pageHtml);
+
+    }
+
+    function operatorLoad(pageNum){
+
+        // 表单序列化
+        var data = $("form").serialize();
+        $.post("/queryAllSetMeal",data+"&pageNum="+pageNum,function (result) {
+            var list = result.list;
+            // 加载分页
+            pageInfoUtil(result);
+            $("#hahahahahah").html("");
+            var html = "";
+            html +=  "<table class='table table-bordered text-center'>"
+                +"<tr class='info'>"
+                +"<th>ID</th>"
+                +"<th>套餐名称</th>"
+                +"<th>套餐图片</th>"
+                +"<th>套餐状态</th>"
+                +"<th>价格</th>"
+                +"<th>操作</th>"
+                +"</tr>";
+            $.each(list,function (index,item) {
+                html += "<tr >"
+                    +"<td>"+item.mealid+"</td>"
+                    +"<td>"+item.mealname+"</td>"
+                    +"<td><input type='hidden' name='hiddenOId' value='"+item.mealid+"'><a href=''><img src='"+item.mealOne+"' alt='找不到图片路径' class='img-circle'></a></td>"
+                    +"<td>"+item.mealstatus+"</td>"
+                    +"<td>"+item.mealprice+"</td>"
+                    +"<td class='col-md-1 '>"
+                    +"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='updateDelicious("+item.foodid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='deleteDelicious("+item.foodid+")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"</td>"
+                    +"</tr>";
+            })
+            html += "</table>";
+            $("#hahahahahah").html(html);
+        })
+    }
+
+    // 加载下拉框
+    function loadSelect(code, e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            e.append("<option value='-1'>--请选择--</option>");
+            $.each(result, function (index,item) {
+                e.append("<option value='"+item.valueId+"'>"+item.valueName+"</option>");
+            })
+        })
+    }
+
+    // 查看操作人员详情
+    function detailDelicious(id) {
+        $("#detailDelicious").modal("show");
+        $.post("DetailDelicious","id="+id,function (result) {
+            $("#detailDeliciouss").html("");
+            var html = "";
+            html="<table class='table table-striped'>"
+                +"<tr class=''>"
+                +"<th>食品名称</th>"
+                +"<td>"+result.foodname+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品图片</th>"
+                +"<td><img src='"+result.foodimgone+"' alt='找不到图片路径' class='img-circle'></td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品类型</th>"
+                +"<td>"+result.foodtypes+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>价格</th>"
+                +"<td>"+result.foodprice+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品状态</th>"
+                +"<td>"+result.foodstat+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>菜品详情</th>"
+                +"<td>"+result.foodDetail+"</td>"
+                +"</tr></table>";
+            $("#detailDeliciouss").html(html);
+        })
+
+    }
+
+
+    // 判断是否点击的变量
+    var isClick = false;
+    // 点击确认删除
+    function OkNo() {
+        isClick = true;
+        var id = $("input[name='hiddenOId']").val();
+        if(isClick){
+            $("#confirmModel").modal("hide");
+            $.post("DeleteDelicious","id="+id, function (result) {
+                if(result){
+                    operatorLoad(-1);
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    $("#alertModel").modal("show");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+
+            })
+        }
+    }
+
+    // 删除操作人员操作
+    function deleteDelicious(id){
+        $("#confirmtishi").html("确定删除该食品信息吗?<input type='hidden' value='"+id+"' name='hiddenOId'>");
+        $("#confirmModel").modal("show");
+    }
+
+</script>
+</body>
+</html>
