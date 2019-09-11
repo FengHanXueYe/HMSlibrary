@@ -34,4 +34,19 @@ public class SetMealController {
         }
         return JSON.toJSONString(setMealVOPageUtil);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "DetailSetMeal", method = RequestMethod.POST, produces = {"application/json;charset=utf-8"})
+    public String detailSetMeal(Integer id){
+        SetMealVO setMealVO=setMealService.detailSetMeal(id);
+        return JSON.toJSONString(setMealVO);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "deleteSetMeal", method = RequestMethod.POST)
+    public boolean deleteSetMeal(Integer id){
+        Integer setmeal=setMealService.deleteSetMeal(id);
+        return setmeal>0?true:false;
+    }
+
 }

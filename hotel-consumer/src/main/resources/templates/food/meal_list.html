@@ -39,6 +39,63 @@
         </ul>
     </nav>
 </div>
+
+
+<!--查看模态框-->
+<div class="modal fade" tabindex="-1" role="dialog" id="detailDelicious">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">套餐详情</h4>
+            </div>
+            <div class="modal-body" id="detailDeliciouss">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--alert弹框样式-->
+<div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" id="alerttishi">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--confirm弹框样式-->
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" id="confirmtishi">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <script type="text/javascript">
     $(function () {
         operatorLoad(-1);
@@ -112,9 +169,9 @@
                     +"<td>"+item.mealstatus+"</td>"
                     +"<td>"+item.mealprice+"</td>"
                     +"<td class='col-md-1 '>"
-                    +"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
-                    +"<a href='javascript:void(0)' onclick='updateDelicious("+item.foodid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                    +"<a href='javascript:void(0)' onclick='deleteDelicious("+item.foodid+")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='detailDelicious("+item.mealid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='updateDelicious("+item.mealid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='deleteDelicious("+item.mealid+")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                     +"</td>"
                     +"</tr>";
             })
@@ -136,33 +193,29 @@
     // 查看操作人员详情
     function detailDelicious(id) {
         $("#detailDelicious").modal("show");
-        $.post("DetailDelicious","id="+id,function (result) {
+        $.post("DetailSetMeal","id="+id,function (result) {
             $("#detailDeliciouss").html("");
             var html = "";
             html="<table class='table table-striped'>"
                 +"<tr class=''>"
-                +"<th>食品名称</th>"
-                +"<td>"+result.foodname+"</td>"
+                +"<th>套餐名称</th>"
+                +"<td>"+result.mealname+"</td>"
                 +"</tr>"
                 +"<tr class=''>"
-                +"<th>食品图片</th>"
-                +"<td><img src='"+result.foodimgone+"' alt='找不到图片路径' class='img-circle'></td>"
+                +"<th>套餐图片</th>"
+                +"<td><img src='"+result.mealOne+"' alt='找不到图片路径' class='img-circle'></td>"
                 +"</tr>"
                 +"<tr class=''>"
-                +"<th>食品类型</th>"
-                +"<td>"+result.foodtypes+"</td>"
+                +"<th>套餐状态</th>"
+                +"<td>"+result.mealstatus+"</td>"
                 +"</tr>"
                 +"<tr class=''>"
                 +"<th>价格</th>"
-                +"<td>"+result.foodprice+"</td>"
+                +"<td>"+result.mealprice+"</td>"
                 +"</tr>"
                 +"<tr class=''>"
-                +"<th>食品状态</th>"
-                +"<td>"+result.foodstat+"</td>"
-                +"</tr>"
-                +"<tr class=''>"
-                +"<th>菜品详情</th>"
-                +"<td>"+result.foodDetail+"</td>"
+                +"<th>套餐详情</th>"
+                +"<td>"+result.mealDetail+"</td>"
                 +"</tr></table>";
             $("#detailDeliciouss").html(html);
         })
@@ -178,7 +231,7 @@
         var id = $("input[name='hiddenOId']").val();
         if(isClick){
             $("#confirmModel").modal("hide");
-            $.post("DeleteDelicious","id="+id, function (result) {
+            $.post("deleteSetMeal","id="+id, function (result) {
                 if(result){
                     operatorLoad(-1);
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
@@ -191,9 +244,9 @@
         }
     }
 
-    // 删除操作人员操作
+    // 删除套餐操作
     function deleteDelicious(id){
-        $("#confirmtishi").html("确定删除该食品信息吗?<input type='hidden' value='"+id+"' name='hiddenOId'>");
+        $("#confirmtishi").html("确定删除该套餐信息吗?<input type='hidden' value='"+id+"' name='hiddenOId'>");
         $("#confirmModel").modal("show");
     }
 
