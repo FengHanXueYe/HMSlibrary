@@ -21,7 +21,7 @@ function loadH(url,e){
 }
 
 // 加载列表
-function loadMembers(FormId,url,pageNumController,pageNum,strSZ){
+function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
     // 表单序列化
     var data = $("#"+FormId).serialize();
     $.post(url,data+"&"+pageNumController+"="+pageNum,function (result) {
@@ -39,17 +39,20 @@ function loadMembers(FormId,url,pageNumController,pageNum,strSZ){
         }
         html+="</tr>";
         $.each(list,function (index,item) {
+            console.log(item);
             html += "<tr >"
-                +"<td>"+item.mId+"</td>"
-                +"<td>"+item.mName+"</td>"
-                +"<td>"+item.mSFZtypeName+"</td>"
-                +"<td>"+item.mAddress+"</td>"
-                +"<td>"+item.mTel+"</td>"
-                +"<td>"+item.mMembershipRank.mrName+"</td>"
-                +"<td class='col-md-1 '>"
-                +"<a href='javascript:void(0)' onclick='detailOperator("+item.oId+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
-                +"<a href='javascript:void(0)' onclick='updateOperator("+item.oId+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                +"<a href='javascript:void(0)' onclick='deleteOperator("+item.oId+",\""+item.oName+"\")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                var id;
+                var name;
+                for(var a = 0; a<entitySZ.length; a++){
+                    var attr = entitySZ[a];
+                    id = item[entitySZ[0]];
+                    name = item[entitySZ[1]];
+                    html+="<td>"+item[attr]+"</td>";
+                }
+                html+="<td class='col-md-1 '>"
+                +"<a href='javascript:void(0)' onclick='detailOperator("+id+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                +"<a href='javascript:void(0)' onclick='updateOperator("+id+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                +"<a href='javascript:void(0)' onclick='deleteOperator("+id+",\""+name+"\")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                 +"</td>"
                 +"</tr>";
         })
@@ -62,7 +65,8 @@ function loadMembers(FormId,url,pageNumController,pageNum,strSZ){
 // 点击分页事件
 function clickPage(pageNum) {
     var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
-    loadMembers("selectForm","ajaxQueryAllMember","pageNum",pageNum,sz);
+    var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
+    loadMembers("selectForm","ajaxQueryAllMember","pageNum",pageNum,sz,entitySz);
 }
 
 // 加载分页

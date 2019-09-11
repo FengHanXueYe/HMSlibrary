@@ -42,7 +42,8 @@
         SELECT
         m.`mId`, m.mNumber, m.mName, m.mGender,
         (SELECT valueName FROM `datastatus` WHERE typeCode='DOCUMENT_TYPE' AND valueId=m.mSFZtype) mSFZtypeName,
-        m.mSFZ, m.mAddress, m.mTel, m.mCreateTime, m.mTotalConsumption, m.mRemarks, mr.mrId, mr.mrName, mr.mrFavouredPolicy, mr.mrDiscountRate, mr.mrDetail
+        m.mSFZ, m.mAddress, m.mTel, m.mCreateTime, m.mTotalConsumption, m.mRemarks, mr.mrId, mr.mrName, mr.mrFavouredPolicy, mr.mrDiscountRate, mr.mrDetail,
+        (SELECT mrName FROM `membershiprank` WHERE mrId = m.mMembershiprank) mMembershipRankName
         FROM `member` m, `membershiprank` mr
         <where>
             m.mMembershiprank = mr.mrId
