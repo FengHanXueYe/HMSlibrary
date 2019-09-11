@@ -25,6 +25,7 @@ public class MemberVO implements Serializable {
     private Date mCreateTime; // 创建时间
     private double mTotalConsumption; // 消费金额
     private MembershipRank mMembershipRank; //会员等级
+    private String mMembershipRankName; //会员等级
     private String mRemarks; // 备注
 
 

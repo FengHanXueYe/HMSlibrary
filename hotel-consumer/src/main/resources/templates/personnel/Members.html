@@ -78,15 +78,16 @@
 <script type="text/javascript">
     $(function () {
         // 加载会员信息列表
-        // "ajaxQueryAllMember" selectForm
+        // "ajaxQueryAllMember" selectForm(勒令：数组第一个必须是id，第二个是名称（建议）)
         var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
-        loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz);
+        var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
+        loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
 
         // 查询按钮
         $("button[id='submitForm']").click(function () {
-            loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz);
+            loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
         })
-        // 加载证件类型下拉框
+        // 加载证件类型下拉框(数据字典)
         loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='mSFZtype']"));
         // 加载会员等级
         loadH("ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
