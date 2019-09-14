@@ -33,6 +33,7 @@ function loadHXP(url,e,id,name){
 
 // 加载列表
 function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
+
     // 表单序列化
     var data = $("#"+FormId).serialize();
     $.post(url,data+"&"+pageNumController+"="+pageNum,function (result) {
@@ -51,7 +52,6 @@ function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
         }
         html+="</tr>";
         $.each(list,function (index,item) {
-            console.log(item);
             html += "<tr >"
                 var id;
                 var name;
@@ -78,12 +78,7 @@ function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
 }
 
 
-// 点击分页事件
-function clickPage(pageNum) {
-    var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
-    var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
-    loadMembers("selectForm","ajaxQueryAllMember","pageNum",pageNum,sz,entitySz);
-}
+
 
 // 加载分页
 function pageInfoUtil(result) {
@@ -107,7 +102,7 @@ function pageInfoUtil(result) {
         +"</a>"
         +"</li>";
     $.each(result.navigatepageNums, function (index,item) {
-        if(result.pageNo==item||result.ttotalPageCount==1){
+        if(result.pageNo==item||result.totalPageCount==1){
             pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
         }else{
             pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
