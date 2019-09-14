@@ -24,6 +24,11 @@ public interface MemberService {
     // 删除会员信息
     Integer deleteMember(Integer mId);
 
+    // 查询单个返回VO
+    MemberVO detailMemberXP(Member member);
+
+    // 获取编号
+    Integer selectMId();
 
 
 

@@ -12,6 +12,21 @@
             <if test="mSFZ!=null and mSFZ!=''">and mSFZ = #{mSFZ}</if>
         </where>
     </select>
+    <select id="detailMemberXP" parameterType="cn.hotel.entity.Member" resultMap="mrMap">
+        SELECT
+        m.`mId`, m.mNumber, m.mName, m.mGender,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='DOCUMENT_TYPE' AND valueId=m.mSFZtype) mSFZtypeName,
+        m.mSFZ, m.mAddress, m.mTel, m.mCreateTime, m.mTotalConsumption, m.mRemarks, mr.mrId, mr.mrName, mr.mrFavouredPolicy, mr.mrDiscountRate, mr.mrDetail,
+        (SELECT mrName FROM `membershiprank` WHERE mrId = m.mMembershiprank) mMembershipRankName
+        FROM `member` m, `membershiprank` mr
+        <where>
+            m.mMembershiprank = mr.mrId
+            <if test="mId!=null and mId!=-1">and m.mId = #{mId}</if>
+            <if test="mName!=null and mName!=''">and m.mName = #{mName}</if>
+            <if test="mSFZtype!=null and mSFZtype!=-1">and m.mSFZtype = #{mSFZtype}</if>
+            <if test="mSFZ!=null and mSFZ!=''">and m.mSFZ = #{mSFZ}</if>
+        </where>
+    </select>
 
     <insert id="insertMember" parameterType="cn.hotel.entity.Member">
         insert into member value(null, #{mNumber}, #{mName}, #{mGender}, #{mSFZtype}, #{mSFZ}, #{mAddress}, #{mTel}, NOW(), #{mTotalConsumption}, #{mMembershipRank}, #{mRemarks})
@@ -59,5 +74,9 @@
     <resultMap id="mrmMap" type="cn.hotel.entity.MembershipRank" autoMapping="true">
         <id column="mrId" property="mrId"></id>
     </resultMap>
+
+    <select id="selectMId" resultType="integer">
+        select mId from member order by mId desc limit 1
+    </select>
 
 </mapper>

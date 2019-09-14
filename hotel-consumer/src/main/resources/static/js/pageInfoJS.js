@@ -20,11 +20,23 @@ function loadH(url,e){
     })
 }
 
+// 加载普通
+function loadHXP(url,e,id,name){
+    $.post(url,function(result){
+        e.append("<option value='-1'>--请选择--</option>");
+        $.each(result, function (index,item) {
+            e.append("<option value='"+item[id]+"'>"+item[name]+"</option>");
+        })
+    })
+}
+
+
 // 加载列表
 function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
     // 表单序列化
     var data = $("#"+FormId).serialize();
     $.post(url,data+"&"+pageNumController+"="+pageNum,function (result) {
+        if(result.list!=""){
         var list = result.list;
 
         // 加载分页
@@ -50,14 +62,18 @@ function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
                     html+="<td>"+item[attr]+"</td>";
                 }
                 html+="<td class='col-md-1 '>"
-                +"<a href='javascript:void(0)' onclick='detailOperator("+id+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
-                +"<a href='javascript:void(0)' onclick='updateOperator("+id+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                +"<a href='javascript:void(0)' onclick='deleteOperator("+id+",\""+name+"\")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                +"<a href='javascript:void(0)' onclick='detailInformation("+id+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                +"<a href='javascript:void(0)' onclick='updateInformation("+id+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                +"<a href='javascript:void(0)' onclick='deleteInformation("+id+",\""+name+"\")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                 +"</td>"
                 +"</tr>";
         })
         html += "</table>";
         $("#listContainer").html(html);
+        }else{
+            $("#listContainer").html("<h3 align='center' style='color: red'><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'></span> 没有数据！</h3>");
+            $("ul[id='fengye']").html("");
+        }
     })
 }
 

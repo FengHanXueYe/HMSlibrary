@@ -7,8 +7,12 @@
     <script src="/js/dateJS.js"></script>
     <script src="/js/pageInfoJS.js"></script>
     <style type="text/css">
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
         div .row{
-
             margin-top: 20px;
         }
     </style>
@@ -38,7 +42,7 @@
                         查询
                     </button>
 
-                    <button type="button" id="toInsertOperator" class="btn btn-default">
+                    <button type="button" id="toInsertMember" class="btn btn-default">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         增加
                     </button>
@@ -72,8 +76,79 @@
 
 
 
+
     </div>
 
+    <!--查看模态框-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="detailInformation">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">会员详情</h4>
+                </div>
+                <div class="modal-body" id="detailInformations">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--编辑模态框-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="updateInformation">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑会员信息</h4>
+                </div>
+                <div class="modal-body" id="updateInformations">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="alertLeft" onclick="updateInformationForm()">保存修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--alert弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="alerttishi">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--confirm弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="confirmtishi">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 <script type="text/javascript">
     $(function () {
@@ -91,7 +166,250 @@
         loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='mSFZtype']"));
         // 加载会员等级
         loadH("ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
+
+        $("#toInsertMember").click(function(){
+            location.href="toInsertMember";
+        })
+
     })
+
+    // 查看会员详情
+    function detailInformation(mId) {
+        $("#detailInformation").modal("show");
+
+        $.post("ajaxDetailMember","mId="+mId,function (result) {
+            var src = "";
+            var title = "";
+            // <img src="../../static/images/nan.png" height="32" width="32"/>
+            if(result.mGender==1){
+                src = "images/nan.png"
+                title = "男";
+            }else{
+                src = "images/nv1.png";
+                title = "女";
+            }
+            $("#detailInformations").html("");
+            var html = "";
+            html="<table class='table table-striped'>"
+                +"<tr class=''>"
+                +"<th>编号</th>"
+                +"<td>"+result.mNumber+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>姓名</th>"
+                +"<td>"+result.mName+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>证件类型</th>"
+                +"<td>"+result.mSFZtypeName+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>证件号码</th>"
+                +"<td>"+result.mSFZ+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>创建时间</th>"
+                +"<td>"+getDateTime(result.mCreateTime,2)+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>总消费金额</th>"
+                +"<td>"+result.mTotalConsumption+"￥</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>电话</th>"
+                +"<td>"+result.mTel+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>会员等级</th>"
+                +"<td>"+result.mMembershipRankName+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>住址</th>"
+                +"<td>"+result.mAddress+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>性别</th>"
+                +"<td><img src='"+src+"' alt='' title='"+title+"'></td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>描述</th>"
+                +"<td>"+result.mRemarks+"</td>"
+                +"</tr>"
+                +"</tr></table>";
+            $("#detailInformations").html(html);
+        })
+
+    }
+
+    // js ajax加载下拉框
+    function jsLoadSelect(code,k){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            $.each(result, function (index,item) {
+                if(k==item.valueName){
+                    html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }else{
+                    html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+                }
+            })
+            $("select[id='mSFZtype']").html(html);
+        })
+        // alert(z);
+        // return z;
+    }
+
+    // 加载会员等级
+    function loadHotelUser(ohun) {
+        $.post("ajaxQueryAllMembershipRank",function (result) {
+            var html = "";
+            $.each(result, function (index,item) {
+                if(ohun==item.mrId){
+                    html+= "<option selected value='"+item.mrId+"'>"+item.mrName+"</option>";
+                }else{
+                    html+= "<option value='"+item.mrId+"'>"+item.mrName+"</option>";
+                }
+            })
+            $("select[id='ohun']").html(html);
+        })
+    }
+
+
+    // 编辑会员
+    function updateInformation(mId) {
+        $("#updateInformation").modal("show");
+        $("#updateInformations").html("");
+
+        $.post("ajaxDetailMember","mId="+mId,function (result) {
+            var c;
+            var v;
+            if(result.mGender==1){
+                c = "checked";
+            }
+            if(result.mGender==2){
+                v = "checked";
+            }
+            //jsLoadSelect("",result.mSFZtype)
+            loadHotelUser(result.mMembershipRank.mrId);
+            var html = "<form class='form-horizontal' id='updateOperatorForm'>"
+                +"<div class='form-group'>"
+                +"<label for='on' class='col-sm-4 control-label'>会员姓名：<span id='nameTiShi'></span></label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='text' name='mName' maxlength='5' readonly  class='form-control' value='"+result.mName+"' id='on' placeholder='操作人员姓名'><input type='hidden' name='mId' value='"+result.mId+"'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='mSFZtype' class='col-sm-4 control-label'>证件类型：</label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='text' class='form-control' readonly name='' value='"+result.mSFZtypeName+"' id='os'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='os' class='col-sm-4 control-label'>身份证号：</label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='text' class='form-control' readonly name='mSFZ' value='"+result.mSFZ+"' id='os'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='osa' class='col-sm-4 control-label'>住址：</label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='text' class='form-control' name='mAddress' value='"+result.mAddress+"' id='osa'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='radio' "+c+" name='mGender' id='genderNan' value='1'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                +"<input type='radio' "+v+" name='mGender' id='genderNv' value='2'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='ot' class='col-sm-4 control-label'>电话：<span id='telTiShi'></span></label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='number' oninput='checkLength(1)' class='form-control' name='mTel' value='"+result.mTel+"' id='ot'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='oa' class='col-sm-4 control-label'>总消费金额：</label>"
+                +"<div class='col-sm-6'>"
+                +"<input type='text' class='form-control' name='mTotalConsumption' readonly value='"+result.mTotalConsumption+"' id='oa'>"
+                +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                +"<label for='ohun' class='col-sm-4 control-label'>会员等级：</label>"
+                +"<div class='col-sm-6'>"
+                +"<select class='form-control' name='mMembershipRank' id='ohun'></select>"
+                +"</div>"
+                +"</div>"
+                +"</form>";
+            $("#updateInformations").html(html);
+        })
+    }
+
+    // 编辑保存操作
+    function updateInformationForm() {
+        if (checkLength(1)){
+            var data = $("#updateOperatorForm").serialize();
+            $.post("ajaxUpdateMember",data,function (resutl) {
+                if(resutl){
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
+                    var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
+                    loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+                $("#updateOperator").modal("hide");
+            })
+        }else{
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+        }
+        $("#alertModel").modal("show");
+    }
+
+
+    // 检查字符串长度
+    function checkLength(r){
+        if(r==1){
+            var telLength = $("input[name='mTel']").val().length;
+            if(telLength!=11){
+                $("#telTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                return false;
+            }else{
+                $("#telTiShi").html("");
+                return true;
+            }
+        }
+    }
+
+    // 判断是否点击的变量
+    var isClick = false;
+    // 点击确认删除
+    function OkNo() {
+        isClick = true;
+        var oId = $("input[name='hiddenOId']").val();
+        if(isClick){
+            $("#confirmModel").modal("hide");
+            $.post("ajaxDeleteMember","mId="+oId, function (result) {
+                if(result){
+                    var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
+                    var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
+                    loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    $("#alertModel").modal("show");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+
+            })
+        }
+    }
+
+    // 删除操作人员操作
+    function deleteInformation(oId,name){
+        $("#confirmtishi").html("确定删除操作人员<strong>"+name+"</strong>的信息吗?<input type='hidden' value='"+oId+"' name='hiddenOId'>");
+        $("#confirmModel").modal("show");
+    }
 
 
 </script>

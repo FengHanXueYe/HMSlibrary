@@ -59,4 +59,14 @@ public class MemberServiceImpl implements MemberService {
     public Integer deleteMember(Integer mId) {
         return memberMapper.deleteMember(mId);
     }
+
+    @Override
+    public MemberVO detailMemberXP(Member member) {
+        return memberMapper.detailMemberXP(member);
+    }
+
+    @Override
+    public Integer selectMId() {
+        return memberMapper.selectMId();
+    }
 }

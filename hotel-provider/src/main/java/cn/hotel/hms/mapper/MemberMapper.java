@@ -10,6 +10,8 @@ public interface MemberMapper {
     // 查询单个会员信息
     Member detailMember(Member member);
 
+    MemberVO detailMemberXP(Member member);
+
     // 增加会员信息
     Integer insertMember(Member member);
 
@@ -21,5 +23,7 @@ public interface MemberMapper {
 
     // 查询会员信息
     List<MemberVO> queryAllMember(Member member);
+
+    Integer selectMId();
 
 }
