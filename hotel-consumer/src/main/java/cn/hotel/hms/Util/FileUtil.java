@@ -11,7 +11,7 @@ import java.util.UUID;
 @Component
 public class FileUtil {
 
-    @Value("D://picture//")
+    @Value("${picture}")
     private String logPath;
 
     public static String getFileName(){
@@ -39,8 +39,13 @@ public class FileUtil {
         System.out.println(fileName+"////////");
         String filePath="";
         if (1 == type) {
-            //apk
-            filePath=getFileName();
+            //log
+            //截取源文件名的后缀
+            String suffix=fileName.substring(fileName.lastIndexOf("."),fileName.length());
+            //UUID 生成字符串
+            String uuid= UUID.randomUUID().toString().replace("-","");
+            fileName=uuid+suffix;
+            filePath=logPath;
         }
 
 //        else{

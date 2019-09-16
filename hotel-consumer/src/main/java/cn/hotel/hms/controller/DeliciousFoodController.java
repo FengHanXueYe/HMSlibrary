@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 
 import static cn.hotel.hms.Util.FileUtil.getFileName;
 
@@ -27,7 +27,7 @@ public class DeliciousFoodController {
     @Reference
     private DeliciousFoodService deliciousFoodService;
 
-    @Value("D://picture//")
+    @Value("${imgage}")
     private String logPath;
 
     @Autowired
@@ -75,10 +75,10 @@ public class DeliciousFoodController {
     }
 
     @RequestMapping(value = "doAddDelicious",method = RequestMethod.POST)
-    public String doAddDelicious(MultipartFile file,DeliciousFood deliciousFood){
+    public String doAddDelicious(MultipartFile file,DeliciousFood deliciousFood,BindingResult result){
         System.out.println(">>>"+file);
         String fillName=fileUtil.upload(file,1);
-        deliciousFood.setFoodimgone(getFileName()+fillName);
+        deliciousFood.setFoodimgone(logPath+fillName);
         this.deliciousFoodService.addDeliciousFood(deliciousFood);
         return "redirect:queryAllFood";
     }

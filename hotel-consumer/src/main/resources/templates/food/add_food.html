@@ -11,16 +11,12 @@
             margin: 0;
         }
     </style>
-    <link rel="stylesheet" type="text/css"
-          href="/js/webuploader.css">
-    <script type="text/javascript"
-            src="/js/webuploader.js"></script>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>操作人员信息 </small></h1>
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>食品信息 </small></h1>
         </div>
         <form class="form-horizontal" action="/doAddDelicious" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -38,7 +34,7 @@
                         <!--<div id="fileList" class="uploader-list"></div>-->
                         <!--<div id="filePicker" class="webuploader-container">选择图片</div>-->
                     <!--</div>-->
-                    <input type="file" name="file" id="fileButton">
+                    <input type="file" name="file">
                 </div>
             </div>
             <div class="form-group">
@@ -74,21 +70,21 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function () {
-        //图片预览
-        // $("#fileButton").change(function (e) {
-        //     //获取到文件
-        //     var file=e.target.files[0];
-        //     if(file){
-        //         var fileReader=new FileReader();
-        //         fileReader.onload=function (e) {
-        //             $("img").attr("src",this.result);
-        //         }
-        //         fileReader.readAsDataURL(file);
-        //     }
-        //
-        // });
-    })
+    // $(function () {
+    //     //图片预览
+    //     // $("#fileButton").change(function (e) {
+    //     //     //获取到文件
+    //     //     var file=e.target.files[0];
+    //     //     if(file){
+    //     //         var fileReader=new FileReader();
+    //     //         fileReader.onload=function (e) {
+    //     //             $("img").attr("src",this.result);
+    //     //         }
+    //     //         fileReader.readAsDataURL(file);
+    //     //     }
+    //     //
+    //     // });
+    // })
     $(function () {
         jsLoadSelect("FOOD_TYPE",1);
         jsLoadSelect("FOOD_STATUS",2);
