@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 物品实体（峰）
@@ -19,5 +20,6 @@ public class LuckyDraw implements Serializable {
     private String ldNumber; // 物品编号
     private double ldShopIntegral; // 物品积分价格
     private Integer ldShopNum; // 商品数量
+    private Date ldCreateTime; // 创建时间
 
 }
