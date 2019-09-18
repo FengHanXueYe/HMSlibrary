@@ -27,4 +27,19 @@ public interface ActualsStockMapper {
      * @return
      */
     Integer delActualStockByasNumber(Integer asNumber);
+
+    /**
+     * 根据物品编号查询实际库存信息
+     * @param materialsNumber 物品编号
+     * @return
+     */
+    WZXActualStock  queryActualsStockBymaterialsNumber(String materialsNumber);
+
+
+    /**
+     * 添加实际库存
+     * @param actualsStockVO
+     * @return
+     */
+    Integer  addActualStock(WZXActualStock actualsStockVO);
 }

@@ -31,7 +31,7 @@ public class InstockServiceImpl implements InstockService {
     @Override
     public PageUtil<InstockVO> queryAllInstockVOByInstock(InstockVO instockVO, Integer pageNo, Integer pageSize) {
         PageUtil<InstockVO> pageInfoUtil=new PageUtil<>();
-        List<InstockVO> actualsStockVOS = instockMapper.queryAllInstockVOByInstock(instockVO,pageNo,pageSize);
+        List<InstockVO> actualsStockVOS = instockMapper.queryAllInstockVOByInstock(instockVO);
         if(null == pageNo){
             pageNo = 1;
         }
@@ -48,5 +48,20 @@ public class InstockServiceImpl implements InstockService {
 
 
         return pageInfoUtil;
+    }
+
+    @Override
+    public Integer updateInstock(WZXInstock wzxInstock) {
+        return instockMapper.updateInstock(wzxInstock);
+    }
+
+    @Override
+    public InstockVO queryAllInstockVoByIsId(Integer isId) {
+        return instockMapper.queryAllInstockVoByIsId(isId);
+    }
+
+    @Override
+    public Integer delInstock(Integer isId) {
+        return instockMapper.delInstock(isId);
     }
 }

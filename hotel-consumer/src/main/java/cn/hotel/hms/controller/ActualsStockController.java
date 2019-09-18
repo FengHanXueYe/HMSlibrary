@@ -66,6 +66,11 @@ public class ActualsStockController {
         return "receptionroom/reception";
     }
 
+    /**
+     * 删除实际库存
+     * @param asNumber
+     * @return
+     */
     @RequestMapping("delActualsStock")
     @ResponseBody
     public JSONObject delActualsStock(Integer asNumber){
