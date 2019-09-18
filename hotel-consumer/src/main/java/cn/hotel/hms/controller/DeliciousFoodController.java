@@ -111,7 +111,6 @@ public class DeliciousFoodController {
         String fillName=fileUtil.upload(file,1);
         deliciousFood.setFoodimgone(logPath+fillName);
         this.deliciousFoodService.updateDeliciousFood(deliciousFood);
-        System.out.println("--------------------------------7---------------------------------"+this.deliciousFoodService.updateDeliciousFood(deliciousFood));
         return "redirect:queryAllFood";
     }
 
