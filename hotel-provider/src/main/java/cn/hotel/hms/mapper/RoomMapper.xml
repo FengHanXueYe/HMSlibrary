@@ -25,4 +25,12 @@
     <select id="queryByNumber" resultType="cn.hotel.vo.RoomVO" parameterType="String">
          SELECT r.*,sta.valueName AS roomTypeName FROM `room` AS r,`datastatus` AS sta WHERE r.roomType = sta.valueId AND sta.typeCode = 'ROMM_TYPE' AND r.roomNumber = #{no}
     </select>
+    
+    <update id="updateStatus" parameterType="Room">
+        update `room` set roomStatus = #{roomStatus} where roomNumber = #{roomNumber}
+    </update>
+
+    <select id="queryRoomAllNumber" resultType="Room">
+        SELECT * FROM `room`
+    </select>
 </mapper>

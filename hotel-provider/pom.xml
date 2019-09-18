@@ -62,20 +62,6 @@
             <version>1.2.17</version>
         </dependency>
 
-        <!--MD5-->
-        <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
-            <version>1.20</version>
-        </dependency>
-
-        <!--userAgent-->
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
-        </dependency>
-
         <!--pagehelper-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -83,11 +69,9 @@
             <version>1.2.3</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
-
 
         <resources>
             <resource>
