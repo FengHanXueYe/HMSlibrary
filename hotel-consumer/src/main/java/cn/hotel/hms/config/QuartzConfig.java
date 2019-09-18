@@ -20,19 +20,19 @@ public class QuartzConfig {
 //    private MemberShipScoreService memberShipScoreService;
    // ApplicationContextUtil applicationContextUtil = ApplicationContextUtil.getBean("MemberShipScoreService");
 
-    @Reference
-    private OperatorService operatorService;
-    //private static final Logger log = Logger.getLogger(QuartzConfig.class);
-        /**
-         *  任务：
-         *      向控制台输出内容
-         */
-    @Scheduled(cron = "*/2 * * * * *")
-    public void sysText(){
-        OperatorVO operatorVO = operatorService.detailOperator(1);
-        System.out.println(operatorVO);
-//        MemberShipScoreVO memberShipScoreVO = memberShipScoreService.detailMemberShipScoreVO();
-//        System.out.println(memberShipScoreVO);
-    }
+//    @Reference
+//    private OperatorService operatorService;
+//    //private static final Logger log = Logger.getLogger(QuartzConfig.class);
+//        /**
+//         *  任务：
+//         *      向控制台输出内容
+//         */
+//    @Scheduled(cron = "*/2 * * * * *")
+//    public void sysText(){
+//        OperatorVO operatorVO = operatorService.detailOperator(1);
+//        System.out.println(operatorVO);
+////        MemberShipScoreVO memberShipScoreVO = memberShipScoreService.detailMemberShipScoreVO();
+////        System.out.println(memberShipScoreVO);
+//    }
 
 }
