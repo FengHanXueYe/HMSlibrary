@@ -49,7 +49,6 @@ public class DeliciousFoodController {
         PageUtil<DeliciousFoodVo> deliciousFoodVoPageUtil=this.deliciousFoodService.queryAllFood(deliciousFood,pageNum,pageSize);
         System.out.println(deliciousFoodVoPageUtil.getNavigatepageNums());
         for (DeliciousFoodVo food : deliciousFoodVoPageUtil.getList()) {
-            System.out.println(""+food);
         }
         return JSON.toJSONString(deliciousFoodVoPageUtil);
     }
