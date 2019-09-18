@@ -65,20 +65,58 @@
             $(".btn-tuifang").click(function (e) {
                 //阻止父级事件跳出
                 e.stopPropagation();
-                alert();
+                var status = $(this).attr("status");
+                var Number = $(this).attr("number");
+                if(status != 2){
+                    alert("当前客房还没有客户入住");
+                    return false;
+                }
+
             })
             //报修按钮事件
             $(".btn-baoxiu").click(function (e) {
                 //阻止父级事件跳出
                 e.stopPropagation();
-                alert();
+                var status = $(this).attr("status");
+                var Number = $(this).attr("number");
+                if(status == 2){
+                    alert("当前客房还有客户入住哦");
+                    return false;
+                }
+                var fag = confirm("确定要报修当前客房吗？");
+                if(fag){
+                    $.post("/room/updateRepairStatus",{"roomStatus":status,"roomNumber":Number},function (result) {
+                        if(result == "ok"){
+                            alert("报修成功");
+                            location.reload();
+                        }else{
+                            alert("报修失败");
+                        }
+                    })
+                }
+
             })
             //服务按钮事件
             $(".btn-fuwu").click(function (e) {
                 //阻止父级事件跳出
                 e.stopPropagation();
-                alert();
+                var status = $(this).attr("status");
+                var Number = $(this).attr("number");
+                $(".btn-fuwulist").attr("number",Number);
+                $(".btn-fuwulist").attr("status",status);
+                $('#room-fuwu').modal('show');
             })
+
+            $(".btn-xiaofei").click(function () {
+                var number = $(this).attr("number");
+                location.href="/room/queryRoomRecord?roomNumber="+number;
+            })
+
+            $(".btn-genghuan").click(function () {
+                var number = $(this).attr("number");
+                location.href="/room/toRoomReplace?code="+number;
+            })
+            
         })
 
 
@@ -168,7 +206,7 @@
                     </div>
                     <div class="div-caozuo" hidden>
                         <p><button type="button" class="btn btn-info btn-ruzhu" th:status="*{roomStatus}" th:number="*{roomNumber}">入住</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-tuifang" th:status="*{roomStatus}" th:number="*{roomNumber}">退房</button></p>
-                        <p><button type="button" class="btn btn-danger btn-baoxiu">报修</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-fuwu">服务</button></p>
+                        <p><button type="button" class="btn btn-danger btn-baoxiu"  th:status="*{roomStatus}" th:number="*{roomNumber}">报修</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-fuwu"  th:status="*{roomStatus}" th:number="*{roomNumber}">服务</button></p>
                     </div>
                 </div>
             </div>
@@ -201,8 +239,27 @@
     </div>
 
 
-    <!--客房详细信息模态框-->
+    <!--客房服务模态框-->
     <!-- Modal -->
+    <div class="modal fade" id="room-fuwu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="roomfuwu">客房服务</h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-info btn-fuwulist btn-xiaofei">查看消费记录</button>
+                    <button type="button" class="btn btn-info btn-fuwulist btn-genghuan">更换房间</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 客房详情-->
     <div class="modal fade" id="room-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -249,8 +306,7 @@
         </div>
     </div>
 
-    <!--用于提示的小模态框-->
-    <!-- Small modal -->
+
 
 </body>
 </html>
