@@ -19,4 +19,7 @@ public interface SetMealService {
 
     //查看单个套餐信息
     SetMealVO detailSetMeal(Integer id);
+
+    //查看单个套餐信息（修改时候用到）
+    SetMeal detaSetMeal(Integer id);
 }
