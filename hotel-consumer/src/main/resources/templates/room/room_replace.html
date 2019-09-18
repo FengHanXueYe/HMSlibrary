@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="base::base"></div>
+    <script type="text/javascript">
+
+        /*初始化内容*/
+        $(function () {
+            $.post("romm/queryRommNumber",function (result) {
+                $("select[name='roomNo']").empty();
+                $.each(result,function (i,d) {
+
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" align="center">
+            <h3>房间号:<span th:text="${roomLivein.roomNo}"></span></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3" align="center">
+            <form class="form-inline">
+                <table class="table table-bordered">
+                    <tr>
+                        <td align="center"><h5>需要更换的房间</h5></td>
+                        <td align="left">
+                            <select class="form-control" name="roomNo">
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3" align="center">
+            <h3>客户信息</h3>
+            <table class="table table-bordered">
+                <tr align="center">
+                    <td>客户姓名</td>
+                    <td><h4 th:text="${roomLivein.cName}"></h4></td>
+                </tr>
+                <tr align="center">
+                    <td>客户性别</td>
+                    <td><h4 th:text="${roomLivein.cSex == 1 ? '男' : '女'}"></h4></td>
+                </tr>
+                <tr align="center">
+                    <td>证件类型</td>
+                    <td><h4 th:text="${roomLivein.documentTypeName}"></h4></td>
+                </tr>
+                <tr align="center">
+                    <td>证件号</td>
+                    <td><h4 th:text="${roomLivein.documentNo}"></h4></td>
+                </tr>
+                <tr align="center">
+                    <td>电话</td>
+                    <td><h4 th:text="${roomLivein.rIphone}"></h4></td>
+                </tr>
+            </table>
+            <button type="button" class="btn btn-info">更换</button>
+            <button onclick="window.history.go(-1)" type="button" class="btn btn-info">返回</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

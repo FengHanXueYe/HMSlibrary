@@ -5,9 +5,12 @@
     <title>客房入住</title>
     <div th:replace="base::base"></div>
     <script type="text/javascript">
+
         $(function () {
             //初始化
             queryByCode('DOCUMENT_TYPE', $("select[name='documentType']"))
+            //会员变量
+            var vipId;
 
             $("#VIPyanzheng").click(function () {
                 var name = $("input[name='cName']").val();
@@ -29,6 +32,8 @@
                 $.get("/room/verificationVIP",{"mName":name,"mSFZ":documentNo,"mSFZtype":documentType},function (result) {
                     if(result == null){
                         alert("该顾客还不是本店会有哦");
+                        vipId=null;
+                        return false;
                     }
                     var fag  = confirm("该顾客是本店会员哦，需要导入信息吗？");
                     if(fag){
@@ -44,6 +49,7 @@
                             var val = $(this).val();
                             if(val == 1){
                                 $(this).attr("selected","selected");
+                                vipId = result.mMembershipRank;
                             }
                         })
                         //更改地址
@@ -51,13 +57,72 @@
                     }
                 })
             })
-            
             //自动计算金额
             $("input[name='preDays']").change(function () {
-                
+                var preDays = $(this).val();
+                var price = [[${room.roomPrice}]];
+
+                if(vipId == null){
+                    $("input[name='conPrice']").val(preDays*price);
+                    $("input[name='conPrice']").next().css("color","red").html("非会员");
+                    return false;
+                }
+
+                $.get("/room/queryLevle",{"id":vipId},function (result) {
+                    $("input[name='conPrice']").val((preDays*price)*(result.mrDiscountRate/10));
+                    $("input[name='conPrice']").next().css("color","red").html("会员");
+                })
             })
-            
+
+            $("#btn-save").click(function () {
+
+                var data = $("#data-from").serialize();
+                var dataArray = data.split("&");
+                dataArray[8] = "checkInTime="+myFunction();
+                dataArray.push("ctype="+$("select[name='ctype']").val());
+                var datas;
+                for(var i = 0; i < dataArray.length; i++){
+                    if(i==0){
+                        datas = dataArray[i]
+                        continue;
+                    }
+                    datas = datas+"&"+dataArray[i];
+                }
+
+                $.post("/room/saveRoom",datas,function (result) {
+                    if(result == "ok"){
+                        alert("入住成功");
+                        location.href="/room/queryAll";
+                    }else{
+                        alert("添加失败");
+                    }
+                })
+
+            })
         })
+
+
+        //将时间类型datetime-local 转成datetime
+        function myFunction(){
+
+            var x=document.getElementById("datetime").value;
+
+            year=x.substring(0,4);
+
+            month=(parseInt(x.substring(5,7)) + 1);
+
+            day=x.substring(8,10);
+
+            hour=x.substring(11,13);
+
+            minute=x.substring(14)
+
+            format=year+"-"+month+"-"+day;
+
+            return format;
+
+        }
+
 
         //获取类型方法
         function queryByCode(code, ele) {
@@ -94,17 +159,17 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2" >
-            <form class="form-inline">
+            <form id="data-from" class="form-inline">
                 <table class="table table-bordered">
                     <tr>
                         <td align="center">房间号</td>
-                        <td><input type="text" class="form-control" th:value="${room.roomNumber}" name="roomNumber"></td>
+                        <td><input type="text" class="form-control" th:value="${room.roomNumber}" name="roomNo"></td>
                     </tr>
                     <tr>
                         <td align="center">房间类型</td>
                         <td>
                             <input class="form-control" type="text" th:value="${room.roomTypeName}">
-                            <input class="form-control" type="hidden" th:value="${room.roomType}" name="roomType">
+                            <input class="form-control" type="hidden" th:value="${room.roomType}" name="roomTypeId">
                         </td>
                     </tr>
                     <tr>
@@ -134,7 +199,7 @@
                     <tr>
                         <td align="center">客户类型</td>
                         <td>
-                            <select class="form-control" name="ctype">
+                            <select class="form-control" name="ctype" disabled>
                                 <option value="2">普通</option>
                                 <option value="1">会员</option>
                             </select>
@@ -156,7 +221,7 @@
                     </tr>
                     <tr>
                         <td align="center">入住时间</td>
-                        <td><input class="form-control" type="datetime-local" name="checkInTime"></td>
+                        <td><input id="datetime" class="form-control" type="datetime-local" name="checkInTime"></td>
                     </tr>
                     <tr>
                         <td align="center">入住人数</td>
@@ -167,8 +232,8 @@
                         <td><input class="form-control" type="text" name="preDays"></td>
                     </tr>
                     <tr>
-                        <td align="center">消费金额</td>
-                        <td><input class="form-control" type="text" name=""></td>
+                        <td align="center" >消费金额</td>
+                        <td><input class="form-control" type="text" name="conPrice" readonly>&nbsp;&nbsp;<span></span></td>
                     </tr>
                     <tr>
                         <td align="center">押金</td>
@@ -177,11 +242,13 @@
                     <tr>
                         <td align="center">备注</td>
                         <td>
-                        <textarea class="form-control" name="rIRemarks" rows="5" cols="22">
-                        </textarea>
+                        <textarea class="form-control" name="rIRemarks" rows="5" cols="22"></textarea>
                         </td>
                     </tr>
                 </table>
+                <div style="height: 100px">
+                    <button id="btn-save" type="button" class="btn btn-success">提交</button>&nbsp;&nbsp;<button type="button" class="btn btn-warning">清空</button>
+                </div>
             </form>
         </div>
     </div>
