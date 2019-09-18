@@ -34,7 +34,8 @@
             <div class="form-group">
                 <label for="ft" class="col-sm-4 control-label">食品类型：</label>
                 <div class="col-sm-6">
-                    <select class="form-control" name="foodtype" id="ft" th:value="${delicious.foodtype}"></select>
+                    <select class="form-control" name="foodtype" id="ft"></select>
+                    <input type="hidden" id="foodtype" th:value="${delicious.foodtype}">
                 </div>
             </div>
             <div class="form-group">
@@ -46,7 +47,8 @@
             <div class="form-group">
                 <label for="fs" class="col-sm-4 control-label">食品状态：</label>
                 <div class="col-sm-6">
-                    <select class="form-control" name="foodstatus" id="fs" th:value="${delicious.foodstatus}"></select>
+                    <select class="form-control" name="foodstatus" id="fs" ></select>
+                    <input type="hidden" id="foodstatus" th:value="${delicious.foodtype}">
                 </div>
             </div>
             <div class="form-group">
@@ -75,20 +77,20 @@
             html+= "<option value='-1'>--请选择--</option>";
             $.each(result, function (index,item) {
                 html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
-            })
+            });
             if(e==1){
                 $("select[id='ft']").html(html);
-                var ft=$("#ft").val();
+                var foodtype=$("#foodtype").val();
 
-                if(null!=ft&&ft!=''){
-                    $("#ft").val(value);
+                if(null!=foodtype&&foodtype!=''){
+                    $("#ft").val(foodtype);
                 }
             }else if(e==2){
                 $("select[id='fs']").html(html);
-                var fs=$("#fs").val();
+                var foodstatus=$("#foodstatus").val();
 
-                if(null!=fs&&fs!=''){
-                    $("#fs").val(value);
+                if(null!=foodstatus&&foodstatus!=''){
+                    $("#fs").val(foodstatus);
                 }
             }
         })

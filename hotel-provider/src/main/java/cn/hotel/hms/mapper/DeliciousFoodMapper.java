@@ -4,6 +4,7 @@ import cn.hotel.entity.DeliciousFood;
 import cn.hotel.vo.DeliciousFoodVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface DeliciousFoodMapper {
     //修改食品信息
     @Update("UPDATE `deliciousfood` SET `foodname`=#{foodname},`foodimgone`=#{foodimgone},`foodtype`=#{foodtype},`foodprice`=#{foodprice},`foodstatus`=#{foodstatus},`foodDetail`=#{foodDetail} where `foodid`=#{foodid}")
     Integer updateDeliciousFood(DeliciousFood deliciousFood);
+
+    //查看食品信息（修改时候用到）
+    @Select("SELECT * FROM `deliciousfood` WHERE foodid=#{foodid}")
+    DeliciousFood detaDeliciousFood(Integer id);
 }
