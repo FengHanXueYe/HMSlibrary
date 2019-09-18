@@ -201,6 +201,11 @@
         })
     }
 
+    //去修改页面
+    function updateDelicious(id) {
+        location.href="toUpdateDelicious?id="+id;
+    }
+
     // 加载下拉框
     function loadSelect(code, e){
         $.get("dataStatus/queryByCode","code="+code,function(result){

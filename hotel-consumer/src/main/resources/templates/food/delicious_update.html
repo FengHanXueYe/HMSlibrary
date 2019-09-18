@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>修改食品</title>
+    <div th:include="base::base"></div>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>食品信息 </small></h1>
+        </div>
+        <form class="form-horizontal" action="/doUpdateDelicious" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">食品名称：<span id="nameTiShi"></span></label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodname" class="form-control"  placeholder="食品名称" th:value="${delicious.foodname}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">食品图片：</label>
+                <div class="col-sm-6">
+                    <input type="file" name="file" th:value="${delicious.foodimgone}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ft" class="col-sm-4 control-label">食品类型：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="foodtype" id="ft" th:value="${delicious.foodtype}"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">价格：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodprice" class="form-control"   placeholder="食品价格" th:value="${delicious.foodprice}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fs" class="col-sm-4 control-label">食品状态：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="foodstatus" id="fs" th:value="${delicious.foodstatus}"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">菜品详情：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="foodDetail"   class="form-control"  placeholder="菜品详情" th:value="${delicious.foodDetail}">
+                </div>
+            </div>
+            <div class="col-sm-10 control-label">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>修改
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        jsLoadSelect("FOOD_TYPE",1);
+        jsLoadSelect("FOOD_STATUS",2);
+    })
+    // js ajax加载下拉框
+    function jsLoadSelect(code,e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
+            $.each(result, function (index,item) {
+                html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+            })
+            if(e==1){
+                $("select[id='ft']").html(html);
+                var ft=$("#ft").val();
+
+                if(null!=ft&&ft!=''){
+                    $("#ft").val(value);
+                }
+            }else if(e==2){
+                $("select[id='fs']").html(html);
+                var fs=$("#fs").val();
+
+                if(null!=fs&&fs!=''){
+                    $("#fs").val(value);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
