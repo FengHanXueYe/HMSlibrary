@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.IindividualTravelersMapper">
+    <select id="queryAllIindividualTravelers" parameterType="cn.hotel.entity.IindividualTravelers" resultType="cn.hotel.vo.IindividualTravelersVO">
+        SELECT itName,itId,itGender,itSFZ,itAddress,itTel,itCreateTime,itTotalConsumption,itRemarks,itSFZtype,
+         (SELECT valueName FROM `datastatus` WHERE typeCode='DOCUMENT_TYPE' AND valueId=itSFZtype) itSFZtypeName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='GENDER_TYPE' AND valueId=itGender) itGenderName
+         FROM `individualtravelers`
+         <where>
+             <if test="itName!=null and itName!=''"> itName like concat('%',#{itName},'%')</if>
+             <if test="itSFZtype!=null and itSFZtype!=-1">and itSFZtype = #{itSFZtype}</if>
+             <if test="itGender!=null and itGender!=-1">and itGender = #{itGender}</if>
+         </where>
+    </select>
+
+    <select id="detailIindividualTravelers" parameterType="cn.hotel.entity.IindividualTravelers" resultType="cn.hotel.vo.IindividualTravelersVO">
+        SELECT itName,itId,itGender,itSFZ,itAddress,itTel,itCreateTime,itTotalConsumption,itRemarks,itSFZtype,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='DOCUMENT_TYPE' AND valueId=itSFZtype) itSFZtypeName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='GENDER_TYPE' AND valueId=itGender) itGenderName
+        FROM `individualtravelers`
+        <where>
+            <if test="itId!=null and itId!=-1"> itId = #{itId}</if>
+            <if test="itName!=null and itName!=''">and  itName like concat('%',#{itName},'%')</if>
+            <if test="itSFZtype!=null and itSFZtype!=-1">and itSFZtype = #{itSFZtype}</if>
+            <if test="itGender!=null and itGender!=-1">and itGender = #{itGender}</if>
+        </where>
+    </select>
+
+    <insert id="insertIindividualTravelers" parameterType="cn.hotel.entity.IindividualTravelers">
+        insert into individualtravelers value(null,#{itName},#{itGender},#{itSFZtype},#{itSFZ},#{itAddress},#{itTel},NOW(),#{itTotalConsumption},#{itRemarks})
+    </insert>
+
+    <update id="updateIindividualTravelers" parameterType="cn.hotel.entity.IindividualTravelers">
+        update individualtravelers
+        <set>
+            <if test="itName!=null and itName!=''">itName = #{itName},</if>
+            <if test="itGender!=null and itGender!=-1">itGender = #{itGender},</if>
+            <if test="itSFZ!=null and itSFZ!=''">itSFZ = #{itSFZ},</if>
+            <if test="itSFZtype!=null and itSFZtype!=-1">itSFZtype = #{itSFZtype},</if>
+            <if test="itAddress!=null and itAddress!=''">itAddress = #{itAddress},</if>
+            <if test="itTel!=null and itTel!=''">itTel = #{itTel},</if>
+            <if test="itTotalConsumption!=null and itTotalConsumption!=-1">itTotalConsumption = #{itTotalConsumption},</if>
+            <if test="itRemarks!=null and itRemarks!=''">itRemarks = #{itRemarks}</if>
+        </set>
+        where itId = #{itId}
+    </update>
+
+    <delete id="deleteIindividualTravelers" parameterType="integer">
+        delete from individualtravelers where itId = #{id}
+    </delete>
+</mapper>

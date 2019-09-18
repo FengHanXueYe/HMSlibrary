@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.SetMealMapper">
+    <resultMap id="setMealMap" type="cn.hotel.vo.SetMealVO" autoMapping="true">
+        <id column="mealid" property="mealid"></id>
+    </resultMap>
+
+    <select id="queryAllSetMeal" resultMap="setMealMap" parameterType="cn.hotel.entity.SetMeal">
+        SELECT mealid,`mealname`,`mealprice`,
+	(SELECT `valueName` FROM `datastatus` WHERE `typeCode`='MEAL_STATUS' AND `valueId`=`mealstatus`)`mealstatus`,
+	`mealDetail`,`mealOne`
+	FROM `setmeal`
+	<where>
+        <if test="mealname!=null and mealname!=''">
+            mealname like concat('%',#{mealname},'%')
+        </if>
+        <if test="mealstatus!=null and mealstatus!=-1">
+            mealstatus=#{mealstatus}
+        </if>
+    </where>
+    </select>
+
+    <select id="detailSetMeal" resultMap="setMealMap" parameterType="cn.hotel.entity.SetMeal">
+        SELECT mealid,`mealname`,`mealprice`,
+	(SELECT `valueName` FROM `datastatus` WHERE `typeCode`='MEAL_STATUS' AND `valueId`=`mealstatus`)`mealstatus`,
+	`mealDetail`,`mealOne`
+	FROM `setmeal` where mealid=#{mealid}
+    </select>
+</mapper>

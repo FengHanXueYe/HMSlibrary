@@ -38,6 +38,19 @@
         where oId = #{oId}
     </select>
 
+    <select id="verificationOperator" parameterType="cn.hotel.entity.Operator" resultType="cn.hotel.entity.Operator">
+        select * from operator
+        <where>
+            <if test="oName!=null and oName!=''"> oName like concat('%',#{oName},'%')</if>
+            <if test="oDepartment!=null and oDepartment!=-1">and oDepartment=#{oDepartment}</if>
+            <if test="oWorkStatus!=null and oWorkStatus!=-1">and oWorkStatus=#{oWorkStatus}</if>
+            <if test="oGender!=null and oGender!=''">and oGender=#{oGender}</if>
+            <if test="oHotelUserNum!=null and oHotelUserNum!=''">and oHotelUserNum=#{oHotelUserNum}</if>
+            <if test="oId!=null and oId!=-1">and oId=#{oId}</if>
+        </where>
+
+    </select>
+
     <update id="updateOperator" parameterType="cn.hotel.entity.Operator">
         update operator
         <set>

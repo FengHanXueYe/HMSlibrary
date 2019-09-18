@@ -8,6 +8,15 @@ public class SetMeal implements Serializable {
     private double mealprice; //套餐价格
     private Integer mealstatus; //套餐状态（1.充足，2.缺少 3.暂无）
     private String mealDetail;//套餐详情
+    private String mealOne;//套餐图片
+
+    public String getMealOne() {
+        return mealOne;
+    }
+
+    public void setMealOne(String mealOne) {
+        this.mealOne = mealOne;
+    }
 
     public Integer getMealid() {
         return mealid;

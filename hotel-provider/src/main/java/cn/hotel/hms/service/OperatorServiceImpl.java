@@ -57,4 +57,9 @@ public class OperatorServiceImpl implements OperatorService {
     public Integer deleteOperator(Integer oId) {
         return operatorMapper.deleteOperator(oId);
     }
+
+    @Override
+    public Operator verificationOperator(Operator operator) {
+        return operatorMapper.verificationOperator(operator);
+    }
 }

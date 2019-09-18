@@ -24,5 +24,8 @@ public interface OperatorService {
     // 删除操作人员
     Integer deleteOperator(Integer oId);
 
+    // 验证查询
+    Operator verificationOperator(Operator operator);
+
 
 }

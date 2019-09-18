@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.MembershipRankMapper">
+    <select id="detailMembershipRank" parameterType="integer" resultType="cn.hotel.entity.MembershipRank">
+        select * from membershiprank where mrId = #{mrId}
+    </select>
+
+    <select id="queryAllMembershipRank" resultType="cn.hotel.entity.MembershipRank" >
+        select * from membershiprank
+    </select>
+</mapper>

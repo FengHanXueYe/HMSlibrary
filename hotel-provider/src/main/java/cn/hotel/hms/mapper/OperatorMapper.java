@@ -22,5 +22,6 @@ public interface OperatorMapper {
     // 删除操作人员
     Integer deleteOperator(Integer oId);
 
+    Operator verificationOperator(Operator operator);
 
 }
