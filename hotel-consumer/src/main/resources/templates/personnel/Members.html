@@ -152,6 +152,9 @@
 
 <script type="text/javascript">
     $(function () {
+        // 获取幸运会员
+        ajaxGetMSS();
+
         // 加载会员信息列表
         // "ajaxQueryAllMember" selectForm(勒令：数组第一个必须是id，第二个是名称（建议）)
         var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
@@ -172,6 +175,13 @@
         })
 
     })
+
+    // ajax 获取幸运会员
+    function ajaxGetMSS(){
+        $.post("ajaxGetMSS",function(result){
+            alert("会员是"+result.mName);
+        })
+    }
 
     // 查看会员详情
     function detailInformation(mId) {
