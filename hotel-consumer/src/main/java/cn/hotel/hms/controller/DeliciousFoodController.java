@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -99,4 +100,16 @@ public class DeliciousFoodController {
         }
         return "/"+path+"/"+file.getOriginalFilename();
     }
+    @RequestMapping(value = "toUpdateDelicious")
+    public String toUpdateDelicious(Integer id, Model model){
+        model.addAttribute("delicious",this.deliciousFoodService.detaDeliciousFood(id));
+        return "food/delicious_update";
+    }
+
+    @RequestMapping(value = "doUpdateDelicious",method = RequestMethod.POST)
+    public String doUpdateDelicious(DeliciousFood deliciousFood){
+        this.deliciousFoodService.updateDeliciousFood(deliciousFood);
+        return "redirect:queryAllFood";
+    }
+
 }

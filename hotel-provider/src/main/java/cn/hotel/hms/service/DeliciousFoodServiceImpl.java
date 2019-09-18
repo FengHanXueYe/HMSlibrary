@@ -58,4 +58,9 @@ public class DeliciousFoodServiceImpl implements DeliciousFoodService {
     public Integer updateDeliciousFood(DeliciousFood deliciousFood) {
         return deliciousFoodMapper.updateDeliciousFood(deliciousFood);
     }
+
+    @Override
+    public DeliciousFood detaDeliciousFood(Integer id) {
+        return deliciousFoodMapper.detaDeliciousFood(id);
+    }
 }
