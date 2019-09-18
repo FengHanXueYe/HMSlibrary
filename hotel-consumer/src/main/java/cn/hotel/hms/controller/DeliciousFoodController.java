@@ -40,6 +40,7 @@ public class DeliciousFoodController {
         return "food/food_list";
     }
 
+
     @ResponseBody
     @RequestMapping(value = "queryAllDelicious", method = RequestMethod.POST, produces = {"application/json;charset=utf-8"})
     public String queryAllDelicious(DeliciousFood deliciousFood, Integer pageNum, Integer pageSize){
@@ -49,6 +50,7 @@ public class DeliciousFoodController {
         PageUtil<DeliciousFoodVo> deliciousFoodVoPageUtil=this.deliciousFoodService.queryAllFood(deliciousFood,pageNum,pageSize);
         System.out.println(deliciousFoodVoPageUtil.getNavigatepageNums());
         for (DeliciousFoodVo food : deliciousFoodVoPageUtil.getList()) {
+            System.out.println("------------"+food);
         }
         return JSON.toJSONString(deliciousFoodVoPageUtil);
     }
