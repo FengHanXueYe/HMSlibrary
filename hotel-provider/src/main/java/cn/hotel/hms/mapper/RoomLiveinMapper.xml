@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.RoomLiveinMapper">
+    <insert id="save" parameterType="cn.hotel.vo.RoomLiveinVO">
+        insert into `roomLivein` values(default,#{rINo},#{roomNo},#{roomTypeId},#{ctype},#{cName},#{cSex},#{documentType},#{documentNo},#{rIaddress},#{rINumber},#{checkInTime},#{preDays},#{rIDeposit},#{rIBillId},#{rIRemarks},#{rIOperator});
+    </insert>
+
+    <select id="queryByidCode" parameterType="String" resultType="cn.hotel.vo.RoomLiveinVO">
+        SELECT r.*,sta.valueName AS documentTypeName FROM `roomLivein` AS r,`datastatus` AS sta WHERE r.documentType = sta.valueId AND sta.typeCode = 'DOCUMENT_TYPE' AND r.roomNo = #{code}
+    </select>
+</mapper>
