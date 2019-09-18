@@ -11,13 +11,15 @@
             -webkit-appearance: none !important;
             margin: 0;
         }
+        div .row{
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="row">
-            <br>
             <div class="col-xs-12">
             <form class="form-inline" id="selectForm">
                 <div class="form-group">
@@ -55,11 +57,16 @@
 
             </form>
             </div>
-            <br>
-            <!--人员列表-->
-            <div id="listOperator">
-            </div>
+        </div>
 
+
+        <div class="row">
+            <!--人员列表-->
+            <div class="row" id="listOperator">
+            </div>
+        </div>
+
+        <div class="row">
             <!--分页-->
             <div class="col-xs-10">
                 <nav aria-label="Page navigation">
@@ -68,8 +75,9 @@
                     </ul>
                 </nav>
             </div>
+        </div>
 
-
+    </div>
             <!--查看模态框-->
             <div class="modal fade" tabindex="-1" role="dialog" id="detailOperator">
                 <div class="modal-dialog" role="document">
@@ -108,8 +116,8 @@
             </div><!-- /.modal -->
 
 
-            </div>
-    </div>
+
+
 
 
 
@@ -181,6 +189,12 @@
         }else{
             pagePre = Number(result.pageNo)-1;
         }
+        var pageNext;
+        if(result.pageNo>=result.totalPageCount){
+            pageNext = result.totalPageCount;
+        }else{
+            pageNext = Number(result.pageNo)+1;
+        }
         var pageHtml = "";
          pageHtml+="<li no='"+result.pageNo+"'>"
                         +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
@@ -194,7 +208,7 @@
                 pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
             }
         })
-        pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
+        pageHtml+="<li th:no='"+pageNext+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+pageNext+")'>"
             +"<span aria-hidden='true'>&raquo;</span>"
             +"</a>"
             +"</li>";

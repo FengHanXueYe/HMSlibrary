@@ -11,6 +11,9 @@
 <br>
 <br>
 <br>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
 <form class="form-inline text-center">
     <div class="form-group">
         <label for="exampleInputName2">食品名称</label>
@@ -33,13 +36,15 @@
 <br>
 <br>
 <p>
-    <button class="btn btn-info">
+    <button class="btn btn-info" id="toAddDelicious">
         <span class="glyphicon glyphicon-plus" aria-hidden="true" id="addInfo">新增食品</span>
     </button>
 </p>
         <div id="hahahahahah">
 
         </div>
+        </div>
+    </div>
 <br>
         <div class="col-xs-10">
             <nav aria-label="Page navigation" class="text-center">
@@ -49,6 +54,59 @@
             </nav>
         </div>
 
+        </div>
+<!--查看模态框-->
+<div class="modal fade" tabindex="-1" role="dialog" id="detailDelicious">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">食品详情</h4>
+            </div>
+            <div class="modal-body" id="detailDeliciouss">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--alert弹框样式-->
+<div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" id="alerttishi">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--confirm弹框样式-->
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">系统提示</h4>
+            </div>
+            <div class="modal-body" id="confirmtishi">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
@@ -62,6 +120,10 @@
         loadSelect("FOOD_STATUS", $("select[name='foodstatus']"));
         // 加载菜品类型
         loadSelect("FOOD_TYPE", $("select[name='foodtype']"));
+        // 去增加页面
+        $("#toAddDelicious").click(function () {
+            location.href="toAddDelicious";
+        })
     });
     function clickPage(pageNum) {
         operatorLoad(pageNum);
@@ -106,7 +168,7 @@
             pageInfoUtil(result);
             $("#hahahahahah").html("");
             var html = "";
-            html +=  "<table class='table table-bordered text-center'>"
+            html +=  "<table class='table table-striped table-hover'>"
                 +"<tr class='info'>"
                 +"<th>ID</th>"
                 +"<th>食品名称</th>"
@@ -117,23 +179,31 @@
                 +"<th>操作</th>"
                 +"</tr>";
             $.each(list,function (index,item) {
+                // var src = item.foodimgone;
+                // src = src.substring(src.lastIndexOf('\\'));
+                // src = "images\\"+src;
                 html += "<tr >"
                     +"<td>"+item.foodid+"</td>"
                     +"<td>"+item.foodname+"</td>"
-                    +"<td><a href=''><img src='"+item.foodimgone+"' alt='找不到图片路径' class='img-circle'></a></td>"
+                    +"<td><img src='"+item.foodimgone+"' alt='找不到图片路径' width='110px' height='110px'></td>"
                     +"<td>"+item.foodtypes+"</td>"
                     +"<td>"+item.foodprice+"</td>"
                     +"<td>"+item.foodstat+"</td>"
                     +"<td class='col-md-1 '>"
-                    +"<a href=''><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
-                    +"<a href=''><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
-                    +"<a href=''><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='updateDelicious("+item.foodid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "
+                    +"<a href='javascript:void(0)' onclick='deleteDelicious("+item.foodid+")'><span class='glyphicon glyphicon-trash' title='删除' aria-hidden='true'></span></a> "
                     +"</td>"
                     +"</tr>";
             })
             html += "</table>";
             $("#hahahahahah").html(html);
         })
+    }
+
+    //去修改页面
+    function updateDelicious(id) {
+        location.href="toUpdateDelicious?id="+id;
     }
 
     // 加载下拉框
@@ -144,6 +214,69 @@
                 e.append("<option value='"+item.valueId+"'>"+item.valueName+"</option>");
             })
         })
+    }
+
+    // 查看操作人员详情
+    function detailDelicious(id) {
+        $("#detailDelicious").modal("show");
+        $.post("DetailDelicious","id="+id,function (result) {
+            $("#detailDeliciouss").html("");
+            var html = "";
+            html="<table class='table table-striped'>"
+                +"<tr class=''>"
+                +"<th>食品名称</th>"
+                +"<td>"+result.foodname+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品图片</th>"
+                +"<td><img src='"+result.foodimgone+"' alt='找不到图片路径' class='img-circle'></td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品类型</th>"
+                +"<td>"+result.foodtypes+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>价格</th>"
+                +"<td>"+result.foodprice+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>食品状态</th>"
+                +"<td>"+result.foodstat+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>菜品详情</th>"
+                +"<td>"+result.foodDetail+"</td>"
+                +"</tr></table>";
+            $("#detailDeliciouss").html(html);
+        })
+
+    }
+
+
+    // 判断是否点击的变量
+    var isClick = false;
+    // 点击确认删除
+    function OkNo() {
+        isClick = true;
+        var id = $("input[name='hiddenOId']").val();
+        if(isClick){
+            $("#confirmModel").modal("hide");
+            $.post("DeleteDelicious","id="+id, function (result) {
+                if(result){
+                    operatorLoad(-1);
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    $("#alertModel").modal("show");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+
+            })
+        }
+    }
+    // 删除操作
+    function deleteDelicious(id){
+        $("#confirmtishi").html("确定删除该食品信息吗?<input type='hidden' value='"+id+"' name='hiddenOId'>");
+        $("#confirmModel").modal("show");
     }
 
 </script>

@@ -19,4 +19,7 @@ public interface DeliciousFoodService {
 
     //修改食品信息
     Integer updateDeliciousFood(DeliciousFood deliciousFood);
+
+    //查看单个食品信息（修改时候用）
+    DeliciousFood detaDeliciousFood(Integer id);
 }

@@ -6,4 +6,8 @@
     <select id="detailMembershipRank" parameterType="integer" resultType="cn.hotel.entity.MembershipRank">
         select * from membershiprank where mrId = #{mrId}
     </select>
+
+    <select id="queryAllMembershipRank" resultType="cn.hotel.entity.MembershipRank" >
+        select * from membershiprank
+    </select>
 </mapper>

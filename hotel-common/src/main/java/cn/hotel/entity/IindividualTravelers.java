@@ -16,9 +16,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class IindividualTravelers implements Serializable {
 
-    private Integer itIdl; // 散客信息表主键
+    private Integer itId; // 散客信息表主键
     private String itName; // 散客姓名
     private Integer itGender; // 散客性别
+    private Integer itSFZtype; // 证件类型
     private String itSFZ; // 身份证
     private String itAddress; // 散客住址
     private String itTel; // 电话
