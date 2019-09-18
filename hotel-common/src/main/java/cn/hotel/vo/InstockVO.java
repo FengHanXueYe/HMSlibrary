@@ -27,6 +27,7 @@ public class InstockVO implements Serializable {
     private WZXMaterialsInfo wzxMaterialsInfo;
     private WZXStockInfo wzxStockInfo;
 
+
     public Date getIsTime() {
         return isTime;
     }

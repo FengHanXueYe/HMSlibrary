@@ -19,6 +19,23 @@
         <association property="stockInfo" resultMap="stockInfoMap"></association>
         <association property="materialsLocation" resultMap="materialsLocationMap"></association>
     </resultMap>
+    <insert id="addActualStock">
+        INSERT INTO roomdb.wzxactualstock
+	(asNumber,
+	materialsId,
+	stockNumber,
+	goodsLocationNumber,
+	materialss
+	)
+	VALUES
+	(NULL,
+	#{materialsId},
+	#{stockNumber},
+	#{goodsLocationNumber},
+	#{materialss}
+	);
+
+    </insert>
     <delete id="delActualStockByasNumber">
         DELETE FROM roomdb.wzxactualstock
 	WHERE
@@ -26,9 +43,9 @@
     </delete>
     <select id="queryAll"  resultMap="ActualsStockVoMap">
         SELECT * FROM wzxactualstock a,wzxmaterialsinfo m,wzxstockinfo s,wzxmaterialslocation g
-          WHERE a.materialsNumber=m.materialsId AND a.stockNumber=s.stockId AND a.goodsLocationNumber=g.goodsLocationNumber
+          WHERE a.materialsId=m.materialsId AND a.stockNumber=s.stockId AND a.goodsLocationNumber=g.goodsLocationNumber
         <if test="stockInfo!=null">
-            <if test="stockInfo.stockId!=null and stockInfo.stockId">
+            <if test="stockInfo.stockId!=null and stockInfo.stockId>0">
                 AND s.stockId=#{stockInfo.stockId}
             </if>
         </if>
@@ -58,5 +75,8 @@
     </select>
     <select id="queryActualStockByasNumber" resultType="cn.hotel.entity.WZXActualStock">
         select * from wzxactualstock where asNumber=#{asNumber}
+    </select>
+    <select id="queryActualsStockBymaterialsNumber" resultType="cn.hotel.entity.WZXActualStock">
+        select * from wzxactualstock where materialsId=#{materialsId}
     </select>
 </mapper>

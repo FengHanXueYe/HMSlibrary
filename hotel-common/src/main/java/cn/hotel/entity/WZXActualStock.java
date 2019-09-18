@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class WZXActualStock implements Serializable {
     private Integer asNumber,goodsLocationNumber,materialss;
-    private String materialsNumber,stockNumber;
+    private String materialsId,stockNumber;
 
     public Integer getAsNumber() {
         return asNumber;
@@ -35,12 +35,13 @@ public class WZXActualStock implements Serializable {
         this.materialss = materialss;
     }
 
-    public String getMaterialsNumber() {
-        return materialsNumber;
+
+    public String getMaterialsId() {
+        return materialsId;
     }
 
-    public void setMaterialsNumber(String materialsNumber) {
-        this.materialsNumber = materialsNumber;
+    public void setMaterialsId(String materialsId) {
+        this.materialsId = materialsId;
     }
 
     public String getStockNumber() {

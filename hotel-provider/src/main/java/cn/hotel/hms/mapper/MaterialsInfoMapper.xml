@@ -29,7 +29,8 @@
 	materialsNumber,
 	materialsDisable,
 	materialsPrices,
-	materialsStatus
+	materialsStatus,
+	materialsPath
 	)
 	VALUES
 	(null,
@@ -40,26 +41,53 @@
 	#{materialsProducts},
 	#{materialsUnitPrice},
 	#{supplierNumber},
-	#{typeCode},
+	'MATERIALS_TYPE',
 	#{isStockAlam},
 	#{materialsStartDate},
 	#{materialsEndDate},
 	#{materialsNumber},
 	#{materialsDisable},
 	#{materialsPrices},
-	#{materialsStatus}
+	#{materialsStatus},
+	#{materialsPath}
 	);
 
     </insert>
     <update id="UpdateMaterialsInfoByMaterialsId">
 		UPDATE wzxactualstock SET materialss=materialss+#{materialsCount}
-           WHERE materialsNumber=#{materialsId}
+           WHERE materialsId=#{materialsId}
 	</update>
 
 	<update id="UpdatedelMaterialsInfoByMaterialsId">
 		UPDATE wzxactualstock SET materialss=materialss-#{materialsCount}
-           WHERE materialsNumber=#{materialsId}
+           WHERE materialsId=#{materialsId}
 	</update>
+	<update id="updateMaterialsInfo">
+	    	UPDATE roomdb.wzxmaterialsinfo
+	    SET
+	    materialsBarCode = #{materialsBarCode} ,
+	    materialsName = #{materialsName} ,
+	    materialsStandard = #{materialsStandard} ,
+	    materialsModel = #{materialsModel} ,
+	    materialsProducts = #{materialsProducts} ,
+	    materialsUnitPrice = #{materialsUnitPrice} ,
+	    supplierNumber = #{supplierNumber} ,
+	    isStockAlam = #{isStockAlam} ,
+	    materialsStartDate = #{materialsStartDate} ,
+	    materialsEndDate = #{materialsEndDate} ,
+	    materialsNumber = #{materialsNumber} ,
+	    materialsDisable = #{materialsDisable} ,
+	    materialsPrices = #{materialsPrices} ,
+	    materialsStatus = #{materialsStatus},
+        materialsPath=#{materialsPath}
+	    WHERE
+	    materialsId = #{materialsId} ;
+	</update>
+	<delete id="delMaterialsInfo">
+		  DELETE FROM roomdb.wzxmaterialsinfo
+	         WHERE
+	         materialsId = #{materialsId} ;
+	</delete>
 
 	<select id="queryMaterialsInfoBymaterialsBarCode" resultType="cn.hotel.entity.WZXMaterialsInfo">
         SELECT * FROM wzxmaterialsinfo w WHERE w.materialsBarCode=#{materialsBarCode}
@@ -72,7 +100,7 @@
     <select id="queryAllMaterialsInfoVO" resultMap="MaterialsInfoMap">
 		SELECT * FROM wzxmaterialsinfo w,wzxsupplierinfo s WHERE w.supplierNumber=s.supplierNumber
 		   <if test="materialsName!=null and materialsName!=''">
-			   AND w.materialsName=#{materialsName}
+			   AND w.materialsName like concat('%',#{materialsName},'%')
 		   </if>
 		   <if test="isStockAlam!=null and isStockAlam!=-1">
 			   AND w.isStockAlam=#{isStockAlam}

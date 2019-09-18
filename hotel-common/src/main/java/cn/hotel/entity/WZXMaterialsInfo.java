@@ -1,6 +1,9 @@
 package cn.hotel.entity;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +17,23 @@ import java.util.Date;
  */
 public class WZXMaterialsInfo implements Serializable {
     private Integer materialsId,isStockAlam,supplierNumber,materialsDisable,materialsStatus;
-    private String materialsBarCode,materialsName,materialsStandard,materialsModel,materialsProducts,typeCode,materialsNumber;
+    private String materialsBarCode;
+    private String materialsName;
+    private String materialsStandard;
+    private String materialsModel;
+    private String materialsProducts;
+    private String typeCode;
+    private String materialsNumber;
+
+    public String getMaterialsPath() {
+        return materialsPath;
+    }
+
+    public void setMaterialsPath(String materialsPath) {
+        this.materialsPath = materialsPath;
+    }
+
+    private String materialsPath;
     private Double materialsUnitPrice,materialsPrices;
     private Date materialsStartDate,materialsEndDate;
 
@@ -134,15 +153,29 @@ public class WZXMaterialsInfo implements Serializable {
         return materialsStartDate;
     }
 
-    public void setMaterialsStartDate(Date materialsStartDate) {
-        this.materialsStartDate = materialsStartDate;
+    public void setMaterialsStartDate(String materialsStartDate) {
+        Date date=null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = df.parse(materialsStartDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.materialsStartDate = date;
     }
 
     public Date getMaterialsEndDate() {
         return materialsEndDate;
     }
 
-    public void setMaterialsEndDate(Date materialsEndDate) {
-        this.materialsEndDate = materialsEndDate;
+    public void setMaterialsEndDate(String materialsEndDate) {
+        Date date=null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = df.parse(materialsEndDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.materialsEndDate = date;
     }
 }
