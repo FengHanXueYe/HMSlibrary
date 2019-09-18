@@ -4,6 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hotel.hms.mapper.OutStockMapper">
 
+	<resultMap id="MaterialsInfoMap" type="cn.hotel.entity.WZXMaterialsInfo" autoMapping="true">
+		<id column="materialsId" property="materialsId"></id>
+	</resultMap>
+	<resultMap id="stockInfoMap" type="cn.hotel.entity.WZXStockInfo" autoMapping="true">
+		<id column="stockId" property="stockId"></id>
+	</resultMap>
+	<resultMap id="OutStockMap" type="cn.hotel.vo.OutStockVO" autoMapping="true">
+         <id column="osId" property="osId"></id>
+		 <association property="wzxMaterialsInfo" resultMap="MaterialsInfoMap"></association>
+		 <association property="stockInfo" resultMap="stockInfoMap"></association>
+	</resultMap>
     <insert id="addOutStock">
           INSERT INTO roomdb.wzxoutstock
           	(osId,
@@ -26,4 +37,50 @@
           	#{osNumber}
           	);
     </insert>
+	<update id="updateOutStock">
+		UPDATE roomdb.wzxoutstock
+	       SET
+	       outStockNumber = #{outStockNumber} ,
+	       materialsId = #{materialsId} ,
+	       receivePerson = #{receivePerson} ,
+	       osTime = #{osTime} ,
+	       materialsCount = #{materialsCount} ,
+	       osRemark = #{osRemark} ,
+	       osNumber = #{osNumber}
+
+	       WHERE
+	       osId = #{osId} ;
+	</update>
+	<delete id="delOutStock">
+           DELETE FROM roomdb.wzxoutstock
+	         WHERE
+	         osId = #{osId} ;
+	</delete>
+	<select id="queryAllOutStockVO" resultMap="OutStockMap">
+		SELECT * FROM wzxoutstock o,wzxmaterialsinfo w,wzxstockinfo s
+           WHERE o.materialsId=w.materialsId AND o.outStockNumber=s.stockId
+           <if test="wzxMaterialsInfo!=null">
+			   <if test="wzxMaterialsInfo.materialsName!=null and wzxMaterialsInfo.materialsName!=''">
+				   AND w.materialsName LIKE CONCAT('%',#{wzxMaterialsInfo.materialsName},'%')
+			   </if>
+		   </if>
+
+           <if test="osNumber!=null and osNumber!=''">
+			   AND o.osNumber=#{osNumber}
+		   </if>
+		   <if test="stockInfo!=null">
+			   <if test="stockInfo.stockId!=null and stockInfo.stockId!=-1">
+				   AND o.outStockNumber=#{stockInfo.stockId}
+			   </if>
+		   </if>
+
+           <if test="toTime!=null and reachTime!=null">
+			   AND #{toTime}<![CDATA[<=]]>o.osTime<![CDATA[<=]]>#{reachTime}
+		   </if>
+	</select>
+	<select id="queryAllOutStockVOByOsId" resultMap="OutStockMap">
+		SELECT * FROM wzxoutstock o,wzxmaterialsinfo w,wzxstockinfo s
+           WHERE o.materialsId=w.materialsId AND o.outStockNumber=s.stockId
+           and o.osId=#{osId}
+	</select>
 </mapper>

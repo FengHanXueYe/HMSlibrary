@@ -1,5 +1,7 @@
 package cn.hotel.hms.mapper;
 
+import cn.hotel.entity.WZXMaterialsLocation;
+
 /**
  * @description:
  * @author: 汪志雄
@@ -12,4 +14,11 @@ public interface MaterialsLocationMapper {
      * @return
      */
     Integer delMaterialsLocation(Integer goodsLocationNumber);
+
+    /**
+     * 添加货位
+     * @param actualsStockVO
+     * @return
+     */
+    Integer addMaterialsLocation(WZXMaterialsLocation actualsStockVO);
 }

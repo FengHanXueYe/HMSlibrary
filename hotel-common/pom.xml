@@ -19,7 +19,32 @@
         <artifactId>fastjson</artifactId>
         <version>1.2.47</version>
     </dependency>
+    <!--MD5-->
+    <dependency>
+        <groupId>eu.bitwalker</groupId>
+        <artifactId>UserAgentUtils</artifactId>
+        <version>1.20</version>
+    </dependency>
 
+    <!--userAgent-->
+    <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.9</version>
+    </dependency>
+
+    <!-- poi:07版之前的二进制格式 -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>4.0.0</version>
+    </dependency>
+    <!-- poi-ooxml:07版之后的OpenXML格式 -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>4.0.0</version>
+    </dependency>
 </dependencies>
 
 </project>

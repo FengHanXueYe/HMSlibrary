@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.ConsumptionRecordMapper">
+    <insert id="save" parameterType="ConsumptionRecord">
+         INSERT INTO `consumptionRecord` VALUES(DEFAULT,#{conType},#{conScene},#{conContent},#{conPrice},#{conName},NOW(),#{conRemarks},#{billConfirmer},#{billstatus},#{conBillNumber});
+    </insert>
+    
+    <select id="queryAll" parameterType="ConsumptionRecord" resultType="cn.hotel.vo.ConsumptionRecordVO">
+        SELECT con.*,sta.valueName AS conTypeName,sta.valueName AS billstatusName,op.oName AS billConfirmerName FROM `consumptionRecord` AS con,`datastatus` AS sta,`datastatus` AS stb,`operator` AS op WHERE con.conType = sta.valueId AND con.billstatus = stb.valueId AND sta.typeCode = 'CONSUMPTION_TYPE' AND stb.typeCode = 'BILL_STATUS' AND con.billConfirmer = op.oId AND con.roomNumber = #{roomNumber}
+    </select>
+</mapper>

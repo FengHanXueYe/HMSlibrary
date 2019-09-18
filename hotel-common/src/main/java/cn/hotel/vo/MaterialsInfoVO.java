@@ -1,5 +1,6 @@
 package cn.hotel.vo;
 
+import cn.hotel.entity.DataStatus;
 import cn.hotel.entity.WZXSupplierInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -22,4 +24,6 @@ public class MaterialsInfoVO implements Serializable {
     private Double materialsUnitPrice,materialsPrices;
     private Date materialsStartDate,materialsEndDate;
     private WZXSupplierInfo wzxSupplierInfo;
+
+    private List<DataStatus> statusList;
 }
