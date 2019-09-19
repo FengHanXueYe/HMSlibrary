@@ -1,5 +1,6 @@
 package cn.hotel.hms.service;
 
+import cn.hotel.entity.WZXMaterialsLocation;
 import cn.hotel.hms.mapper.MaterialsLocationMapper;
 import cn.hotel.service.MaterialsLocationService;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -19,5 +20,12 @@ public class MaterialsLocationServiceImpl implements MaterialsLocationService {
     @Override
     public Integer delMaterialsLocation(Integer goodsLocationNumber) {
         return materialsLocationMapper.delMaterialsLocation(goodsLocationNumber);
+    }
+
+    @Override
+    public Integer addMaterialsLocation(WZXMaterialsLocation actualsStockVO) {
+        Integer materialsLocation = materialsLocationMapper.addMaterialsLocation(actualsStockVO);
+
+        return materialsLocation;
     }
 }

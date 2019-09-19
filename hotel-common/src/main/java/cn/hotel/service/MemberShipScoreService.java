@@ -19,6 +19,12 @@ public interface MemberShipScoreService {
     // 随机幸运会员
     MemberShipScoreVO detailMemberShipScoreVO();
 
+    MemberShipScoreVO detailMSSV(Integer mssId);
+
+    // 防止出错
+    List<MemberShipScoreVO> ListdetailMSSV(Integer mssId);
+
+
 
 
 

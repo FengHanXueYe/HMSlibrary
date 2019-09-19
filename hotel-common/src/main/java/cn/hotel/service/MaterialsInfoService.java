@@ -55,4 +55,19 @@ public interface MaterialsInfoService {
      * @return
      */
     PageUtil<MaterialsInfoVO>  queryAllMaterialsInfoVO(WZXMaterialsInfo wzxMaterialsInfo,Integer pageNo,Integer pageSize);
+
+
+    /**
+     * 修改物品信息
+     * @param wzxMaterialsInfo
+     * @return
+     */
+    Integer updateMaterialsInfo(WZXMaterialsInfo wzxMaterialsInfo);
+
+    /**
+     * 删除物品
+     * @param materialsId
+     * @return
+     */
+    Integer delMaterialsInfo(Integer materialsId);
 }

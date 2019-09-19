@@ -53,9 +53,21 @@ public interface MaterialsInfoMapper {
     /**
      * #查询所有物品 根据物品名称、是否库存警报、供应商、条形码查询
      * @param wzxMaterialsInfo
-     * @param pageNo  当前页
-     * @param pageSize  当前页数据数量
      * @return
      */
-    List<MaterialsInfoVO> queryAllMaterialsInfoVO(WZXMaterialsInfo wzxMaterialsInfo, Integer pageNo, Integer pageSize);
+    List<MaterialsInfoVO> queryAllMaterialsInfoVO(WZXMaterialsInfo wzxMaterialsInfo);
+
+    /**
+     * 修改物品信息
+     * @param wzxMaterialsInfo
+     * @return
+     */
+    Integer updateMaterialsInfo(WZXMaterialsInfo wzxMaterialsInfo);
+
+    /**
+     * 删除物品
+     * @param materialsId
+     * @return
+     */
+    Integer delMaterialsInfo(Integer materialsId);
 }

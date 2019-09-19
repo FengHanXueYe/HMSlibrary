@@ -3,6 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hotel.hms.mapper.MaterialsLocationMapper">
+    <insert id="addMaterialsLocation" parameterType="cn.hotel.entity.WZXMaterialsLocation" useGeneratedKeys="true" keyProperty="goodsLocationNumber">
+        INSERT INTO roomdb.wzxmaterialslocation
+	(goodsLocationNumber,
+	locations,
+	stockNumber
+	)
+	VALUES
+	(null,
+	#{locations},
+	#{stockNumber}
+	);
+    </insert>
 
     <delete id="delMaterialsLocation">
         DELETE FROM roomdb.wzxmaterialslocation

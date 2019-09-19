@@ -15,4 +15,8 @@ public interface MemberShipScoreMapper {
 
     MemberShipScoreVO detailMemberShipScoreVO();
 
+    MemberShipScoreVO detailMSSV(Integer mssStatus);
+
+    List<MemberShipScoreVO> ListdetailMSSV(Integer mssId);
+
 }

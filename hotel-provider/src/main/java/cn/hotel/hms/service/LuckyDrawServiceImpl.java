@@ -38,4 +38,9 @@ public class LuckyDrawServiceImpl implements LuckyDrawService {
     public Integer deleteLuckyDraw(Integer ldId) {
         return luckyDrawMapper.deleteLuckyDraw(ldId);
     }
+
+    @Override
+    public LuckyDraw randomLuckDraw() {
+        return luckyDrawMapper.randomLuckDraw();
+    }
 }

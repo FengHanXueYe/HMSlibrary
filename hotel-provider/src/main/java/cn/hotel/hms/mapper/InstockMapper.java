@@ -23,5 +23,26 @@ public interface InstockMapper {
      * @param instockVO 根据库房、商品名称、负责人查询
      * @return
      */
-    List<InstockVO> queryAllInstockVOByInstock(InstockVO instockVO, Integer pageNo, Integer pageSize);
+    List<InstockVO> queryAllInstockVOByInstock(InstockVO instockVO);
+
+    /**
+     * 修改进货单
+     * @param wzxInstock
+     * @return
+     */
+    Integer updateInstock(WZXInstock wzxInstock);
+
+    /**
+     * 根据isId入库单主键查询详细信息
+     * @param isId
+     * @return
+     */
+    InstockVO queryAllInstockVoByIsId(Integer isId);
+
+    /**
+     * isId主键  删除入库单
+     * @param isId
+     * @return
+     */
+    Integer delInstock(Integer isId);
 }

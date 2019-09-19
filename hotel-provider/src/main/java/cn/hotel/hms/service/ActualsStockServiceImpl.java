@@ -1,8 +1,10 @@
 package cn.hotel.hms.service;
 
 import cn.hotel.entity.WZXActualStock;
+import cn.hotel.entity.WZXMaterialsLocation;
 import cn.hotel.hms.mapper.ActualsStockMapper;
 import cn.hotel.service.ActualsStockVoService;
+import cn.hotel.service.MaterialsLocationService;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.ActualsStockVO;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -22,6 +24,9 @@ public class ActualsStockServiceImpl implements ActualsStockVoService {
 
     @Autowired
     private ActualsStockMapper actualsStockMapper;
+
+    @Autowired
+    private MaterialsLocationService materialsLocationMapper;
 
     @Override
     public PageUtil<ActualsStockVO> queryAll(ActualsStockVO actualsStockVO, Integer pageNo, Integer pageNum) {
@@ -53,5 +58,17 @@ public class ActualsStockServiceImpl implements ActualsStockVoService {
     @Override
     public Integer delActualStockByasNumber(Integer asNumber) {
         return actualsStockMapper.delActualStockByasNumber(asNumber);
+    }
+
+    @Override
+    public WZXActualStock queryActualsStockBymaterialsNumber(String materialsNumber) {
+        return actualsStockMapper.queryActualsStockBymaterialsNumber(materialsNumber);
+    }
+
+    @Override
+    public Integer addActualStock(WZXActualStock actualsStockVO, WZXMaterialsLocation wzxMaterialsLocation) {
+        Integer materialsLocation = materialsLocationMapper.addMaterialsLocation(wzxMaterialsLocation);
+        actualsStockVO.setGoodsLocationNumber(wzxMaterialsLocation.getGoodsLocationNumber());
+        return actualsStockMapper.addActualStock(actualsStockVO);
     }
 }

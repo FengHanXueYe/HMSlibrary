@@ -4,6 +4,7 @@ import cn.hotel.entity.SetMeal;
 import cn.hotel.vo.SetMealVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface SetMealMapper {
 
     //查看单个套餐信息
     SetMealVO detailSetMeal(Integer id);
+
+    //查看单个套餐信息（修改时候用到）
+    @Select("SELECT * FROM `setmeal` WHERE `mealid`=#{mealid}")
+    SetMeal detaSetMeal(Integer id);
 }

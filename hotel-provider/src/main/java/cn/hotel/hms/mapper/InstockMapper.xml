@@ -44,21 +44,49 @@
 	#{isMoneyCapitalization}
 	);
     </insert>
-    <select id="queryAllInstockVOByInstock" resultMap="InstockMap">
+	<update id="updateInstock">
+		UPDATE roomdb.wzxinstock
+	SET
+	stockNumber = #{stockNumber} ,
+	isPerson = #{isPerson} ,
+	isTime = #{isTime} ,
+	materialsCount = #{materialsCount} ,
+	remark = #{remark} ,
+	materialsId = #{materialsId} ,
+	isNumber = #{isNumber} ,
+	isMoney = #{isMoney} ,
+	isMoneyCapitalization = #{isMoneyCapitalization}
+
+	WHERE
+	isId = #{isId} ;
+
+	</update>
+	<delete id="delInstock">
+		delete from roomdb.wzxinstock
+	       where
+	       isId = #{isId} ;
+	</delete>
+	<select id="queryAllInstockVOByInstock" resultMap="InstockMap">
 		SELECT * FROM wzxinstock i,wzxstockinfo s,wzxmaterialsinfo m
            WHERE i.stockNumber=s.stockId AND i.materialsId=m.materialsId
-           <if test="wzxStockInfo.stockId!=null and wzxStockInfo.stockId!=-1">
-			   AND i.stockNumber=#{wzxStockInfo.stockId}
+           <if test="wzxStockInfo!=null">
+			   <if test="wzxStockInfo.stockId!=null and wzxStockInfo.stockId>-1">
+				   AND i.stockNumber=#{wzxStockInfo.stockId}
+			   </if>
 		   </if>
-		   <if test="wzxMaterialsInfo.materialsName!=null and wzxMaterialsInfo.materialsName!=''">
-			   AND m.materialsName=#{materialsName}
+		   <if test="wzxMaterialsInfo!=null">
+			   <if test="wzxMaterialsInfo.materialsName!=null and wzxMaterialsInfo.materialsName!=''">
+				   AND m.materialsName like concat('%',#{materialsName},'%')
+			   </if>
 		   </if>
+
 		   <if test="isPerson!=null and isPerson!=''">
 			   AND i.isPerson=#{isPerson}
 		   </if>
-
-
-;
-
+	</select>
+	<select id="queryAllInstockVoByIsId" resultMap="InstockMap">
+		SELECT * FROM wzxinstock i,wzxstockinfo s,wzxmaterialsinfo m
+           WHERE i.stockNumber=s.stockId AND i.materialsId=m.materialsId
+           AND i.isId=#{isId}
 	</select>
 </mapper>

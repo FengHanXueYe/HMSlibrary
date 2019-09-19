@@ -59,7 +59,7 @@ public class MaterialsInfoServiceImpl implements MaterialsInfoService {
     @Override
     public PageUtil<MaterialsInfoVO> queryAllMaterialsInfoVO(WZXMaterialsInfo wzxMaterialsInfo, Integer pageNo, Integer pageSize) {
         PageUtil<MaterialsInfoVO> pageInfoUtil=new PageUtil<>();
-        List<MaterialsInfoVO> actualsStockVOS = materialsInfoMapper.queryAllMaterialsInfoVO(wzxMaterialsInfo,pageNo,pageSize);
+        List<MaterialsInfoVO> actualsStockVOS = materialsInfoMapper.queryAllMaterialsInfoVO(wzxMaterialsInfo);
         if(null == pageNo){
             pageNo = 1;
         }
@@ -76,5 +76,15 @@ public class MaterialsInfoServiceImpl implements MaterialsInfoService {
 
 
         return pageInfoUtil;
+    }
+
+    @Override
+    public Integer updateMaterialsInfo(WZXMaterialsInfo wzxMaterialsInfo) {
+        return materialsInfoMapper.updateMaterialsInfo(wzxMaterialsInfo);
+    }
+
+    @Override
+    public Integer delMaterialsInfo(Integer materialsId) {
+        return materialsInfoMapper.delMaterialsInfo(materialsId);
     }
 }

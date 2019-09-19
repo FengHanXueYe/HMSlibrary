@@ -40,6 +40,7 @@ public class DeliciousFoodController {
         return "food/food_list";
     }
 
+
     @ResponseBody
     @RequestMapping(value = "queryAllDelicious", method = RequestMethod.POST, produces = {"application/json;charset=utf-8"})
     public String queryAllDelicious(DeliciousFood deliciousFood, Integer pageNum, Integer pageSize){
@@ -49,7 +50,7 @@ public class DeliciousFoodController {
         PageUtil<DeliciousFoodVo> deliciousFoodVoPageUtil=this.deliciousFoodService.queryAllFood(deliciousFood,pageNum,pageSize);
         System.out.println(deliciousFoodVoPageUtil.getNavigatepageNums());
         for (DeliciousFoodVo food : deliciousFoodVoPageUtil.getList()) {
-            System.out.println(""+food);
+            System.out.println("------------"+food);
         }
         return JSON.toJSONString(deliciousFoodVoPageUtil);
     }
@@ -107,7 +108,9 @@ public class DeliciousFoodController {
     }
 
     @RequestMapping(value = "doUpdateDelicious",method = RequestMethod.POST)
-    public String doUpdateDelicious(DeliciousFood deliciousFood){
+    public String doUpdateDelicious(MultipartFile file,DeliciousFood deliciousFood,BindingResult result){
+        String fillName=fileUtil.upload(file,1);
+        deliciousFood.setFoodimgone(logPath+fillName);
         this.deliciousFoodService.updateDeliciousFood(deliciousFood);
         return "redirect:queryAllFood";
     }
