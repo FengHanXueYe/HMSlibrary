@@ -2,6 +2,7 @@ package cn.hotel.service;
 
 import cn.hotel.entity.WZXOutStock;
 import cn.hotel.utils.PageUtil;
+import cn.hotel.vo.OutStockVO;
 
 /**
  * @description:
@@ -24,7 +25,7 @@ public interface OutStockService {
      * @param pageSize
      * @return
      */
-    PageUtil<OutStockVO>  queryAllOutStockVO(OutStockVO outStockVO,Integer pageNum,Integer pageSize);
+    PageUtil<OutStockVO>  queryAllOutStockVO(OutStockVO outStockVO, Integer pageNum, Integer pageSize);
 
     /**
      * 查询出库单具体信息
