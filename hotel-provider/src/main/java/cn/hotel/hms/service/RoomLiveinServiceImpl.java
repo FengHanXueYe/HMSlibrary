@@ -23,4 +23,9 @@ public class RoomLiveinServiceImpl implements RoomLiveinService {
     public RoomLiveinVO queryByidCode(String code) {
         return roomLiveinMapper.queryByidCode(code);
     }
+
+    @Override
+    public Integer replaceRoomNo(String no, String repalceNo) {
+        return roomLiveinMapper.replaceRoomNo(no,repalceNo);
+    }
 }

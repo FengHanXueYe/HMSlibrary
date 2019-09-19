@@ -35,4 +35,10 @@ public class ConsumptionRecordServiceImpl implements ConsumptionRecordService {
         pageUtil.setList(pageInfo.getList());
         return pageUtil;
     }
+
+    @Override
+    public Integer repaceRoomNo(String no, String replaceNo) {
+        return consumptionRecordMapper.repaceRoomNo(no,replaceNo);
+    }
+
 }
