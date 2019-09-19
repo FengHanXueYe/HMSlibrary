@@ -5,6 +5,7 @@ import cn.hotel.hms.mapper.MemberShipScoreMapper;
 import cn.hotel.service.MemberShipScoreService;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.MemberShipScoreVO;
+import cn.hotel.vo.MemberShipScoreVOTwo;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -48,6 +49,11 @@ public class MemberShipScoreServiceImpl implements MemberShipScoreService {
     }
 
     @Override
+    public Integer updateMemberShioScoreSave(MemberShipScore memberShipScore) {
+        return memberShipScoreMapper.updateMemberShioScoreSave(memberShipScore);
+    }
+
+    @Override
     public MemberShipScoreVO detailMemberShipScoreVO() {
         return memberShipScoreMapper.detailMemberShipScoreVO();
     }
@@ -60,5 +66,10 @@ public class MemberShipScoreServiceImpl implements MemberShipScoreService {
     @Override
     public List<MemberShipScoreVO> ListdetailMSSV(Integer mssId) {
         return memberShipScoreMapper.ListdetailMSSV(mssId);
+    }
+
+    @Override
+    public List<MemberShipScoreVOTwo> detailMemberShipScoreVOTwo(String mNumber) {
+        return memberShipScoreMapper.detailMemberShipScoreVOTwo(mNumber);
     }
 }

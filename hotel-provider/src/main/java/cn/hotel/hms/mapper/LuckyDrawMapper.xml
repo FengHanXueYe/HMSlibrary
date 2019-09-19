@@ -22,7 +22,7 @@
     </update>
 
     <insert id="insertLuckyDraw" parameterType="cn.hotel.entity.LuckyDraw">
-        insert into luckyDraw value(null,#{ldName},#{ldNumber},#{ldShopIntegr},#{ldShopNum},NOW())
+        insert into luckyDraw value(null,#{ldName},#{ldNumber},#{ldShopIntegr},#{ldShopNum},NOW(),#{ldImg})
     </insert>
 
     <delete id="deleteLuckyDraw" parameterType="integer">

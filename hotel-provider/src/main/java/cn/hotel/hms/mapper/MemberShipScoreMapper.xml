@@ -18,6 +18,14 @@
         </set>
         where mssId = #{mssId}
     </update>
+    <update id="updateMemberShioScoreSave">
+        update  memberShipScore
+        <set>
+            <if test="mssIntegral!=null and mssIntegral!=-1">mssIntegral = mssIntegral+#{mssIntegral},</if>
+            <if test="mssStatus!=null and mssStatus!=-1">mssStatus = #{mssStatus}</if>
+        </set>
+        where mssId = #{mssId}
+    </update>
 
     <select id="detailMemberShipScoreVO" resultType="cn.hotel.vo.MemberShipScoreVO">
           SELECT mssId, mssMId, mssIntegral, mssStatus,
@@ -40,4 +48,18 @@
         where mssStatus = #{mssStatus}
     </select>
 
+    <select id="detailMemberShipScoreVOTwo" parameterType="string" resultMap="mssvtMap">
+        SELECT mss.mssId, mss.mssMId, mss.mssIntegral, mss.mssStatus,
+         (SELECT mName FROM member WHERE `mId`=mss.mssMId) mName,
+         (SELECT mrName FROM `membershiprank` WHERE mrId = (SELECT mMemberShipRank FROM member WHERE `mId`=mss.mssMId )) mMSR,
+         m.*
+          FROM `memberShipScore` mss, member m WHERE mss.mssMId = m.mId AND mssIntegral >=100 AND m.mNumber LIKE CONCAT('%',#{mNumber},'%')
+    </select>
+    <resultMap id="mssvtMap" type="cn.hotel.vo.MemberShipScoreVOTwo" autoMapping="true">
+        <id property="mssId" column="mssId"></id>
+        <association property="mssMId" resultMap="mMap"></association>
+    </resultMap>
+    <resultMap id="mMap" type="cn.hotel.entity.Member" autoMapping="true">
+        <id property="mId" column="mId"></id>
+    </resultMap>
 </mapper>

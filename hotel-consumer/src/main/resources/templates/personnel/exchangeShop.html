@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>exchangeShop</title>
+    <div th:include="base::base"></div>
+</head>
+<body>
+    <div class="container" >
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 会员 <small>积分兑换</small></h1>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 col-md-4" th:each="item : ${map.listOne}">
+                <div class="thumbnail">
+                    <img th:src="${item.ldImg}" alt="加载中">
+                    <div class="caption">
+                        <h3 th:text="${item.ldName}"></h3>
+                        <p>兑换积分: <span th:text="${item.ldShopIntegral}"></span></p>
+                        <p><a href="#" th:no="${item.ldId}" class="btn btn-info" role="button">兑换</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 col-md-4" th:each="item : ${map.listTwo}">
+                <div class="thumbnail">
+                    <img th:src="${item.ldImg}" alt="...">
+                    <div class="caption">
+                        <h3 th:text="${item.ldName}"></h3>
+                        <p>兑换积分: <span th:text="${item.ldShopIntegral}"></span></p>
+                        <p><a href="#" th:no="${item.ldId}" class="btn btn-info" role="button">兑换</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="eShop">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">兑换会员搜索</h4>
+                </div>
+                <div class="modal-body" id="eShops">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-9">
+                                    <input type="email" oninput="selectNumber()" class="form-control" name="mNumber" id="inputEmail3" placeholder="会员编号">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="htmlLM"></div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info">兑换</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<script type="text/javascript">
+    $(function () {
+        $("a[no]").click(function () {
+            var ldId = $(this).attr("no");
+
+            // $.post("","mNumber="+ldId)
+            // alert(ldId);
+            $("#eShop").modal("show");
+        })
+    })
+    // 获取输入的会员编号
+    function selectNumber() {
+        var number = $("input[name='mNumber']").val();
+        $("#htmlLM").html(number);
+        console.log(number);
+    }
+</script>
+</body>
+</html>
