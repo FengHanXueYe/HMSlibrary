@@ -10,4 +10,7 @@ public interface RoomLiveinService {
 
     //根据房间号查询入住客户信息
     RoomLiveinVO queryByidCode(String code);
+
+    //换房-更新入住信息
+    Integer replaceRoomNo(String no, String repalceNo);
 }
