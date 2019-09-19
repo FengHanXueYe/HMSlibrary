@@ -5,7 +5,6 @@ import cn.hotel.hms.mapper.MaterialsInfoMapper;
 import cn.hotel.hms.mapper.OutStockMapper;
 import cn.hotel.service.OutStockService;
 import cn.hotel.utils.PageUtil;
-import cn.hotel.vo.OutStockVO;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

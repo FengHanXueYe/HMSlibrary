@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Members</title>
     <div th:include="base::base"></div>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/atom.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/open.css">
     <script src="/js/dateJS.js"></script>
     <script src="/js/pageInfoJS.js"></script>
     <style type="text/css">
@@ -46,6 +50,20 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         增加
                     </button>
+
+                    <!-- Split button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info">会员特权</button>
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">会员特权</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="goodLuckyMember"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 幸运抽奖 </a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 物品兑换</a></li>
+                        </ul>
+                    </div>
 
                 </form>
             </div>
@@ -150,10 +168,86 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <!--幸运抽奖-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="goodLuckyMemberModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">幸运抽奖</h4>
+                </div>
+                <div class="modal-body" >
+
+
+                        <div class="wrapper" >
+
+                            <div class="bg rotate"></div>
+                            <div class="open-has ">
+                                <h3 class="title-close"><span class="user" id="goodMemberUserName">张三</span>你得到了一个宝箱</h3>
+                                <h3 class="title-open">恭喜你，</br>抽中<span class="user">物品</span><span id="luckName"></span></h3>
+
+                                <div class="mod-chest">
+
+                                    <div class="chest-close show ">
+                                        <div class="gift"></div>
+                                        <div class="tips">
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="chest-open ">
+                                        <div class="mod-chest-cont open-cont">
+                                            <div class="content">
+                                                <div class="gift">
+                                                    <div class="icon"><img src="img/chest-icon-zuan.png"></div>
+                                                </div>
+                                                <div class="func">
+                                                    <button class="chest-btn">请及时拿取奖品</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+        <script type="text/javascript" src="js/zepto.min.js"></script>
 <script type="text/javascript">
+
+
     $(function () {
-        // 获取幸运会员
-        ajaxGetMSS();
+        $(".chest-close").click(function(){
+            var mId = $("#goodMemberUserName").attr("no");
+            // 抽奖
+            $.post("ajaxLuck","mId="+mId,function (result) {
+                if(result!=null){
+                    $("#luckName").html(result.ldName);
+                }else{
+                    $("#alertModel").modal("show");
+                    $("#alerttishi").html("出现未知错误请稍后重试！\n");
+                }
+            })
+            $(this).addClass("shake");
+            var that=this;
+            this.addEventListener("webkitAnimationEnd", function(){
+                $(that).closest(".open-has").addClass("opened");
+                setTimeout(function(){
+                    //$(that).removeClass("show");
+                    $(that).closest(".mod-chest").find(".chest-open").addClass("show");
+                    setTimeout(function(){
+                        $(".chest-open").addClass("blur");
+                    },500)
+                },200)
+            }, false);
+        })
 
         // 加载会员信息列表
         // "ajaxQueryAllMember" selectForm(勒令：数组第一个必须是id，第二个是名称（建议）)
@@ -170,19 +264,40 @@
         // 加载会员等级
         loadH("ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
 
+        // 去增加会员页面
         $("#toInsertMember").click(function(){
             location.href="toInsertMember";
         })
-
+        
+        // 幸运抽奖
+        $("#goodLuckyMember").click(function () {
+            ajaxGetMSS();
+        })
     })
 
     // ajax 获取幸运会员
     function ajaxGetMSS(){
+
         $.post("ajaxGetMSS",function(result){
-            alert("会员是"+result.mName);
+            if(result==null){
+                $("#alertModel").modal("show");
+                $("#alerttishi").html("今日幸运会员已抽奖！\n");
+            }else{
+                $("#goodMemberUserName").html(result.mName);
+                $("#goodMemberUserName").attr("no",result.mssMId);
+                // 查询星愿会员部分信息
+                detailGoodLuck(result.mssMId);
+                $("#goodLuckyMemberModel").modal("show");
+            }
+        })
+
+    }
+    // 查询幸运会员的信息
+    function detailGoodLuck(mssId) {
+        $.post("ajaxDetailMember","mId="+mssId,function(result){
+            $(".wrapper").attr("title","会员编号："+result.mNumber+"\n身份证号码："+result.mSFZ);
         })
     }
-
     // 查看会员详情
     function detailInformation(mId) {
         $("#detailInformation").modal("show");

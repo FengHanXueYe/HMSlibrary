@@ -2,7 +2,6 @@ package cn.hotel.service;
 
 import cn.hotel.entity.WZXOutStock;
 import cn.hotel.utils.PageUtil;
-import cn.hotel.vo.OutStockVO;
 
 /**
  * @description:

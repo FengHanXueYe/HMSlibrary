@@ -7,7 +7,6 @@ import cn.hotel.service.MaterialsInfoService;
 import cn.hotel.service.OutStockService;
 import cn.hotel.service.StockInfoService;
 import cn.hotel.utils.PageUtil;
-import cn.hotel.vo.OutStockVO;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;

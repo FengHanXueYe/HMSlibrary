@@ -28,4 +28,9 @@
     <delete id="deleteLuckyDraw" parameterType="integer">
         delete from luckyDraw where ldId = #{ldId}
     </delete>
+
+    <select id="randomLuckDraw" resultType="cn.hotel.entity.LuckyDraw">
+        SELECT * FROM `luckyDraw` WHERE ldShopNum>0 ORDER BY RAND() LIMIT 1
+    </select>
+
 </mapper>

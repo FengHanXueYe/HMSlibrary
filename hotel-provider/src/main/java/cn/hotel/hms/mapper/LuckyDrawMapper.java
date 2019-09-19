@@ -21,6 +21,7 @@ public interface LuckyDrawMapper {
     // 删除商品
     Integer deleteLuckyDraw(Integer ldId);
 
+    LuckyDraw randomLuckDraw();
 
 
 }

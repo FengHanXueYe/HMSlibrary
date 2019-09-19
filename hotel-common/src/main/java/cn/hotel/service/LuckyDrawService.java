@@ -21,4 +21,7 @@ public interface LuckyDrawService  {
     // 删除商品
     Integer deleteLuckyDraw(Integer ldId);
 
+    // 随机一个物品
+    LuckyDraw randomLuckDraw();
+
 }

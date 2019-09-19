@@ -56,4 +56,9 @@ public class MemberShipScoreServiceImpl implements MemberShipScoreService {
     public MemberShipScoreVO detailMSSV(Integer mssId) {
         return memberShipScoreMapper.detailMSSV(mssId);
     }
+
+    @Override
+    public List<MemberShipScoreVO> ListdetailMSSV(Integer mssId) {
+        return memberShipScoreMapper.ListdetailMSSV(mssId);
+    }
 }
