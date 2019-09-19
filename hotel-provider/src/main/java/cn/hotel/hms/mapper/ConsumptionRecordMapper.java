@@ -3,6 +3,7 @@ package cn.hotel.hms.mapper;
 import cn.hotel.entity.ConsumptionRecord;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.ConsumptionRecordVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface ConsumptionRecordMapper {
 
     //客房账单条件分页查询
     List<ConsumptionRecordVO> queryAll(ConsumptionRecord consumptionRecord);
+
+    //换房-更新消费记录信息
+    Integer repaceRoomNo(@Param("no") String no, @Param("replaceNo") String replaceNo);
 }

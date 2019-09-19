@@ -31,6 +31,6 @@
     </update>
 
     <select id="queryRoomAllNumber" resultType="Room">
-        SELECT * FROM `room`
+        select * from `room` where roomStatus = 1
     </select>
 </mapper>

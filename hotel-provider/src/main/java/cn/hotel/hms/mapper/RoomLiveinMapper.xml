@@ -10,4 +10,8 @@
     <select id="queryByidCode" parameterType="String" resultType="cn.hotel.vo.RoomLiveinVO">
         SELECT r.*,sta.valueName AS documentTypeName FROM `roomLivein` AS r,`datastatus` AS sta WHERE r.documentType = sta.valueId AND sta.typeCode = 'DOCUMENT_TYPE' AND r.roomNo = #{code}
     </select>
+
+    <update id="replaceRoomNo">
+        UPDATE `roomLivein` SET roomNo = #{repalceNo}  WHERE roomNo = #{no}
+    </update>
 </mapper>
