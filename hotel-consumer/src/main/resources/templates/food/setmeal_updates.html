@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加套餐</title>
+    <div th:include="base::base"></div>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 修改 <small>套餐信息 </small></h1>
+        </div>
+        <form class="form-horizontal" action="/doUpdateSetMeal" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">套餐名称：<span id="nameTiShi"></span></label>
+                <div class="col-sm-6">
+                    <input type="text" name="mealname" class="form-control"  placeholder="套餐名称" th:value="${setmeal.mealname}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">价格：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="mealprice" class="form-control"   placeholder="套餐价格" th:value="${setmeal.mealprice}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ft" class="col-sm-4 control-label">套餐状态：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="mealstatus" id="ft"></select>
+                    <input type="hidden" id="mealstatus" th:value="${setmeal.mealstatus}">
+                    <input type="hidden" id="mealid" th:value="${setmeal.mealid}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">套餐详情：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="mealDetail"   class="form-control"  placeholder="套餐详情" th:value="${setmeal.mealDetail}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">套餐图片：</label>
+                <div class="col-sm-6">
+                    <input type="file" name="file" id="files">
+                </div>
+            </div>
+            <div class="col-sm-10 control-label">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>修改
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    // $(function () {
+    //     $("#files").change(function (e) {
+    //         var file = e.target.files[0] || e.dataTransfer.files[1];
+    //
+    //         if (file) {
+    //             var reader = new FileReader();
+    //
+    //             reader.onload = function(e) {
+    //                 $("img").attr("src", this.result);
+    //             }
+    //             reader.readAsDataURL(file);
+    //         }
+    //     });
+    // })
+    $(function () {
+        jsLoadSelect("MEAL_STATUS",1);
+    })
+    // js ajax加载下拉框
+    function jsLoadSelect(code,e){
+        $.get("dataStatus/queryByCode","code="+code,function(result){
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
+            $.each(result, function (index,item) {
+                html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+            })
+            if(e==1){
+                $("select[id='ft']").html(html);
+                var mealstatus=$("#mealstatus").val();
+
+                if(null!=mealstatus&&mealstatus!=''){
+                    $("#ft").val(mealstatus);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -57,4 +57,9 @@ public class SetMealServiceImpl  implements SetMealService {
     public SetMealVO detailSetMeal(Integer id) {
         return setMealMapper.detailSetMeal(id);
     }
+
+    @Override
+    public SetMeal detaSetMeal(Integer id) {
+        return setMealMapper.detaSetMeal(id);
+    }
 }
