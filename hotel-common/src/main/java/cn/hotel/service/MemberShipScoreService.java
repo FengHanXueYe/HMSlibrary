@@ -22,13 +22,17 @@ public interface MemberShipScoreService {
     // 随机幸运会员
     MemberShipScoreVO detailMemberShipScoreVO();
 
+    // 根据幸运会员状态查询
     MemberShipScoreVO detailMSSV(Integer mssId);
 
     // 防止出错
     List<MemberShipScoreVO> ListdetailMSSV(Integer mssId);
 
+    // 查询会员积分及详情
     List<MemberShipScoreVOTwo> detailMemberShipScoreVOTwo(String mNumber);
 
+    // 单点查询
+    MemberShipScoreVO detailOne(Integer mssId);
 
 
 

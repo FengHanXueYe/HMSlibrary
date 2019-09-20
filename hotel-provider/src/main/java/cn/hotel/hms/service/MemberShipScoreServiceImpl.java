@@ -72,4 +72,9 @@ public class MemberShipScoreServiceImpl implements MemberShipScoreService {
     public List<MemberShipScoreVOTwo> detailMemberShipScoreVOTwo(String mNumber) {
         return memberShipScoreMapper.detailMemberShipScoreVOTwo(mNumber);
     }
+
+    @Override
+    public MemberShipScoreVO detailOne(Integer mssId) {
+        return memberShipScoreMapper.detailOne(mssId);
+    }
 }

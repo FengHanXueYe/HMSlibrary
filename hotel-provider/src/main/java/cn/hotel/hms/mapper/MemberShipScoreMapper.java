@@ -23,4 +23,6 @@ public interface MemberShipScoreMapper {
     List<MemberShipScoreVO> ListdetailMSSV(Integer mssId);
 
     List<MemberShipScoreVOTwo> detailMemberShipScoreVOTwo(String mNumber);
+
+    MemberShipScoreVO detailOne(Integer mssId);
 }

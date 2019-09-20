@@ -1,9 +1,11 @@
 package cn.hotel.hms.controller;
 
 import cn.hotel.common.HotelCommon;
+import cn.hotel.entity.ExchangeShop;
 import cn.hotel.entity.Luck;
 import cn.hotel.entity.LuckyDraw;
 import cn.hotel.entity.MemberShipScore;
+import cn.hotel.service.ExchangeShopService;
 import cn.hotel.service.LuckService;
 import cn.hotel.service.LuckyDrawService;
 import cn.hotel.service.MemberShipScoreService;
@@ -37,6 +39,9 @@ public class MemberShipScoreController {
 
     @Reference
     private LuckService luckService;
+
+    @Reference
+    private ExchangeShopService exchangeShopService;
     /**
      * 查询会员抽奖信息列表
      * @param pageNum
@@ -136,6 +141,34 @@ public class MemberShipScoreController {
     }
 
 
+    /**
+     * 兑换
+     * @param exchangeShop
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "ajaxExchangShop",method = RequestMethod.POST)
+    public boolean ajaxExchangShop(ExchangeShop exchangeShop){
+        System.out.println(">>>>------"+exchangeShop);
+        MemberShipScoreVO memberShipScoreVO = memberShipScoreService.detailOne(exchangeShop.getEsMId());
+        LuckyDraw luckyDraw1 = luckyDrawService.detailLuckyDraw(exchangeShop.getEsLdId());
+        if(memberShipScoreVO.getMssIntegral()<luckyDraw1.getLdShopIntegral()){
+            return false;
+        }
+        luckyDraw1.setLdShopNum(luckyDraw1.getLdShopNum()-1);
+        // 修改物品数量
+        Integer integer1 = luckyDrawService.updateLuckyDraw(luckyDraw1);
+
+        MemberShipScoreVO memberShipScoreVO1 = memberShipScoreService.detailOne(exchangeShop.getEsMId());
+        MemberShipScore memberShipScore = new MemberShipScore();
+        memberShipScore.setMssIntegral(luckyDraw1.getLdShopIntegral());
+        memberShipScore.setMssId(memberShipScoreVO1.getMssId());
+        // 修改会员积分
+        Integer integer2 = memberShipScoreService.updateMemberShipScore(memberShipScore);
+        System.out.println(memberShipScore+"==="+integer2+"---"+integer1);
+        Integer integer = exchangeShopService.insertExchangeShop(exchangeShop);
+        return integer1>0&&integer2>0?true:false;
+    }
 
 
 }

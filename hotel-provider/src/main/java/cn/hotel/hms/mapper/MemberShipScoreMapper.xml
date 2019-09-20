@@ -47,6 +47,13 @@
           FROM `memberShipScore`
         where mssStatus = #{mssStatus}
     </select>
+    <select id="detailOne" resultType="cn.hotel.vo.MemberShipScoreVO" parameterType="integer">
+          SELECT mssId, mssMId, mssIntegral, mssStatus,
+         (SELECT mName FROM member WHERE `mId`=mssMId) mName,
+         (SELECT mrName FROM `membershiprank` WHERE mrId = (SELECT mMemberShipRank FROM member WHERE `mId`=mssMId )) mMSR
+          FROM `memberShipScore`
+        where mssMId = #{mssMId}
+    </select>
 
     <select id="detailMemberShipScoreVOTwo" parameterType="string" resultMap="mssvtMap">
         SELECT mss.mssId, mss.mssMId, mss.mssIntegral, mss.mssStatus,
@@ -62,4 +69,7 @@
     <resultMap id="mMap" type="cn.hotel.entity.Member" autoMapping="true">
         <id property="mId" column="mId"></id>
     </resultMap>
+
+
+
 </mapper>
