@@ -1,6 +1,7 @@
 package cn.hotel.hms.mapper;
 
 import cn.hotel.entity.WZXOutStock;
+import cn.hotel.vo.OutStockVO;
 
 import java.util.List;
 
