@@ -76,5 +76,8 @@
         delete from operator where oId = #{oId}
     </delete>
 
+    <select id="queryAllOperator" resultType="cn.hotel.entity.Operator">
+        select * from operator
+    </select>
 
 </mapper>

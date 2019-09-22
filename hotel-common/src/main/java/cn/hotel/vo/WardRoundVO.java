@@ -17,7 +17,7 @@ public class WardRoundVO implements Serializable {
 
     private Integer wrId; // 查房表主键
     private Integer wrOId; // 操作人员外键
-    private Integer wrRoomNumber; // 房间编号
+    private String wrRoomNumber; // 房间编号
     private String wrDetail; // 查房备注
     private Date wrCreatetime; // 查房时间
     private String wrOName; // 操作人员姓名

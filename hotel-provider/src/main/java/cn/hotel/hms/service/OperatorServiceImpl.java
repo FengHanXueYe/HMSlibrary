@@ -62,4 +62,9 @@ public class OperatorServiceImpl implements OperatorService {
     public Operator verificationOperator(Operator operator) {
         return operatorMapper.verificationOperator(operator);
     }
+
+    @Override
+    public List<Operator> queryAllOperator() {
+        return operatorMapper.queryAllOperator();
+    }
 }

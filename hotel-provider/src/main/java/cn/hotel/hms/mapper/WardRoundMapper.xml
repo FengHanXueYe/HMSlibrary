@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.WardRoundMapper">
+
+
+    <select id="queryAllWardRoundVO" resultType="cn.hotel.vo.WardRoundVO" parameterType="cn.hotel.entity.WardRound">
+        SELECT wrId, wrOId, wrRoomNumber, wrDetail, wrCreatetime,
+        (SELECT oName FROM `operator` WHERE oId = wrOId) wrOName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_DEPARTMENTS' AND valueId=(SELECT oDepartment FROM `operator` WHERE oId=wrOId)) wrODepartment
+        FROM `wardRound`
+        <where>
+            <if test="wrRoomNumber!=null and wrRoomNumber!=''">wrRoomNumber like concat('%',#{wrRoomNumber},'%')</if>
+        </where>
+        order by wrCreatetime desc
+    </select>
+    <select id="detailWardRoundVO" resultType="cn.hotel.vo.WardRoundVO" parameterType="integer">
+        SELECT wrId, wrOId, wrRoomNumber, wrDetail, wrCreatetime,
+        (SELECT oName FROM `operator` WHERE oId = wrOId) wrOName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_DEPARTMENTS' AND valueId=(SELECT oDepartment FROM `operator` WHERE oId=wrOId)) wrODepartment
+        FROM `wardRound`
+        <where>
+            <if test="wrId!=null and wrId!=-1">wrId=#{detailWardRoundVO}</if>
+        </where>
+    </select>
+
+    <insert id="insertWardRoundVO" parameterType="cn.hotel.entity.WardRound">
+        insert into wardRound value(null,#{wrOId},#{wrRoomNumber},#{wrDetail},NOW())
+    </insert>
+
+    <update id="updateWardRound" parameterType="cn.hotel.entity.WardRound">
+        update wardRound
+        <set>
+            <if test="wrOId!=null and wrOId!=-1">wrOId = #{wrOId},</if>
+            <if test="wrRoomNumber!=null and wrRoomNumber!=''">wrRoomNumber = #{wrRoomNumber},</if>
+            <if test="wrDetail!=null and wrDetail!=''">wrDetail = #{wrDetail},</if>
+        </set>
+        where wrId = #{wrId}
+    </update>
+
+    <delete id="deleteWardRound" parameterType="integer">
+        delete from wardRound where wrId = #{wrId}
+    </delete>
+
+
+
+
+</mapper>

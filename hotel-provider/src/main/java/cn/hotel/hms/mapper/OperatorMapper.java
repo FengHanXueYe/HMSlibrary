@@ -24,4 +24,7 @@ public interface OperatorMapper {
 
     Operator verificationOperator(Operator operator);
 
+    List<Operator> queryAllOperator();
+
+
 }

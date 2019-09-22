@@ -33,7 +33,6 @@ function loadHXP(url,e,id,name){
 
 // 加载列表
 function loadMembers(FormId,url,pageNumController,pageNum,strSZ,entitySZ){
-
     // 表单序列化
     var data = $("#"+FormId).serialize();
     $.post(url,data+"&"+pageNumController+"="+pageNum,function (result) {
