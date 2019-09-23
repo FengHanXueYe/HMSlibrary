@@ -28,4 +28,9 @@ public class OperatorVO implements Serializable {
     private Date oCreateTime; // 入职时间
     private String oHotelUserNum; // 操作人员所属酒店编号
     private String oHotelUserNumName; // 操作人员所属酒店编号
+    private String oPassword; // 操作人员登录密码
+    private String oEmail; // 操作人员邮箱
+    private Integer oDisabled; // 禁用
+    private Integer oExpired; // 过期
+
 }

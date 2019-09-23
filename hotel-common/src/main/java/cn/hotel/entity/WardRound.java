@@ -20,5 +20,8 @@ public class WardRound implements Serializable {
     private String wrRoomNumber; // 房间编号
     private String wrDetail; // 查房备注
     private Date wrCreatetime; // 查房时间
+    private Integer wrStatus; // 查房状态
+    private Integer wrToDay; // 判断是今天
+
 
 }

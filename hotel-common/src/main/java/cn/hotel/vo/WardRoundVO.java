@@ -22,6 +22,7 @@ public class WardRoundVO implements Serializable {
     private Date wrCreatetime; // 查房时间
     private String wrOName; // 操作人员姓名
     private String wrODepartment; // 操作人员不门表
-
+    private Integer wrStatus; // 查房状态
+    private Integer wrToDay; // 判断是今天
 
 }
