@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.ToDayWardRoundMapper">
+    <select id="queryAllTDWRV" parameterType="cn.hotel.entity.ToDayWardRound" resultType="cn.hotel.vo.ToDayWardRoundVO">
+        SELECT tdwrId, tdwrOId, tdwrRoomNumber, tdwrDetail, tdwrCreatetime,
+        (SELECT oName FROM `operator` WHERE oId = tdwrOId) tdwrOName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='WARDROUND_STATUS' AND valueId=tdwrStatus) tdwrStatusName
+        FROM `toDayWardRound`
+        <where>
+            <if test="tdwrRoomNumber!=null and tdwrRoomNumber!=''">tdwrRoomNumber like concat('%',#{tdwrRoomNumber},'%')</if>
+            <if test="tdwrStatus!=null and tdwrStatus!=-1">and tdwrStatus=#{tdwrStatus}</if>
+        </where>
+    </select>
+
+    <insert id="insertToDayWardRound" parameterType="cn.hotel.entity.ToDayWardRound">
+        insert into toDayWardRound value(null,#{tdwrOId},#{tdwrRoomNumber},"暂无",NOW(),2)
+    </insert>
+
+    <update id="updateToDayWardRound" parameterType="cn.hotel.entity.ToDayWardRound">
+        update toDayWardRound
+        <set>
+            <if test="tdwrDetail!=null and tdwrDetail!=''">tdwrDetail = #{tdwrDetail},</if>
+            tdwrCreatetime = NOW(),
+            <if test="tdwrStatus!=null and tdwrStatus!=-1">tdwrStatus = #{tdwrStatus},</if>
+        </set>
+        where tdwrId = #{tdwrId}
+    </update>
+
+    <delete id="deleteToDayWardRound" parameterType="integer">
+        delete from toDayWardRound where tdwrId = #{tdwrId}
+    </delete>
+
+    <select id="detailTDWRV" resultType="cn.hotel.vo.ToDayWardRoundVO" parameterType="integer">
+        SELECT tdwrId, tdwrOId, tdwrRoomNumber, tdwrDetail, tdwrCreatetime,
+        (SELECT oName FROM `operator` WHERE oId = tdwrOId) tdwrOName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='WARDROUND_STATUS' AND valueId=tdwrStatus) tdwrStatusName
+        FROM `toDayWardRound`
+        where tdwrId = #{tdwrId}
+    </select>
+
+    <delete id="truncateTable">
+        TRUNCATE TABLE toDayWardRound
+    </delete>
+
+</mapper>

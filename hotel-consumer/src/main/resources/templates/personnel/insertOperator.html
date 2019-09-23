@@ -63,6 +63,26 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="pwwd" class="col-sm-4 control-label">密码：</label>
+                    <div class="col-sm-6">
+                        <input type="password"  placeholder="操作人密码" class="form-control" name="oPassword" id="pwwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="www" class="col-sm-4 control-label">电话：<span id="pwdtishi"></span></label>
+                    <div class="col-sm-6">
+                        <input type="password" oninput="checkPwd()" placeholder="确认密码" class="form-control" name="oPasswordXP" id="www">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eM" class="col-sm-4 control-label">Email：</label>
+                    <div class="col-sm-6">
+                        <input type="email"  placeholder="操作人邮箱" class="form-control" name="oEmail" id="eM">
+                        <input type="hidden"  class="form-control" value="0" name="oDisabled" id="">
+                        <input type="hidden"  class="form-control" value="0" name="oExpired" id="">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="osfz" class="col-sm-4 control-label">身份证号：<span id="sfzTiShi"></span></label>
                     <div class="col-sm-6">
                         <input type="number" oninput="checkLength(2)" placeholder="操作人身份证号" class="form-control" name="oSFZ" id="osfz">
@@ -120,6 +140,20 @@
             $("#nameTiShi").html("");
             return true;
         }
+    }
+
+    // 检查密码
+    function checkPwd() {
+        var pwd = $("input[name='oPassword']").val();
+        var pwdx = $("input[name='oPasswordXP']").val();
+        if(pwd!=pwdx){
+            $("#pwdtishi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+            return false;
+        }else{
+            $("#pwdtishi").html("");
+            return true;
+        }
+
     }
 
     // 检查字符串长度
@@ -221,7 +255,7 @@
             return;
         }
 
-        if(checkNumber()&&checkLength(1)&&checkLength(2)){
+        if(checkNumber()&&checkLength(1)&&checkLength(2)&&checkPwd()){
             var data = $("#insertOperatorForm").serialize();
             $.post("doInsertOperator",data,function (resutl) {
                 if(resutl){

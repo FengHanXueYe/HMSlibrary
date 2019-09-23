@@ -21,4 +21,6 @@ public interface WardRoundService  {
     // 删除查房信息
     Integer deleteWardRound(Integer wrId);
 
+    // 批量编辑今天查房状态
+    Integer updateWR(WardRound wardRound);
 }

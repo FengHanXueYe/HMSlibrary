@@ -57,4 +57,9 @@ public class WardRoundServiceImpl implements WardRoundService {
     public Integer deleteWardRound(Integer wrId) {
         return wardRoundMapper.deleteWardRound(wrId);
     }
+
+    @Override
+    public Integer updateWR(WardRound wardRound) {
+        return wardRoundMapper.updateWR(wardRound);
+    }
 }

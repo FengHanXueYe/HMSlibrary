@@ -14,7 +14,7 @@
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
         (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
-        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`,oEmail,oPassword,oDisabled,oExpired
         FROM `operator`
         <where>
             <if test="oName!=null and oName!=''"> oName like concat('%',#{oName},'%')</if>
@@ -32,7 +32,7 @@
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
         (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
         (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
-        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`,
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`,oEmail,oPassword,oDisabled,oExpired,
         (SELECT  huName FROM `hoteluser` WHERE huNumber=oHotelUserNum) oHotelUserNumName
         FROM `operator`
         where oId = #{oId}
@@ -63,13 +63,17 @@
             <if test="oSFZ!=null and oSFZ!=''">oSFZ = #{oSFZ},</if>
             <if test="oGender!=null and oGender!=''">oGender = #{oGender},</if>
             <if test="oAddress!=null and oAddress!=''">oAddress = #{oAddress},</if>
-            <if test="oHotelUserNum!=null and oHotelUserNum!=''">oHotelUserNum = #{oHotelUserNum}</if>
+            <if test="oHotelUserNum!=null and oHotelUserNum!=''">oHotelUserNum = #{oHotelUserNum},</if>
+            <if test="oEmail!=null and oEmail!=''">oEmail = #{oEmail},</if>
+            <if test="oPassword!=null and oPassword!=''">oPassword = #{oPassword},</if>
+            <if test="oDisabled!=null and oDisabled!=-1">oDisabled = #{oDisabled},</if>
+            <if test="oExpired!=null and oExpired!=-1">oExpired = #{oExpired},</if>
         </set>
         where oId = #{oId}
     </update>
 
     <insert id="insertOperator" parameterType="cn.hotel.entity.Operator">
-        insert into operator value(null, #{oName}, #{oDepartment}, #{oStatus}, #{oSalary}, #{oWorkStatus}, #{oTel}, #{oSFZ}, #{oAddress}, #{oGender}, NOW(), #{oHotelUserNum})
+        insert into operator value(null, #{oName}, #{oDepartment}, #{oStatus}, #{oSalary}, #{oWorkStatus}, #{oTel}, #{oSFZ}, #{oAddress}, #{oGender}, NOW(), #{oHotelUserNum},#{oPassword},#{oEmail},0,0)
     </insert>
 
     <delete id="deleteOperator" parameterType="integer">

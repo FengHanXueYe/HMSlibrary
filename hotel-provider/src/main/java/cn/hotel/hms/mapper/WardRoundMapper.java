@@ -22,5 +22,6 @@ public interface WardRoundMapper {
     // 删除查房信息
     Integer deleteWardRound(Integer wrId);
 
+    Integer updateWR(WardRound wardRound);
 
 }
