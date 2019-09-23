@@ -45,6 +45,7 @@ public class FoodsController {
     //去美食工具页面
     @RequestMapping(value = "tomeishicon")
     public String tomeishicon(){
+
         return "foods/meishi-con";
     }
 
@@ -59,5 +60,8 @@ public class FoodsController {
     public String toshopcon(){
         return "foods/shop-con";
     }
+
+
+
 
 }
