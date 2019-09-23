@@ -12,6 +12,33 @@ public class FoodOrder implements Serializable {
     private String orderRoom;//订单房间号（外键）
     private String userName;//用户姓名
     private String userPhone;//用户电话
+    private Integer shopnumber;//商品数量
+    private Integer foodsid;//食品id
+    private Integer setmealid;//套餐id
+
+    public Integer getFoodsid() {
+        return foodsid;
+    }
+
+    public void setFoodsid(Integer foodsid) {
+        this.foodsid = foodsid;
+    }
+
+    public Integer getSetmealid() {
+        return setmealid;
+    }
+
+    public void setSetmealid(Integer setmealid) {
+        this.setmealid = setmealid;
+    }
+
+    public Integer getShopnumber() {
+        return shopnumber;
+    }
+
+    public void setShopnumber(Integer shopnumber) {
+        this.shopnumber = shopnumber;
+    }
 
     public String getOrderRoom() {
         return orderRoom;

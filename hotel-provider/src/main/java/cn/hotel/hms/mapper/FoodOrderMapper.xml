@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.FoodOrderMapper">
+    <resultMap id="foodMap" type="cn.hotel.vo.FoodOrderVo">
+        <id column="orderid" property="orderid"></id>
+    </resultMap>
+    <select id="queryAllFoodOrder" resultMap="foodMap" parameterType="cn.hotel.entity.FoodOrder">
+        SELECT `orderid`,`orderprice`,
+        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='ORDER_STATUS' AND `valueId`=`orderstatus`)`orderstatus`,
+        (SELECT `roomNumber` FROM `room` WHERE  id=`orderRoom`)`orderRoom`,
+        `ordertime`,`userName`,`userPhone`
+        FROM `foodorder`
+ <where>
+     <if test="userName!=null and userName!=''">
+         userName like concat('%',#{userName},'%')
+     </if>
+     <if test="orderRoom!=null and orderRoom!=-1">
+         and orderRoom=#{orderRoom}
+     </if>
+ </where>
+        ORDER BY orderid DESC
+    </select>
+
+    <select id="detailFoodOrder" parameterType="cn.hotel.entity.FoodOrder" resultMap="foodMap">
+        SELECT `orderid`,`orderprice`,remarks,
+ (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='ORDER_STATUS' AND `valueId`=`orderstatus`)`orderstatus`,
+(SELECT `roomNumber` FROM `room` WHERE  id=`orderRoom`)`orderRoom`,
+`ordertime`,`userName`,`userPhone`
+ FROM `foodorder` where orderid=#{orderid}
+    </select>
+</mapper>
