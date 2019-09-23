@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加订单</title>
+    <div th:include="base::base"></div>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>订单信息 </small></h1>
+        </div>
+        <form class="form-horizontal" action="/doAddFoodOrder">
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">食品：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="foodsid" id="foodsid"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">食品数量：<span></span></label>
+                <div class="col-sm-6">
+                    <input type="text" name="shopnumber" class="form-control"  placeholder="食品数量">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">套餐：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="setmealid" id="setmealid"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">房间号：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="orderRoom" id="orderRoom"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">用户名称：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="userName" class="form-control"   placeholder="用户名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">用户电话：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="userPhone" class="form-control"   placeholder="用户电话">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">备注：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="remarks"   class="form-control"  placeholder="备注">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-4 control-label">价格：</label>
+                <div class="col-sm-6">
+                    <input type="text" name="orderprice" class="form-control"   placeholder="价格">
+                </div>
+            </div>
+            <div class="col-sm-10 control-label">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 添加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        loadSelect($("#orderRoom"));
+        foodSelect($("#foodsid"));
+        setMealSelect($("#setmealid"));
+    });
+    function loadSelect(e) {
+        e.append("<option value='-1'>请选择</option>");
+        $.get("queryAllRoom",function (result) {
+            $.each(result,function (index,d) {
+                e.append("<option value='"+d.id+"'>"+d.roomNumber+"</option>")
+            });
+        });
+    }
+
+    function foodSelect(e) {
+        e.append("<option value='-1'>请选择</option>");
+        $.get("queryAllDelicious",function (result) {
+            $.each(result,function (index,d) {
+                e.append("<option value='"+d.foodid+"'>"+d.foodname+"</option>")
+            });
+        });
+    }
+
+    function setMealSelect(e) {
+        e.append("<option value='-1'>请选择</option>");
+        $.get("queryAllSetMeal",function (result) {
+            $.each(result,function (index,d) {
+                e.append("<option value='"+d.mealid+"'>"+d.mealname+"</option>")
+            });
+        });
+    }
+</script>
+</body>
+</html>

@@ -34,4 +34,7 @@ public interface FoodOrderService {
 
     //查询全部房间（查询时候用到）
     List<Room> queryAllRoom();
+
+    //查看单个订单信息（修改回显时候用到）
+    FoodOrder detailFoodOrders(Integer id);
 }

@@ -29,6 +29,11 @@
             </form>
             <br>
             <br>
+            <p>
+                <button class="btn btn-info" id="toAddDelicious">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" id="addInfo">新增订单</span>
+                </button>
+            </p>
             <div id="hahahahahah">
 
             </div>
@@ -106,6 +111,10 @@
             operatorLoad(-1);
         });
         loadSelect($("select"));
+        // 去增加页面
+        $("#toAddDelicious").click(function () {
+            location.href="toAddFoodOrder";
+        })
     });
     function clickPage(pageNum) {
         operatorLoad(pageNum);

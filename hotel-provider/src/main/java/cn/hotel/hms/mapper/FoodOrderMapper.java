@@ -42,4 +42,8 @@ public interface FoodOrderMapper {
     //查询全部房间（查询时候用到）
     @Select("SELECT * FROM `room`")
     List<Room> queryAllRoom();
+
+    //查看单个订单信息（修改回显时候用到）
+    @Select("SELECT * FROM `foodorder` WHERE orderid=#{orderid}")
+    FoodOrder detailFoodOrders(Integer id);
 }

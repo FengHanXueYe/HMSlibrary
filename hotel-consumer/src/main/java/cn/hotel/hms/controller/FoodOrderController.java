@@ -6,12 +6,11 @@ import cn.hotel.entity.Room;
 import cn.hotel.entity.SetMeal;
 import cn.hotel.service.FoodOrderService;
 import cn.hotel.utils.PageUtil;
-import cn.hotel.vo.DeliciousFoodVo;
 import cn.hotel.vo.FoodOrderVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import org.apache.zookeeper.data.Id;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -83,4 +82,30 @@ public class FoodOrderController {
         Integer foodOrder=foodOrderService.deleteFoodOrder(id);
         return foodOrder>0?true:false;
     }
+    //去增加订单的页面
+    @RequestMapping(value = "toAddFoodOrder")
+    public String toAddFoodOrder(){
+        return "food/add_order";
+    }
+    //增加订单
+    @RequestMapping(value = "doAddFoodOrder")
+    public String doAddFoodOrder(FoodOrder foodOrder){
+        this.foodOrderService.addFoodOrder(foodOrder);
+        return "redirect:toqueryAllFoodOrder";
+    }
+
+    //去修改订单的页面
+    @RequestMapping(value = "toUpdateOrder")
+    public String toUpdateFoodOrder(Integer id, Model model){
+        model.addAttribute("order",this.foodOrderService.detailFoodOrders(id));
+        return "food/update_order";
+    }
+
+    //做修改订单的操作
+    @RequestMapping(value = "doUpdateOrder")
+    public String doUpdateFoodOrder(FoodOrder foodOrder){
+        this.foodOrderService.updateFoodOrder(foodOrder);
+        return "redirect:toqueryAllFoodOrder";
+    }
+
 }

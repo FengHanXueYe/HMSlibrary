@@ -75,4 +75,9 @@ public class FoodOrderServiceImpl implements FoodOrderService {
     public List<Room> queryAllRoom() {
         return foodOrderMapper.queryAllRoom();
     }
+
+    @Override
+    public FoodOrder detailFoodOrders(Integer id) {
+        return foodOrderMapper.detailFoodOrders(id);
+    }
 }
