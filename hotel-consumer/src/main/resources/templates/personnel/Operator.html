@@ -54,6 +54,10 @@
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     增加
                 </button>
+                <button type="button" id="toPB" class="btn btn-default">
+                    <span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
+                    排班情况
+                </button>
 
             </form>
             </div>
@@ -87,6 +91,24 @@
                             <h4 class="modal-title">操作人员详情</h4>
                         </div>
                         <div class="modal-body" id="detailOperators">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <!--排班模态框-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="pSeche">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">排班情况</h4>
+                        </div>
+                        <div class="modal-body" id="listSche">
 
                         </div>
                         <div class="modal-footer">
@@ -172,8 +194,56 @@
         $("#toInsertOperator").click(function () {
             location.href="toInsertOperator";
         })
+        $("#toPB").click(function () {
+            loadScheduling();
+            $("#pSeche").modal("show");
+        })
+
+
 
     })
+
+    // 加载事件
+    function loadScheduling() {
+        $.post("ajaxQueryAllScheduling",function (result) {
+            $("#listSche").html("");
+            var html = "";
+            $.each(result,function (index,item) {
+                if(item.sStatus==2){
+                    html +=
+                        "<div class='row'>"
+                        +"<button type='button' class='btn btn-info col-md-8 col-xs-offset-2' onmouseover='detailOperatorXP("+item.sOId+")' data-toggle='tooltip' data-placement='left' title=''>"
+                        +item.sOName
+                        +"(当前值班人员)</button><br>";
+
+                }else{
+                    html +=
+                        "<div class='row'>"
+                        +"<button type='button' class='btn btn-default col-md-8 col-xs-offset-2' onmouseover='detailOperatorXP("+item.sOId+")'  data-toggle='tooltip' data-placement='left' title=''>"
+                        +item.sOName
+                        +"</button><br>";
+                }
+                if(index!=result.length-1){
+                    html+= "<h3 style='color: aqua;margin-left: 260px' >"
+                        +"<span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span>"
+                        +"</h3>";
+                }
+                html+="</div>";
+            })
+            $("#listSche").html(html);
+        })
+    }
+
+    // 点击查看事件
+    function detailOperatorXP(oId) {
+        var z = $("button[onmouseover='detailOperatorXP("+oId+")']").attr("title");
+        console.log(z)
+        if(z==""){
+            $.post("doDetailOperator","oId="+oId,function (result) {
+                $("button[onmouseover='detailOperatorXP("+oId+")']").attr("title","姓名:"+result.oName+"\n性别:"+result.oGender+"\n部门:"+result.oDepartment+"\n电话:"+result.oTel+"\nEmail:"+result.oEmail+"\n所在酒店:"+result.oHotelUserNumName);
+            })
+        }
+    }
 
     // 点击分页事件
     function clickPage(pageNum) {
@@ -306,7 +376,9 @@
             $("select[id='ohun']").html(html);
         })
     }
-    
+
+
+
     
     // 查看操作人员详情
     function detailOperator(oId) {

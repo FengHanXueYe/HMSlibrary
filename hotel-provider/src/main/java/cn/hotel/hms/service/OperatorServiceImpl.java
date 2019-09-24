@@ -72,4 +72,9 @@ public class OperatorServiceImpl implements OperatorService {
     public OperatorVO loginUser(Operator operator) {
         return operatorMapper.loginUser(operator);
     }
+
+    @Override
+    public List<Operator> queryAllOperatorAndScheduling() {
+        return operatorMapper.queryAllOperatorAndScheduling();
+    }
 }

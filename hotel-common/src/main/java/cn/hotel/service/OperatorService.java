@@ -35,5 +35,8 @@ public interface OperatorService {
     // 登录
     OperatorVO loginUser(Operator operator);
 
+    // 查询排班人员
+    List<Operator> queryAllOperatorAndScheduling();
+
 
 }
