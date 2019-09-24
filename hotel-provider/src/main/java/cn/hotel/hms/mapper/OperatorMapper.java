@@ -26,5 +26,7 @@ public interface OperatorMapper {
 
     List<Operator> queryAllOperator();
 
+    OperatorVO loginUser(Operator operator);
+
 
 }

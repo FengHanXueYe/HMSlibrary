@@ -32,4 +32,8 @@ public interface OperatorService {
     // 查询所有的人员无条件
     List<Operator> queryAllOperator();
 
+    // 登录
+    OperatorVO loginUser(Operator operator);
+
+
 }

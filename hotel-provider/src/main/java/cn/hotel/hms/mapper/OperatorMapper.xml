@@ -84,4 +84,22 @@
         select * from operator
     </select>
 
+    <select id="loginUser" parameterType="cn.hotel.entity.Operator" resultMap="oMap">
+        SELECT
+        oId, oName,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_DEPARTMENTS' AND valueId=oDepartment) oDepartment,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_PERRMISSION_LEVEL' AND valueId=oStatus) oStatus,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='WAGE_SCALE' AND valueId=oSalary) oSalary,
+        (SELECT valueName FROM `datastatus` WHERE typeCode='OPERATOR_WORK_STATUS' AND valueId=oWorkStatus) oWorkStatus,
+        `oTel`, `oSFZ`, `oAddress`, `oGender`, `oCreateTime`, `oHotelUserNum`,oEmail,oPassword,oDisabled,oExpired
+        FROM `operator`
+        <where>
+            <if test="oName!=null and oName!=''">oName=#{oName}</if>
+            <if test="oTel!=null and oTel!=''">or oTel=#{oTel}</if>
+            <if test="oEmail!=null and oEmail!=''">or oTel=#{oTel}</if>
+            <if test="oPassword!=null and oPassword!=''">and oPassword=#{oPassword}</if>
+        </where>
+    </select>
+
+
 </mapper>
