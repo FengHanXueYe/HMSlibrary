@@ -16,7 +16,7 @@
             margin-top: 20px;
         }
     </style>
-    <script src="js/pageInfoJS.js"></script>
+    <script src="/js/pageInfoJS.js"></script>
 </head>
 <body>
     <div class="container">
@@ -151,20 +151,20 @@
     $(function () {
         var sz = ["编号","房间编号","房间状态","查房人","操作"];
         var entitySz = ["tdwrId","tdwrRoomNumber","tdwrStatusName","tdwrOName"];
-        loadMembers("selectForm","ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
+        loadMembers("selectForm","/toDay/ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
 
         // 查询按钮
         $("button[id='submitForm']").click(function () {
-            loadMembers("selectForm","ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
+            loadMembers("selectForm","/toDay/ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
         })
         // 加载证件类型下拉框(数据字典)
         //loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='itSFZtype']"));
-        loadSelect("dataStatus/queryByCode","WARDROUND_STATUS", $("select[name='tdwrStatus']"));
+        loadSelect("/dataStatus/queryByCode","WARDROUND_STATUS", $("select[name='tdwrStatus']"));
 
 
 
         $("#toInsertII").click(function(){
-            location.href="toWardRound";
+            location.href="/wardr/toWardRound";
         })
     })
 
@@ -172,14 +172,14 @@
     function clickPage(pageNum) {
         var sz = ["编号","房间编号","房间状态","查房人","操作"];
         var entitySz = ["tdwrId","tdwrRoomNumber","tdwrStatusName","tdwrOName"];
-        loadMembers("selectForm","ajaxQueryAllTDWRV","pageNum",pageNum,sz,entitySz);
+        loadMembers("selectForm","/toDay/ajaxQueryAllTDWRV","pageNum",pageNum,sz,entitySz);
    }
 
     // 查看查房详情
     function detailInformation(mId) {
         $("#detailInformation").modal("show");
 
-        $.post("ajaxDetailTDWRV","tdwrId="+mId,function (result) {
+        $.post("/toDay/ajaxDetailTDWRV","tdwrId="+mId,function (result) {
             $("#detailInformations").html("");
 
             if(result.tdwrStatusName=="未查"){
@@ -225,7 +225,7 @@
         $("#updateInformation").modal("show");
         $("#updateInformations").html("");
 
-        $.post("ajaxDetailTDWRV","tdwrId="+mId,function (result) {
+        $.post("/toDay/ajaxDetailTDWRV","tdwrId="+mId,function (result) {
 
             var html = "<form class='form-horizontal' id='updateOperatorForm'>"
                 +"</div>"
@@ -257,12 +257,12 @@
         var detail = $("textarea[name='tdwrDetail']").val();
         if (detail!=""){
             var data = $("#updateOperatorForm").serialize();
-            $.post("ajaxUpdateTDWRV",data,function (resutl) {
+            $.post("/toDay/ajaxUpdateTDWRV",data,function (resutl) {
                 if(resutl){
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     var sz = ["编号","房间编号","房间状态","查房人","操作"];
                     var entitySz = ["tdwrId","tdwrRoomNumber","tdwrStatusName","tdwrOName"];
-                    loadMembers("selectForm","ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/toDay/ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
                 }else{
                     $("#alerttishi").html("<font color='red'>操作错误！</font>");
                 }
@@ -283,11 +283,11 @@
         var oId = $("input[name='hiddenOId']").val();
         if(isClick){
             $("#confirmModel").modal("hide");
-            $.post("ajaxDeleteTDWRV","tdwrId="+oId, function (result) {
+            $.post("/toDay/ajaxDeleteTDWRV","tdwrId="+oId, function (result) {
                 if(result){
                     var sz = ["编号","房间编号","房间状态","查房人","操作"];
                     var entitySz = ["tdwrId","tdwrRoomNumber","tdwrStatusName","tdwrOName"];
-                    loadMembers("selectForm","ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/toDay/ajaxQueryAllTDWRV","pageNum",1,sz,entitySz);
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     $("#alertModel").modal("show");
                 }else{

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Members</title>
     <div th:include="base::base"></div>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/atom.css">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/open.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/atom.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/open.css">
     <script src="/js/dateJS.js"></script>
     <script src="/js/pageInfoJS.js"></script>
     <style type="text/css">
@@ -61,7 +61,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" id="goodLuckyMember"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 幸运抽奖 </a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="toExchangeShop"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 物品兑换</a></li>
+                            <li><a href="/luck/toExchangeShop"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 物品兑换</a></li>
                         </ul>
                     </div>
 
@@ -199,7 +199,7 @@
                                         <div class="mod-chest-cont open-cont">
                                             <div class="content">
                                                 <div class="gift">
-                                                    <div class="icon"><img src="img/chest-icon-zuan.png"></div>
+                                                    <div class="icon"><img src="/img/chest-icon-zuan.png"></div>
                                                 </div>
                                                 <div class="func">
                                                     <button class="chest-btn">请及时拿取奖品</button>
@@ -219,7 +219,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-        <script type="text/javascript" src="js/zepto.min.js"></script>
+        <script type="text/javascript" src="/js/zepto.min.js"></script>
 <script type="text/javascript">
 
 
@@ -227,7 +227,7 @@
         $(".chest-close").click(function(){
             var mId = $("#goodMemberUserName").attr("no");
             // 抽奖
-            $.post("ajaxLuck","mId="+mId,function (result) {
+            $.post("/luck/ajaxLuck","mId="+mId,function (result) {
                 if(result!=null){
                     $("#luckName").html(result.ldName);
                 }else{
@@ -253,20 +253,20 @@
         // "ajaxQueryAllMember" selectForm(勒令：数组第一个必须是id，第二个是名称（建议）)
         var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
         var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
-        loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+        loadMembers("selectForm","/member/ajaxQueryAllMember","pageNum",1,sz,entitySz);
 
         // 查询按钮
         $("button[id='submitForm']").click(function () {
-            loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+            loadMembers("selectForm","/member/ajaxQueryAllMember","pageNum",1,sz,entitySz);
         })
         // 加载证件类型下拉框(数据字典)
-        loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='mSFZtype']"));
+        loadSelect("/dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='mSFZtype']"));
         // 加载会员等级
-        loadH("ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
+        loadH("/msr/ajaxQueryAllMembershipRank",$("select[name='mMembershipRank']"));
 
         // 去增加会员页面
         $("#toInsertMember").click(function(){
-            location.href="toInsertMember";
+            location.href="/member/toInsertMember";
         })
         
         // 幸运抽奖
@@ -278,7 +278,7 @@
     // ajax 获取幸运会员
     function ajaxGetMSS(){
 
-        $.post("ajaxGetMSS",function(result){
+        $.post("/luck/ajaxGetMSS",function(result){
             if(result==null){
                 $("#alertModel").modal("show");
                 $("#alerttishi").html("今日幸运会员已抽奖！\n");
@@ -294,7 +294,7 @@
     }
     // 查询幸运会员的信息
     function detailGoodLuck(mssId) {
-        $.post("ajaxDetailMember","mId="+mssId,function(result){
+        $.post("/member/ajaxDetailMember","mId="+mssId,function(result){
             $(".wrapper").attr("title","会员编号："+result.mNumber+"\n身份证号码："+result.mSFZ);
         })
     }
@@ -302,15 +302,15 @@
     function detailInformation(mId) {
         $("#detailInformation").modal("show");
 
-        $.post("ajaxDetailMember","mId="+mId,function (result) {
+        $.post("/member/ajaxDetailMember","mId="+mId,function (result) {
             var src = "";
             var title = "";
             // <img src="../../static/images/nan.png" height="32" width="32"/>
             if(result.mGender==1){
-                src = "images/nan.png"
+                src = "/images/nan.png"
                 title = "男";
             }else{
-                src = "images/nv1.png";
+                src = "/images/nv1.png";
                 title = "女";
             }
             $("#detailInformations").html("");
@@ -368,7 +368,7 @@
 
     // js ajax加载下拉框
     function jsLoadSelect(code,k){
-        $.get("dataStatus/queryByCode","code="+code,function(result){
+        $.get("/dataStatus/queryByCode","code="+code,function(result){
             var html = "";
             $.each(result, function (index,item) {
                 if(k==item.valueName){
@@ -385,7 +385,7 @@
 
     // 加载会员等级
     function loadHotelUser(ohun) {
-        $.post("ajaxQueryAllMembershipRank",function (result) {
+        $.post("/msr/ajaxQueryAllMembershipRank",function (result) {
             var html = "";
             $.each(result, function (index,item) {
                 if(ohun==item.mrId){
@@ -404,7 +404,7 @@
         $("#updateInformation").modal("show");
         $("#updateInformations").html("");
 
-        $.post("ajaxDetailMember","mId="+mId,function (result) {
+        $.post("/member/ajaxDetailMember","mId="+mId,function (result) {
             var c;
             var v;
             if(result.mGender==1){
@@ -443,8 +443,8 @@
                 +"<div class='form-group'>"
                 +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
                 +"<div class='col-sm-6'>"
-                +"<input type='radio' "+c+" name='mGender' id='genderNan' value='1'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
-                +"<input type='radio' "+v+" name='mGender' id='genderNv' value='2'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                +"<input type='radio' "+c+" name='mGender' id='genderNan' value='1'><label for='genderNan'><img  src='/images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                +"<input type='radio' "+v+" name='mGender' id='genderNv' value='2'><label for='genderNv'><img  src='/images/nv1.png' alt='' title='女'></label>"
                 +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
@@ -474,12 +474,12 @@
     function updateInformationForm() {
         if (checkLength(1)){
             var data = $("#updateOperatorForm").serialize();
-            $.post("ajaxUpdateMember",data,function (resutl) {
+            $.post("/member/ajaxUpdateMember",data,function (resutl) {
                 if(resutl){
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
                     var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
-                    loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/member/ajaxQueryAllMember","pageNum",1,sz,entitySz);
 
                 }else{
                     $("#alerttishi").html("<font color='red'>操作错误！</font>");
@@ -511,7 +511,7 @@
     function clickPage(pageNum) {
         var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
         var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
-        loadMembers("selectForm","ajaxQueryAllMember","pageNum",pageNum,sz,entitySz);
+        loadMembers("selectForm","/member/ajaxQueryAllMember","pageNum",pageNum,sz,entitySz);
     }
 
     // 判断是否点击的变量
@@ -522,11 +522,11 @@
         var oId = $("input[name='hiddenOId']").val();
         if(isClick){
             $("#confirmModel").modal("hide");
-            $.post("ajaxDeleteMember","mId="+oId, function (result) {
+            $.post("/member/ajaxDeleteMember","mId="+oId, function (result) {
                 if(result){
                     var sz = ["编号","会员姓名","证件类型","住址","电话","会员等级","操作"];
                     var entitySz = ["mId","mName","mSFZtypeName","mAddress","mTel","mMembershipRankName"];
-                    loadMembers("selectForm","ajaxQueryAllMember","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/member/ajaxQueryAllMember","pageNum",1,sz,entitySz);
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     $("#alertModel").modal("show");
                 }else{

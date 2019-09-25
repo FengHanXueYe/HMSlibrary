@@ -192,7 +192,7 @@
         loadSelect("OPERATOR_WORK_STATUS", $("select[name='oWorkStatus']"));
         // 去增加页面
         $("#toInsertOperator").click(function () {
-            location.href="toInsertOperator";
+            location.href="/operator/toInsertOperator";
         })
         $("#toPB").click(function () {
             loadScheduling();
@@ -205,7 +205,7 @@
 
     // 加载事件
     function loadScheduling() {
-        $.post("ajaxQueryAllScheduling",function (result) {
+        $.post("/scheduling/ajaxQueryAllScheduling",function (result) {
             $("#listSche").html("");
             var html = "";
             $.each(result,function (index,item) {
@@ -239,7 +239,7 @@
         var z = $("button[onmouseover='detailOperatorXP("+oId+")']").attr("title");
         console.log(z)
         if(z==""){
-            $.post("doDetailOperator","oId="+oId,function (result) {
+            $.post("/operator/doDetailOperator","oId="+oId,function (result) {
                 $("button[onmouseover='detailOperatorXP("+oId+")']").attr("title","姓名:"+result.oName+"\n性别:"+result.oGender+"\n部门:"+result.oDepartment+"\n电话:"+result.oTel+"\nEmail:"+result.oEmail+"\n所在酒店:"+result.oHotelUserNumName);
             })
         }
@@ -290,7 +290,7 @@
     function operatorLoad(pageNum){
         // 表单序列化
         var data = $("#selectForm").serialize();
-        $.post("ajaxQueryOperators",data+"&pageNum="+pageNum,function (result) {
+        $.post("/operator/ajaxQueryOperators",data+"&pageNum="+pageNum,function (result) {
             var list = result.list;
             // 加载分页
             pageInfoUtil(result);
@@ -328,7 +328,7 @@
 
     // 加载下拉框
     function loadSelect(code, e){
-        $.get("dataStatus/queryByCode","code="+code,function(result){
+        $.get("/dataStatus/queryByCode","code="+code,function(result){
             e.append("<option value='-1'>--请选择--</option>");
             $.each(result, function (index,item) {
                 e.append("<option value='"+item.valueId+"'>"+item.valueName+"</option>");
@@ -338,7 +338,7 @@
 
     // js ajax加载下拉框
     function jsLoadSelect(code,k,e){
-        $.get("dataStatus/queryByCode","code="+code,function(result){
+        $.get("/dataStatus/queryByCode","code="+code,function(result){
             var html = "";
             $.each(result, function (index,item) {
                 if(k==item.valueName){
@@ -364,7 +364,7 @@
 
     // ajax加载下拉框酒店
     function loadHotelUser(ohun) {
-        $.post("ajaxQueryAllHotelUser",function (result) {
+        $.post("/hotel/ajaxQueryAllHotelUser",function (result) {
             var html = "";
             $.each(result, function (index,item) {
                 if(ohun==item.huNumber){
@@ -384,15 +384,15 @@
     function detailOperator(oId) {
         $("#detailOperator").modal("show");
 
-        $.post("doDetailOperator","oId="+oId,function (result) {
+        $.post("/operator/doDetailOperator","oId="+oId,function (result) {
             var src = "";
             var title = "";
         // <img src="../../static/images/nan.png" height="32" width="32"/>
             if(result.oGender=="男"){
-                src = "images/nan.png"
+                src = "/images/nan.png"
                 title = "男";
             }else{
-                src = "images/nv1.png";
+                src = "/images/nv1.png";
                 title = "女";
             }
             $("#detailOperators").html("");
@@ -460,7 +460,7 @@
         $("#updateOperator").modal("show");
         $("#updateOperators").html("");
 
-        $.post("doDetailOperator","oId="+oId,function (result) {
+        $.post("/operator/doDetailOperator","oId="+oId,function (result) {
             var c;
             var v;
             if(result.oGender=="男"){
@@ -508,8 +508,8 @@
                 +"<div class='form-group'>"
                     +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
                     +"<div class='col-sm-6'>"
-                        +"<input type='radio' "+c+" name='oGender' id='genderNan' value='男'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
-                        +"<input type='radio' "+v+" name='oGender' id='genderNv' value='女'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                        +"<input type='radio' "+c+" name='oGender' id='genderNan' value='男'><label for='genderNan'><img  src='/images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                        +"<input type='radio' "+v+" name='oGender' id='genderNv' value='女'><label for='genderNv'><img  src='/images/nv1.png' alt='' title='女'></label>"
                     +"</div>"
                 +"</div>"
                 +"<div class='form-group'>"
@@ -545,7 +545,7 @@
     function updateOperatorForm() {
         if (checkLength(1) && checkNumber()){
             var data = $("#updateOperatorForm").serialize();
-            $.post("doUpdateOperator",data,function (resutl) {
+            $.post("/operator/doUpdateOperator",data,function (resutl) {
                 if(resutl){
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                 }else{
@@ -596,7 +596,7 @@
         var oId = $("input[name='hiddenOId']").val();
         if(isClick){
             $("#confirmModel").modal("hide");
-            $.post("doDeleteOperator","oId="+oId, function (result) {
+            $.post("/operator/doDeleteOperator","oId="+oId, function (result) {
                 if(result){
                     operatorLoad(-1);
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
