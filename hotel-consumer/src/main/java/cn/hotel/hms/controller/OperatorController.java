@@ -37,6 +37,9 @@ public class OperatorController {
             pageNum = null;
         }
         PageUtil<OperatorVO> pageInfoUtil = operatorService.queryAllOperatorPage(operator, pageNum, pageSize);
+        for (OperatorVO operatorVO : pageInfoUtil.getList()) {
+            System.out.println(">>>>>>>>>>>"+operatorVO);
+        }
         return JSON.toJSONString(pageInfoUtil);
     }
 

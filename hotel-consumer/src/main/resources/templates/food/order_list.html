@@ -6,6 +6,7 @@
     <div th:include="base::base"></div>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="/js/dateJS.js"></script>
 </head>
 <body>
 <br>
@@ -25,7 +26,9 @@
                     <select class="form-control"  name="orderRoom">
                     </select>
                 </div>
-                <button type="button" id="submitForm" class="btn btn-default">查询</button>
+                <button type="button" id="submitForm" class="btn btn-info">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    查询</button>
             </form>
             <br>
             <br>
@@ -186,10 +189,10 @@
                 html += "<tr >"
                     +"<td>"+item.userName+"</td>"
                     +"<td>"+item.userPhone+"</td>"
-                    +"<td>"+item.ordertime+"</td>"
+                    +"<td>"+getDateTime(item.ordertime,2)+"</td>"
                     +"<td>"+item.orderRoom+"</td>"
                     +"<td>"+item.orderstatus+"</td>"
-                    +"<td>"+item.orderprice+"</td>"
+                    +"<td>"+item.orderprice+" ￥</td>"
                     +"<td class='col-md-1 '>"
                     +"<a href='javascript:void(0)' onclick='detailDelicious("+item.orderid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
                     +"<a href='javascript:void(0)' onclick='updateDelicious("+item.orderid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "

@@ -8,48 +8,13 @@
 		<div th:include="base::base"></div>
 	</head>
 	<body>
-		<div class="clearfix nav">
-			<a class="logo" href="javascript:;"></a>
-			<ul class="clearfix nav-wrap">
-				<li><a class="nav-item nav-active" href="/toFoods">首页</a></li>
-				<li><a class="nav-item" href="/topinpai">品牌故事</a></li>
-				<li><a class="nav-item" href="/tomeishi">美食系列</a></li>
-				<li><a class="nav-item" href="/toshop">套餐系列</a></li>
-				<li><a class="nav-item" href="/tonews">新闻资讯</a></li>
-				<li><a class="nav-item" href="/toaboutus">关于我们</a></li>
-			</ul>
-		</div>
-		
-		<div id="container">
-			<div id="buttons">
-		        <span index="1" class="on"></span>
-		        <span index="2"></span>
-		        <span index="3"></span>
-		    </div>
-		    <a href="javascript:;" id="prev" class="arrow"><img src="img/l.png"/></a>
-		    <a href="javascript:;" id="next" class="arrow"><img src="img/r.png"/></a>
-		</div>
-		
-		<ul class="breadnav clearfix">
-			<li class="bnav-item"><a href="/toFoods">首页</a></li>
-			<li class="bnav-item">&lt;</li>
-			<li class="bnav-item"><a href="/toshop">店面展示</a></li>
-			<li class="bnav-item">&lt;</li>
-			<li class="bnav-item"><a href="javascript:;">北京店</a></li>
-		</ul>
-		<form>
+		<form class="form-inline text-center">
 			<div class="clearfix table-wrap" id="tab-span">
-				<span class="table-item table-active">全部菜品</span>
-				<span class="table-item">经典牛排</span>
-				<span class="table-item">意面/烩饭</span>
-				<span class="table-item">风味披萨</span>
-				<span class="table-item">甜品小食</span>
-				<span class="table-item">酒水饮料</span>
-				<span class="table-item" id="queryAllSetMeal">其他</span>
-				<div class="search clearfix">
-					<input  type="text" name="mealname"/>
-					<button type="button" id="submitForm" class="btn btn-default">查询</button>
+				<div class="form-group">
+					<label for="exampleInputName2">套餐名称:</label>
+					<input type="text" class="form-control" id="exampleInputName2" placeholder="请输入套餐名称" name="mealname">
 				</div>
+					<button type="button" id="submitForm" class="btn btn-default">查询</button>
 			</div>
 		</form>
 		<div id="table-div">
@@ -60,41 +25,10 @@
 		<!--分页-->
 		<div class="col-xs-10">
 			<nav aria-label="Page navigation" class="text-center">
-				<ul class="ms-paging clearfix" id="fengye">
+				<ul class="pagination text-center " id="fengye">
 
 				</ul>
 			</nav>
-		</div>
-
-		<div class="foot">
-			<div class="foot-wrap">
-				<p class="foot-tit">友情链接</p>
-				<ul class="foot-link clearfix">
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link6.png"/></a>
-					</li>
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link5.png"/></a>
-					</li>
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link4.png"/></a>
-					</li>
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link3.png"/></a>
-					</li>
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link2.png"/></a>
-					</li>
-					<li class="foot-pic">
-						<a href="javascript:;"><img src="img/link1.png"/></a>
-					</li>
-				</ul>
-				<div class="copyright">
-					<p>CopyRight©2003-2015 www.91cy.cn All rigt rederved</p>
-					<p>版权所有：贵族食代牛排有限公司  来源:<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
-					<p>ICP备案号：京ICP备16047255号-3本站信息由会员自主添加，如信息涉及隐私等，网站不承担任何责任！</p>
-				</div>
-			</div>
 		</div>
 		<!--查看模态框-->
 		<div class="modal fade" tabindex="-1" role="dialog" id="detailDelicious">
@@ -134,19 +68,19 @@
                 pagePre = Number(result.pageNo)-1;
             }
             var pageHtml = "";
-            pageHtml+="<li class='pag-item' no='"+result.pageNo+"'>"
+            pageHtml+="<li no='"+result.pageNo+"'>"
                 +"<a href='javascript:void(0)' onclick='clickPage("+pagePre+")'  aria-label='Previous' >"
                 +"<span aria-hidden='true'>&laquo;</span>"
                 +"</a>"
                 +"</li>";
             $.each(result.navigatepageNums, function (index,item) {
                 if(result.pageNo==item){
-                    pageHtml+="<li class='pag-item' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
+                    pageHtml+="<li class='active' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")' >"+item+"</a></li>";
                 }else{
-                    pageHtml+="<li class='pag-item' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
+                    pageHtml+="<li class='' th:no='"+item+"'><a href='javascript:void(0)' onclick='clickPage("+item+")'>"+item+"</a></li>";
                 }
             })
-            pageHtml+="<li class='pag-item' th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
+            pageHtml+="<li th:no='"+result.totalPageCount+"'><a href='javascript:void(0)' aria-label='Next' onclick='clickPage("+result.totalPageCount+")'>"
                 +"<span aria-hidden='true'>&raquo;</span>"
                 +"</a>"
                 +"</li>";
