@@ -16,7 +16,7 @@
             margin-top: 20px;
         }
     </style>
-    <script src="js/pageInfoJS.js"></script>
+    <script src="/js/pageInfoJS.js"></script>
 </head>
 <body>
     <div class="container">
@@ -146,11 +146,11 @@
     $(function () {
         var sz = ["编号","房间编号","查房人","操作"];
         var entitySz = ["wrId","wrRoomNumber","wrOName"];
-        loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+        loadMembers("selectForm","/wardr/ajaxQueryAllWR","pageNum",1,sz,entitySz);
 
         // 查询按钮
         $("button[id='submitForm']").click(function () {
-            loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+            loadMembers("selectForm","/wardr/ajaxQueryAllWR","pageNum",1,sz,entitySz);
         })
         // 加载证件类型下拉框(数据字典)
         //loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='itSFZtype']"));
@@ -159,7 +159,7 @@
 
 
         $("#toInsertII").click(function(){
-            location.href="toTDWRV";
+            location.href="/toDay/toTDWRV";
         })
     })
 
@@ -167,14 +167,14 @@
     function clickPage(pageNum) {
         var sz = ["编号","房间编号","查房人","操作"];
         var entitySz = ["wrId","wrRoomNumber","wrOName"];
-        loadMembers("selectForm","ajaxQueryAllWR","pageNum",pageNum,sz,entitySz);
+        loadMembers("selectForm","/wardr/ajaxQueryAllWR","pageNum",pageNum,sz,entitySz);
    }
 
     // 查看散客详情
     function detailInformation(mId) {
         $("#detailInformation").modal("show");
 
-        $.post("ajaxDetailWR","wrId="+mId,function (result) {
+        $.post("/wardr/ajaxDetailWR","wrId="+mId,function (result) {
 
             $("#detailInformations").html("");
             var html = "";
@@ -253,9 +253,9 @@
 
         $.post("ajaxDetailWR","wrId="+mId,function (result) {
             // 加载房间
-            jsLoadSelectXP("ajaxLoadRoom",result.wrRoomNumber);
+            jsLoadSelectXP("/wardr/ajaxLoadRoom",result.wrRoomNumber);
             // 加载查房人
-            jsLoadSelect("ajaxLoadOperator",result.wrOId);
+            jsLoadSelect("/wardr/ajaxLoadOperator",result.wrOId);
 
             var html = "<form class='form-horizontal' id='updateOperatorForm'>"
                 +"</div>"
@@ -287,12 +287,12 @@
         var detail = $("textarea[name='wrDetail']").val();
         if (detail!=""){
             var data = $("#updateOperatorForm").serialize();
-            $.post("ajaxUpdateWR",data,function (resutl) {
+            $.post("/wardr/ajaxUpdateWR",data,function (resutl) {
                 if(resutl){
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     var sz = ["编号","房间编号","查房人","操作"];
                     var entitySz = ["wrId","wrRoomNumber","wrOName"];
-                    loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/wardr/ajaxQueryAllWR","pageNum",1,sz,entitySz);
                 }else{
                     $("#alerttishi").html("<font color='red'>操作错误！</font>");
                 }
@@ -313,11 +313,11 @@
         var oId = $("input[name='hiddenOId']").val();
         if(isClick){
             $("#confirmModel").modal("hide");
-            $.post("ajaxDeleteWR","wrId="+oId, function (result) {
+            $.post("/wardr/ajaxDeleteWR","wrId="+oId, function (result) {
                 if(result){
                     var sz = ["编号","房间编号","查房人","操作"];
                     var entitySz = ["wrId","wrRoomNumber","wrOName"];
-                    loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+                    loadMembers("selectForm","/wardr/ajaxQueryAllWR","pageNum",1,sz,entitySz);
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                     $("#alertModel").modal("show");
                 }else{

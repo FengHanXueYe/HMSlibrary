@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 散客
  */
 @Controller
+@RequestMapping(value = "iddtl")
 public class IindividualTravelersController {
 
     @Reference

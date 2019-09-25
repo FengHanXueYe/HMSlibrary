@@ -101,5 +101,8 @@
         </where>
     </select>
 
+    <select id="queryAllOperatorAndScheduling" resultType="cn.hotel.entity.Operator">
+        SELECT oId, oName FROM `operator` WHERE `oDepartment` = 4 AND `oWorkStatus` = 1 ORDER BY RAND()
+    </select>
 
 </mapper>

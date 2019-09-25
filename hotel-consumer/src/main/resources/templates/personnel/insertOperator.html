@@ -52,8 +52,8 @@
                 <div class="form-group">
                     <label  class="col-sm-4 control-label">性别：</label>
                     <div class="col-sm-6">
-                        <input type="radio" checked  name="oGender" id="genderNan" value="男"><label for="genderNan"><img  src="images/nan.png" alt="" title="男"></label>&nbsp;&nbsp;&nbsp;
-                        <input type="radio"   name="oGender" id="genderNv" value="女"><label for="genderNv"><img  src="images/nv1.png" alt="" title="女"></label>
+                        <input type="radio" checked  name="oGender" id="genderNan" value="男"><label for="genderNan"><img  src="/images/nan.png" alt="" title="男"></label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio"   name="oGender" id="genderNv" value="女"><label for="genderNv"><img  src="/images/nv1.png" alt="" title="女"></label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -191,7 +191,7 @@
 
     // js ajax加载下拉框
     function jsLoadSelect(code,e){
-        $.get("dataStatus/queryByCode","code="+code,function(result){
+        $.get("/dataStatus/queryByCode","code="+code,function(result){
             var html = "";
             html+= "<option value='-1'>--请选择--</option>";
             $.each(result, function (index,item) {
@@ -214,7 +214,7 @@
 
     // ajax加载下拉框酒店
     function loadHotelUser() {
-        $.post("ajaxQueryAllHotelUser",function (result) {
+        $.post("/hotel/ajaxQueryAllHotelUser",function (result) {
             var html = "";
             html+= "<option value='-1'>--请选择--</option>";
             $.each(result, function (index,item) {
@@ -257,7 +257,7 @@
 
         if(checkNumber()&&checkLength(1)&&checkLength(2)&&checkPwd()){
             var data = $("#insertOperatorForm").serialize();
-            $.post("doInsertOperator",data,function (resutl) {
+            $.post("/operator/doInsertOperator",data,function (resutl) {
                 if(resutl){
                     $("#alerttishi").html("<font color='green'>操作成功！</font>");
                 }else{

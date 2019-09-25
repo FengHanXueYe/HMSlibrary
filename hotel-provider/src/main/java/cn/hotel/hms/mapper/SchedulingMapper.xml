@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.SchedulingMapper">
+    <select id="queryAllScheduling" resultType="cn.hotel.vo.SchedulingVO">
+        SELECT sId,sOId, sStatus,
+        (SELECT oName FROM operator WHERE oId = sOId) sOName
+        FROM `scheduling`
+    </select>
+
+    <delete id="truncateTableScheduling">
+        truncate table scheduling
+    </delete>
+
+    <update id="updateScheduling" parameterType="cn.hotel.entity.Scheduling">
+        update scheduling
+        <set>
+            <if test="sStatus!=null and sStatus!=-1">sStatus = #{sStatus}</if>
+        </set>
+        where sId = #{sId}
+    </update>
+
+    <select id="detailScheduling" resultType="cn.hotel.vo.SchedulingVO" parameterType="integer">
+        SELECT sId,sOId, sStatus,
+        (SELECT oName FROM operator WHERE oId = sOId) sName
+        FROM `scheduling` where sId = #{sId}
+    </select>
+
+    <insert id="insertScheduling" parameterType="cn.hotel.entity.Scheduling">
+        insert into scheduling value(null,#{sOId},1)
+    </insert>
+
+
+
+
+</mapper>

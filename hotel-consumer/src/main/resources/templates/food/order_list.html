@@ -120,6 +120,11 @@
         operatorLoad(pageNum);
     };
 
+    //去修改页面
+    function updateDelicious(id) {
+        location.href="toUpdateOrder?id="+id;
+    }
+
     function loadSelect(e) {
         e.append("<option value='-1'>请选择</option>");
         $.get("queryAllRoom",function (result) {
@@ -199,7 +204,7 @@
 
     //去修改页面
     function updateDelicious(id) {
-        location.href="toUpdateDelicious?id="+id;
+        location.href="toUpdateOrder?id="+id;
     }
     // 查看订单详情
     function detailDelicious(id) {

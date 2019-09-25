@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Modern Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css' />
+    <!-- Graph CSS -->
+    <link href="../css/lines.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <!-- jQuery -->
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <!--时钟-->
+    <link rel="stylesheet" href="../clock/css/demo.css"/>
+    <!---//webfonts--->
+    <!-- Nav CSS -->
+    <link href="../css/custom.css" rel="stylesheet">
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../js/metisMenu.min.js"></script>
+    <script src="../js/custom.js"></script>
+    <!-- Graph JavaScript -->
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/rickshaw.js"></script>
+
+    <!--许茂峰-->
+    <div th:include="base::base"></div>
+
+    <script src="/js/dateJS.js"></script>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+        div .row{
+            margin-top: 20px;
+        }
+    </style>
+    <script src="js/pageInfoJS.js"></script>
+</head>
+<body>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../index.html">酒店管理系统</a>
+        </div>
+
+
+        <!--在职人员 -->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-comments-o"></i></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-menu-header">
+                        <strong>在职人员</strong>
+                    </li>
+                    <li class="avatar">
+                        <a href="#">
+                            <img src="../images/1.png" alt=""/>
+                            <div><span>陈华</span></div>
+                            <small>EG134354134641354</small>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--系统设置等-->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown"><img src="../images/1.png"><span class="badge">9</span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-menu-header text-center">
+                        <strong>Account</strong>
+                    </li>
+                    <li class="m_2"><a href="#"><i class="fa fa-bell-o"></i> Updates <span class="label label-info">42</span></a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-envelope-o"></i> Messages <span class="label label-success">42</span></a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-tasks"></i> Tasks <span class="label label-danger">42</span></a></li>
+                    <li><a href="#"><i class="fa fa-comments"></i> Comments <span class="label label-warning">42</span></a></li>
+                    <li class="dropdown-menu-header text-center">
+                        <strong>Settings</strong>
+                    </li>
+                    <li class="m_2"><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-wrench"></i> Settings</a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-usd"></i> Payments <span class="label label-default">42</span></a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-file"></i> Projects <span class="label label-primary">42</span></a></li>
+                    <li class="divider"></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-shield"></i> Lock Profile</a></li>
+                    <li class="m_2"><a href="#"><i class="fa fa-lock"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--搜索框-->
+        <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" value="Search..." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search...';}">
+        </form>
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="../index.html"><i class="fa fa-dashboard fa-fw nav_icon"></i>Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-laptop nav_icon"></i>Layouts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../grids.html">Grid System</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>Menu Levels<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../graphs.html">Graphs</a>
+                            </li>
+                            <li>
+                                <a href="../typography.html">Typography</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../inbox.html">Inbox</a>
+                            </li>
+                            <li>
+                                <a href="../compose.html">Compose email</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="../widgets.html"><i class="fa fa-flask nav_icon"></i>Widgets</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../forms.html">Basic Forms</a>
+                            </li>
+                            <li>
+                                <a href="../validation.html">Validation</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-table nav_icon"></i>Tables<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../basic_tables.html">Basic Tables</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-sitemap fa-fw nav_icon"></i>Css<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../media.html">Media</a>
+                            </li>
+                            <li>
+                                <a href="../login.html">Login</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="../graphs.html">库存管理</a>
+                            </li>
+                            <li>
+                                <a href="../typography.html">入库管理</a>
+                            </li>
+                            <li>
+                                <a href="../typography.html">出库管理</a>
+                            </li>
+                            <li>
+                                <a href="../typography.html">物品管理</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+    <div id="page-wrapper">
+        <div class="graphs">
+            <div class="col_1">
+                <!--许茂峰-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <form class="form-inline" id="selectForm">
+                                <div class="form-group">
+                                    <label for="mName">散客名称：</label>
+                                    <input type="text" name="itName" class="form-control" id="mName" placeholder="会员姓名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mSFZtype">证件类型：</label>
+                                    <select class="form-control" name="itSFZtype" id="mSFZtype">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="itGender">散客性别：</label>
+                                    <select class="form-control" name="itGender" id="itGender">
+                                    </select>
+                                </div>
+
+                                <button type="button" id="submitForm" class="btn btn-info">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    查询
+                                </button>
+
+                                <button type="button" id="toInsertII" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    增加
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <!--人员列表-->
+                        <div class="row" id="listContainer">
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <!--分页-->
+                        <div class="col-xs-10">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination" id="fengye">
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+                <!--查看模态框-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="detailInformation">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">散客详情</h4>
+                            </div>
+                            <div class="modal-body" id="detailInformations">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <!--编辑模态框-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="updateInformation">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">编辑散客信息</h4>
+                            </div>
+                            <div class="modal-body" id="updateInformations">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="alertLeft" onclick="updateInformationForm()">保存修改</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <!--alert弹框样式-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">系统提示</h4>
+                            </div>
+                            <div class="modal-body" id="alerttishi">
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <!--confirm弹框样式-->
+                <div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">系统提示</h4>
+                            </div>
+                            <div class="modal-body" id="confirmtishi">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <script type="text/javascript">
+
+                    $(function () {
+                        var sz = ["编号","散客姓名","证件类型","住址","电话","性别","操作"];
+                        var entitySz = ["itId","itName","itSFZtypeName","itAddress","itTel","itGenderName"];
+                        loadMembers("selectForm","ajaxQueryAllIindividualTravelers","pageNum",1,sz,entitySz);
+
+                        // 查询按钮
+                        $("button[id='submitForm']").click(function () {
+                            loadMembers("selectForm","ajaxQueryAllIindividualTravelers","pageNum",1,sz,entitySz);
+                        })
+                        // 加载证件类型下拉框(数据字典)
+                        loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='itSFZtype']"));
+                        loadSelect("dataStatus/queryByCode","GENDER_TYPE", $("select[name='itGender']"));
+
+
+
+                        $("#toInsertII").click(function(){
+                            location.href="toInsertII";
+                        })
+                    })
+
+                    // 点击分页事件
+                    function clickPage(pageNum) {
+                        var sz = ["编号","散客姓名","证件类型","住址","电话","性别","操作"];
+                        var entitySz = ["itId","itName","itSFZtypeName","itAddress","itTel","itGenderName"];
+                        loadMembers("selectForm","ajaxQueryAllIindividualTravelers","pageNum",pageNum,sz,entitySz);
+                    }
+
+                    // 查看散客详情
+                    function detailInformation(mId) {
+                        $("#detailInformation").modal("show");
+
+                        $.post("ajaxDetailIindividualTravelersVO","itId="+mId,function (result) {
+                            var src = "";
+                            var title = "";
+                            // <img src="../../static/images/nan.png" height="32" width="32"/>
+                            if(result.itGender==1){
+                                src = "images/nan.png"
+                                title = "男";
+                            }else{
+                                src = "images/nv1.png";
+                                title = "女";
+                            }
+                            $("#detailInformations").html("");
+                            var html = "";
+                            html="<table class='table table-striped'>"
+                                +"<tr class=''>"
+                                +"<th>编号</th>"
+                                +"<td>"+result.itId+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>姓名</th>"
+                                +"<td>"+result.itName+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>证件类型</th>"
+                                +"<td>"+result.itSFZtypeName+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>证件号码</th>"
+                                +"<td>"+result.itSFZ+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>创建时间</th>"
+                                +"<td>"+getDateTime(result.itCreateTime,2)+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>总消费金额</th>"
+                                +"<td>"+result.itTotalConsumption+"￥</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>电话</th>"
+                                +"<td>"+result.itTel+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>住址</th>"
+                                +"<td>"+result.itAddress+"</td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>性别</th>"
+                                +"<td><img src='"+src+"' alt='' title='"+title+"'></td>"
+                                +"</tr>"
+                                +"<tr class=''>"
+                                +"<th>描述</th>"
+                                +"<td>"+result.itRemarks+"</td>"
+                                +"</tr>"
+                                +"</tr></table>";
+                            $("#detailInformations").html(html);
+                        })
+
+                    }
+
+                    // js ajax加载下拉框
+                    function jsLoadSelect(code,k){
+                        console.log(k)
+                        $.get("dataStatus/queryByCode","code="+code,function(result){
+                            var html = "";
+                            $.each(result, function (index,item) {
+                                if(k==item.valueName){
+                                    html+= "<option selected value='"+item.valueId+"'>"+item.valueName+"</option>";
+                                }else{
+                                    html+= "<option value='"+item.valueId+"'>"+item.valueName+"</option>";
+                                }
+                            })
+                            $("select[id='itsfzl']").html(html);
+
+
+                        })
+                        // alert(z);
+                        // return z;
+                    }
+
+                    // 编辑会员
+                    function updateInformation(mId) {
+                        $("#updateInformation").modal("show");
+                        $("#updateInformations").html("");
+
+                        $.post("ajaxDetailIindividualTravelersVO","itId="+mId,function (result) {
+                            var c;
+                            var v;
+                            if(result.itGender==1){
+                                c = "checked";
+                            }
+                            if(result.itGender==2){
+                                v = "checked";
+                            }
+                            jsLoadSelect("DOCUMENT_TYPE",result.itSFZtypeName);
+
+                            var html = "<form class='form-horizontal' id='updateOperatorForm'>"
+                                +"<div class='form-group'>"
+                                +"<label for='on' class='col-sm-4 control-label'>散客姓名：<span id='nameTiShi'></span></label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='text' name='itName' maxlength='5' oninput='checkNumber()'   class='form-control' value='"+result.itName+"' id='on' placeholder='散客姓名'><input type='hidden' name='itId' value='"+result.itId+"'>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='itsfzl' class='col-sm-4 control-label'>证件类型：</label>"
+                                +"<div class='col-sm-6'>"
+                                +"<select class='form-control' name='itSFZtype' id='itsfzl'></select>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='os' class='col-sm-4 control-label'>身份证号：<span id='sfzTiShi'></span></label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='text' class='form-control' oninput='checkLength(2)'  name='itSFZ' value='"+result.itSFZ+"' id='os'>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='osa' class='col-sm-4 control-label'>住址：</label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='text' class='form-control' name='itAddress' value='"+result.itAddress+"' id='osa'>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='aaa' class='col-sm-4 control-label'>性别：</label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='radio' "+c+" name='itGender' id='genderNan' value='1'><label for='genderNan'><img  src='images/nan.png' alt='' title='男'></label>&nbsp;&nbsp;&nbsp;  "
+                                +"<input type='radio' "+v+" name='itGender' id='genderNv' value='2'><label for='genderNv'><img  src='images/nv1.png' alt='' title='女'></label>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='ot' class='col-sm-4 control-label'>电话：<span id='telTiShi'></span></label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='number' oninput='checkLength(1)' class='form-control' name='itTel' value='"+result.itTel+"' id='ot'>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='oa' class='col-sm-4 control-label'>总消费金额：</label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='text' class='form-control' name='itTotalConsumption'  value='"+result.itTotalConsumption+"' id='oa'>"
+                                +"</div>"
+                                +"</div>"
+                                +"<div class='form-group'>"
+                                +"<label for='oa' class='col-sm-4 control-label'>备注：</label>"
+                                +"<div class='col-sm-6'>"
+                                +"<input type='text' class='form-control' name='itRemarks'  value='"+result.itRemarks+"' id='oa'>"
+                                +"</div>"
+                                +"</div>"
+                                +"</form>";
+                            $("#updateInformations").html(html);
+                        })
+                    }
+
+                    // 编辑保存操作
+                    function updateInformationForm() {
+                        if (checkLength(1)&&checkNumber()&&checkLength(2)){
+                            var data = $("#updateOperatorForm").serialize();
+                            $.post("ajaxUpdateIindividualTravelers",data,function (resutl) {
+                                if(resutl){
+                                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                                    var sz = ["编号","散客姓名","证件类型","住址","电话","性别","操作"];
+                                    var entitySz = ["itId","itName","itSFZtypeName","itAddress","itTel","itGenderName"];
+                                    loadMembers("selectForm","ajaxQueryAllIindividualTravelers","pageNum",1,sz,entitySz);
+
+                                }else{
+                                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                                }
+                                $("#updateOperator").modal("hide");
+                            })
+                        }else{
+                            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                        }
+                        $("#alertModel").modal("show");
+                    }
+
+                    // 检查字符串长度
+                    function checkLength(r){
+                        if(r==1){
+                            var telLength = $("input[name='itTel']").val().length;
+                            if(telLength!=11){
+                                $("#telTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                                return false;
+                            }else{
+                                $("#telTiShi").html("");
+                                return true;
+                            }
+                        }else if(r==2){
+                            var telLength = $("input[name='itSFZ']").val().length;
+                            if(telLength!=18){
+                                $("#sfzTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                                return false;
+                            }else{
+                                $("#sfzTiShi").html("");
+                                return true;
+                            }
+                        }
+                    }
+
+                    // 检查是否包含数字
+                    function checkNumber() {
+                        var oName = $("input[name='itName'][id='on']").val();
+                        var reg = /^(?=.*\d.*\b)/;
+                        if(reg.test(oName)){
+                            // 包含nameTiShi
+                            $("#nameTiShi").html("<font color='red'><span class='glyphicon glyphicon-hand-right' aria-hidden='true'></span></font>");
+                            return false;
+                        }else{
+                            // 不包含
+                            $("#nameTiShi").html("");
+                            return true;
+                        }
+                    }
+
+                    // 判断是否点击的变量
+                    var isClick = false;
+                    // 点击确认删除
+                    function OkNo() {
+                        isClick = true;
+                        var oId = $("input[name='hiddenOId']").val();
+                        if(isClick){
+                            $("#confirmModel").modal("hide");
+                            $.post("ajaxDeleteII","itId="+oId, function (result) {
+                                if(result){
+                                    var sz = ["编号","散客姓名","证件类型","住址","电话","性别","操作"];
+                                    var entitySz = ["itId","itName","itSFZtypeName","itAddress","itTel","itGenderName"];
+                                    loadMembers("selectForm","ajaxQueryAllIindividualTravelers","pageNum",1,sz,entitySz);
+                                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                                    $("#alertModel").modal("show");
+                                }else{
+                                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                                }
+
+                            })
+                        }
+                    }
+
+                    // 删除操作
+                    function deleteInformation(oId,name){
+                        $("#confirmtishi").html("确定删除操作人员<strong>"+name+"</strong>的信息吗?<input type='hidden' value='"+oId+"' name='hiddenOId'>");
+                        $("#confirmModel").modal("show");
+                    }
+
+
+
+                </script>
+            </div>
+            <div class="span_11">
+                <div class="col-md-6 col_4">
+
+                    <!----Calender -------->
+                    <link rel="stylesheet" href="../css/clndr.css" type="text/css" />
+                    <script src="../js/underscore-min.js" type="text/javascript"></script>
+                    <script src= "../js/moment-2.2.1.js" type="text/javascript"></script>
+                    <script src="../js/clndr.js" type="text/javascript"></script>
+                    <script src="../js/site.js" type="text/javascript"></script>
+                    <!----End Calender -------->
+                </div>
+                <div class="col-md-6 col_5">
+                    <div id="chart_container">
+
+                        <script>
+
+                            var seriesData = [ [], [], [], [], [] ];
+                            var random = new Rickshaw.Fixtures.RandomData(50);
+
+                            for (var i = 0; i < 75; i++) {
+                                random.addData(seriesData);
+                            }
+
+                            var graph = new Rickshaw.Graph( {
+                                element: document.getElementById("chart"),
+                                renderer: 'multi',
+
+                                dotSize: 5,
+                                series: [
+                                    {
+                                        name: 'temperature',
+                                        data: seriesData.shift(),
+                                        color: '#AFE9FF',
+                                        renderer: 'stack'
+                                    }, {
+                                        name: 'heat index',
+                                        data: seriesData.shift(),
+                                        color: '#FFCAC0',
+                                        renderer: 'stack'
+                                    }, {
+                                        name: 'dewpoint',
+                                        data: seriesData.shift(),
+                                        color: '#555',
+                                        renderer: 'scatterplot'
+                                    }, {
+                                        name: 'pop',
+                                        data: seriesData.shift().map(function(d) { return { x: d.x, y: d.y / 4 } }),
+                                        color: '#555',
+                                        renderer: 'bar'
+                                    }, {
+                                        name: 'humidity',
+                                        data: seriesData.shift().map(function(d) { return { x: d.x, y: d.y * 1.5 } }),
+                                        renderer: 'line',
+                                        color: '#ef553a'
+                                    }
+                                ]
+                            } );
+
+
+                            graph.render();
+
+                            var detail = new Rickshaw.Graph.HoverDetail({
+                                graph: graph
+                            });
+                        </script>
+                    </div>
+                    <!-- map -->
+                    <link href="../css/jqvmap.css" rel='stylesheet' type='text/css' />
+                    <script src="../js/jquery.vmap.js"></script>
+                    <script src="../js/jquery.vmap.sampledata.js" type="text/javascript"></script>
+                    <script src="../js/jquery.vmap.world.js" type="text/javascript"></script>
+                    <script type="text/javascript" src="../clock/js/clock-1.1.0.min.js"></script>
+                    <script>
+
+                        var clock = $("#clock").clock(),
+                            data = clock.data('clock');
+
+                        // data.pause();
+                        // data.start();
+                        // data.setTime(new Date());
+
+                        var d = new Date();
+                        d.setHours(9);
+                        d.setMinutes(51);
+                        d.setSeconds(20);
+
+                        var clock1 = $("#clock1").clock({
+                            width: 210,
+                            height: 305,
+                            theme: 't2',
+                            date: d
+                        });
+
+                        var clock2 = $("#clock2").clock({
+                            width: 150,
+                            height: 220,
+                            theme: 't3'
+                        });
+
+                    </script>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            jQuery('#vmap').vectorMap({
+                                map: 'world_en',
+                                backgroundColor: '#333333',
+                                color: '#ffffff',
+                                hoverOpacity: 0.7,
+                                selectedColor: '#666666',
+                                enableZoom: true,
+                                showTooltip: true,
+                                values: sample_data,
+                                scaleColors: ['#C8EEFF', '#006491'],
+                                normalizeFunction: 'polynomial'
+                            });
+                        });
+                    </script>
+                    <!-- //map -->
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="content_bottom">
+
+                <div class="clearfix"> </div>
+            </div>
+            <div class="copy">
+                <p>Copyright &copy; 2015 </p>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<!-- Bootstrap Core JavaScript -->
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+</body>
+</html>
