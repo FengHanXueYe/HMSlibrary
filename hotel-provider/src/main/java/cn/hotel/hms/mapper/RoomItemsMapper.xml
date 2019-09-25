@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.RoomItemsMapper">
+    <select id="queryAllByNumber" parameterType="String" resultType="cn.hotel.vo.RoomItemsVO">
+        SELECT rmi.*,sta.valueName AS goodsStatusName FROM `roomitems` AS rmi,`datastatus` AS sta WHERE rmi.goodsStatus = sta.valueId AND sta.typeCode = 'GOODS_STATUS' AND roomCode = #{code}
+    </select>
+</mapper>

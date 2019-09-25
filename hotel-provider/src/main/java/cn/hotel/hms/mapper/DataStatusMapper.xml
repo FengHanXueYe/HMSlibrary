@@ -4,6 +4,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hotel.hms.mapper.DataStatusMapper">
     <select id="queryByCode" parameterType="String" resultType="DataStatus">
-        select * from `datastatus` where typeCode = #{code}
+        select * from `datastatus`
+        <where>
+            <if test="code != null">
+                typeCode = #{code}
+            </if>
+        </where>
+
     </select>
+
+    <select id="queryAll" parameterType="DataStatus" resultType="cn.hotel.vo.DataStatusVO">
+        SELECT sta.*,opea.oName AS createdByName,opeb.oName AS modifyByName FROM `datastatus` AS sta,`operator` AS opea,operator AS opeb WHERE opea.oId = sta.createdBy AND opeb.oId = sta.modifyBy
+        <if test="typeCode != null and typeCode != ''">
+            and sta.typeCode = #{typeCode}
+        </if>
+    </select>
+    
+    <select id="queryById" parameterType="Integer" resultType="cn.hotel.vo.DataStatusVO">
+        SELECT sta.*,opea.oName AS createdByName,opeb.oName AS modifyByName FROM `datastatus` AS sta,`operator` AS opea,operator AS opeb WHERE opea.oId = sta.createdBy AND opeb.oId = sta.modifyBy AND sta.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="DataStatus">
+        INSERT INTO `datastatus`(typeCode,typeName,valueId,valueName,createdBy,creationDate) VALUES(#{typeCode},#{typeName},#{valueId},#{valueName},#{createdBy},NOW())
+    </insert>
+
+    <update id="update" parameterType="DataStatus">
+        UPDATE `datastatus`  SET typeCode = #{typeCode} ,typeName = #{typeName},valueId = #{valueId},valueName = #{valueName},modifyBy = #{modifyBy},modifyDate = NOW() WHERE id = #{id}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        DELETE FROM `datastatus` WHERE id = #{id}
+    </delete>
 </mapper>
