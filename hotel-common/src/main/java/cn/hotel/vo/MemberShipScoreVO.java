@@ -1,5 +1,6 @@
 package cn.hotel.vo;
 
+import cn.hotel.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

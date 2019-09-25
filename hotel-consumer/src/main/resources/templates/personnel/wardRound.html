@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>listWardRound</title>
+    <div th:include="base::base"></div>
+
+    <script src="/js/dateJS.js"></script>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+        div .row{
+            margin-top: 20px;
+        }
+    </style>
+    <script src="js/pageInfoJS.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-inline" id="selectForm">
+                    <div class="form-group">
+                        <label for="mName">房间编号：</label>
+                        <input type="text" name="wrRoomNumber" class="form-control" id="mName" title="支持模糊查询" placeholder="请输入房间编号">
+                    </div>
+
+                    <button type="button" id="submitForm" class="btn btn-info">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        查询
+                    </button>
+
+                    <button type="button" id="toInsertII" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        今日查房记录
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <!--人员列表-->
+            <div class="row" id="listContainer">
+
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <!--分页-->
+            <div class="col-xs-10">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="fengye">
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <!--查看模态框-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="detailInformation">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">查房详情</h4>
+                </div>
+                <div class="modal-body" id="detailInformations">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--编辑模态框-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="updateInformation">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑查房信息</h4>
+                </div>
+                <div class="modal-body" id="updateInformations">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="alertLeft" onclick="updateInformationForm()">保存修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--alert弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="alerttishi">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--confirm弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="confirmModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="confirmtishi">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="OkNo()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<script type="text/javascript">
+
+    $(function () {
+        var sz = ["编号","房间编号","查房人","操作"];
+        var entitySz = ["wrId","wrRoomNumber","wrOName"];
+        loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+
+        // 查询按钮
+        $("button[id='submitForm']").click(function () {
+            loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+        })
+        // 加载证件类型下拉框(数据字典)
+        //loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE", $("select[name='itSFZtype']"));
+        //loadSelect("dataStatus/queryByCode","GENDER_TYPE", $("select[name='itGender']"));
+
+
+
+        $("#toInsertII").click(function(){
+            location.href="toTDWRV";
+        })
+    })
+
+    // 点击分页事件
+    function clickPage(pageNum) {
+        var sz = ["编号","房间编号","查房人","操作"];
+        var entitySz = ["wrId","wrRoomNumber","wrOName"];
+        loadMembers("selectForm","ajaxQueryAllWR","pageNum",pageNum,sz,entitySz);
+   }
+
+    // 查看散客详情
+    function detailInformation(mId) {
+        $("#detailInformation").modal("show");
+
+        $.post("ajaxDetailWR","wrId="+mId,function (result) {
+
+            $("#detailInformations").html("");
+            var html = "";
+            html="<table class='table table-striped'>"
+                +"<tr class=''>"
+                +"<th>编号</th>"
+                +"<td>"+result.wrId+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>房间编号</th>"
+                +"<td>"+result.wrRoomNumber+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>查房人</th>"
+                +"<td>"+result.wrOName+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>查房人部门</th>"
+                +"<td>"+result.wrODepartment+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>查房情况</th>"
+                +"<td>"+result.wrDetail+"</td>"
+                +"</tr>"
+                +"<tr class=''>"
+                +"<th>查房时间</th>"
+                +"<td>"+getDateTime(result.wrCreatetime,1)+"</td>"
+                +"</tr>"
+            // getDateTime(result.wrCreatetime,1) getTimesLoad(result.wrCreatetime,"hms") 	1569184368000
+
+                +"</tr></table>";
+            $("#detailInformations").html(html);
+        })
+
+    }
+
+    // js ajax加载下拉框
+    function jsLoadSelectXP(url,e){
+        console.log(e+"--===--"+url)
+        $.post(url,function(result){
+            var html = "";
+            $.each(result, function (index,item) {
+                if(e==item.roomNumber){
+                    html+= "<option selected value='"+item.roomNumber+"'>"+item.roomNumber+"</option>";
+                }else{
+                    html+= "<option value='"+item.roomNumber+"'>"+item.roomNumber+"</option>";
+                }
+            })
+            $("select[id='wrRoomNumber']").html(html);
+        })
+        // alert(z);
+        // return z;
+    }
+    // js ajax加载下拉框
+    function jsLoadSelect(url,e){
+        console.log(e+"----"+url)
+        $.post(url,function(result){
+            var html = "";
+            $.each(result, function (index,item) {
+                if(e==item.oId){
+                    html+= "<option selected value='"+item.oId+"'>"+item.oName+"</option>";
+                }else{
+                    html+= "<option value='"+item.oId+"'>"+item.oName+"</option>";
+                }
+            })
+            $("select[id='wrOId']").html(html);
+        })
+        // alert(z);
+        // return z;
+    }
+
+    // 编辑会员
+    function updateInformation(mId) {
+        $("#updateInformation").modal("show");
+        $("#updateInformations").html("");
+
+        $.post("ajaxDetailWR","wrId="+mId,function (result) {
+            // 加载房间
+            jsLoadSelectXP("ajaxLoadRoom",result.wrRoomNumber);
+            // 加载查房人
+            jsLoadSelect("ajaxLoadOperator",result.wrOId);
+
+            var html = "<form class='form-horizontal' id='updateOperatorForm'>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='wrRoomNumber' class='col-sm-4 control-label'>房间编号：</label>"
+                    +"<div class='col-sm-6'>"
+                    +"<select class='form-control' name='wrRoomNumber' id='wrRoomNumber'></select><input type='hidden' name='wrId' value='"+result.wrId+"'>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='wrOId' class='col-sm-4 control-label'>查房人：</label>"
+                    +"<div class='col-sm-6'>"
+                    +"<select class='form-control' name='wrOId' id='wrOId'></select>"
+                    +"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                    +"<label for='wrDetail' class='col-sm-4 control-label'>查房情况：<span id='sfzTiShi'></span></label>"
+                    +"<div class='col-sm-6'>"
+                    +"<textarea name='wrDetail' id='wrDetail' cols='35' rows='5'>"+result.wrDetail+"</textarea>"
+                    +"</div>"
+                +"</div>"
+                +"</form>";
+            $("#updateInformations").html(html);
+        })
+    }
+
+    // 编辑保存操作
+    function updateInformationForm() {
+        var detail = $("textarea[name='wrDetail']").val();
+        if (detail!=""){
+            var data = $("#updateOperatorForm").serialize();
+            $.post("ajaxUpdateWR",data,function (resutl) {
+                if(resutl){
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    var sz = ["编号","房间编号","查房人","操作"];
+                    var entitySz = ["wrId","wrRoomNumber","wrOName"];
+                    loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+                $("#updateOperator").modal("hide");
+            })
+        }else{
+            $("#alerttishi").html("<font color='red'>操作错误，请填写查房情况！</font>");
+        }
+        $("#alertModel").modal("show");
+    }
+
+
+    // 判断是否点击的变量
+    var isClick = false;
+    // 点击确认删除
+    function OkNo() {
+        isClick = true;
+        var oId = $("input[name='hiddenOId']").val();
+        if(isClick){
+            $("#confirmModel").modal("hide");
+            $.post("ajaxDeleteWR","wrId="+oId, function (result) {
+                if(result){
+                    var sz = ["编号","房间编号","查房人","操作"];
+                    var entitySz = ["wrId","wrRoomNumber","wrOName"];
+                    loadMembers("selectForm","ajaxQueryAllWR","pageNum",1,sz,entitySz);
+                    $("#alerttishi").html("<font color='green'>操作成功！</font>");
+                    $("#alertModel").modal("show");
+                }else{
+                    $("#alerttishi").html("<font color='red'>操作错误！</font>");
+                }
+
+            })
+        }
+    }
+
+    // 删除操作
+    function deleteInformation(oId,name){
+        $("#confirmtishi").html("确定删除<strong>"+name+"</strong>房间的信息吗?<input type='hidden' value='"+oId+"' name='hiddenOId'>");
+        $("#confirmModel").modal("show");
+    }
+
+
+
+</script>
+</body>
+</html>

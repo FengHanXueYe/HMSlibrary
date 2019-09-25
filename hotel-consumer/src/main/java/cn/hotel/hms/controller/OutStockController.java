@@ -7,6 +7,7 @@ import cn.hotel.service.MaterialsInfoService;
 import cn.hotel.service.OutStockService;
 import cn.hotel.service.StockInfoService;
 import cn.hotel.utils.PageUtil;
+import cn.hotel.vo.OutStockVO;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class OutStockController {
         model.addAttribute("StockInfo",wzxStockInfos);
         model.addAttribute("Materials",info);
         model.addAttribute("actualStock",stockId);
-        return "storageroom_addoutstock";
+        return "/receptionroom/storageroom_addOutStock";
     }
 
     @RequestMapping(value = "doAddOutStock",method = RequestMethod.POST)
@@ -57,7 +58,7 @@ public class OutStockController {
         if(outStock>0){
             return "redirect:/actuals/queryAll";
         }else{
-            return "storageroom_addoutstock";
+            return "/receptionroom/storageroom_addoutstock";
         }
     }
 
@@ -67,7 +68,7 @@ public class OutStockController {
     }
 
     @RequestMapping("queryAllOutStockVO")
-    public String queryAllOutStockVO(OutStockVO outStockVO,Integer pageNum,Integer pageSize,Model model){
+    public String queryAllOutStockVO(OutStockVO outStockVO, Integer pageNum, Integer pageSize, Model model){
         //查询所有入库单信息
         PageUtil<OutStockVO> pageUtil = outStockService.queryAllOutStockVO(outStockVO, pageNum, pageSize);
         //查询所有仓库信息

@@ -136,6 +136,7 @@ public class MaterialsInfoController {
     }
     @RequestMapping(value = "doUpdateMaterialsInfo",method = RequestMethod.POST)
     public String doUpdateMaterialsInfo(WZXMaterialsInfo wzxMaterialsInfo,Model model){
+        System.out.println("wzxMaterialsInfo:"+wzxMaterialsInfo.getMaterialsUnitPrice());
         Integer materialsInfo = materialsInfoService.updateMaterialsInfo(wzxMaterialsInfo);
         if(materialsInfo>0){
             model.addAttribute("修改成功");

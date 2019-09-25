@@ -4,6 +4,8 @@ import cn.hotel.entity.Operator;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.OperatorVO;
 
+import java.util.List;
+
 /**
  * 操作人员接口（峰）
  */
@@ -26,6 +28,12 @@ public interface OperatorService {
 
     // 验证查询
     Operator verificationOperator(Operator operator);
+
+    // 查询所有的人员无条件
+    List<Operator> queryAllOperator();
+
+    // 登录
+    OperatorVO loginUser(Operator operator);
 
 
 }

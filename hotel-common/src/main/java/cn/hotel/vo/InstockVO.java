@@ -33,7 +33,7 @@ public class InstockVO implements Serializable {
     }
 
     public void setIsTime(String isTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:sss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
         Date date;
         try {
             date = sdf.parse(isTime);

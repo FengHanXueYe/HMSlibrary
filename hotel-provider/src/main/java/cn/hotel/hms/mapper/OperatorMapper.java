@@ -24,4 +24,9 @@ public interface OperatorMapper {
 
     Operator verificationOperator(Operator operator);
 
+    List<Operator> queryAllOperator();
+
+    OperatorVO loginUser(Operator operator);
+
+
 }

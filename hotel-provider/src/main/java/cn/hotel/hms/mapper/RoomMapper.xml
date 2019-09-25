@@ -33,4 +33,7 @@
     <select id="queryRoomAllNumber" resultType="Room">
         select * from `room` where roomStatus = 1
     </select>
+    <select id="queryRoomAllMake" resultType="cn.hotel.entity.Room">
+        select * from `room` where roomStatus = 5
+    </select>
 </mapper>

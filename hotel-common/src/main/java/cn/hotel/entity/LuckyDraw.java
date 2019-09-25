@@ -21,5 +21,5 @@ public class LuckyDraw implements Serializable {
     private double ldShopIntegral; // 物品积分价格
     private Integer ldShopNum; // 商品数量
     private Date ldCreateTime; // 创建时间
-
+    private String ldImg; // 物品图片
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>insertWardRound</title>
+    <div th:include="base::base"></div>
+
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0;
+        }
+    </style>
+    <script src="js/pageInfoJS.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>查房信息 </small></h1>
+            </div>
+            <form class="form-horizontal" id="insertOperatorForm">
+                <div class="form-group">
+                    <label for="on" class="col-sm-4 control-label">房间编号：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="wrRoomNumber" id="on"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="od" class="col-sm-4 control-label">查房人员：</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="wrOId" id="od"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="os" class="col-sm-4 control-label">查房情况：<span id="sfzTiShi"></span></label>
+                    <div class="col-sm-6">
+                        <textarea name="wrDetail" cols="75" rows="5" id="os"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-sm-10 control-label">
+                    <button type="button" class="btn btn-info" id="alertLeft" onclick="insertOperatorForm()">
+                        <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 添加
+                    </button>
+                </div>
+            </form>
+
+
+
+            <!--alert弹框样式-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">系统提示</h4>
+                        </div>
+                        <div class="modal-body" id="alerttishi">
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+<script type="text/javascript">
+
+
+
+
+
+    $(function () {
+
+
+        // loadSelect("dataStatus/queryByCode","DOCUMENT_TYPE",$("select[name='wrRoomNumber']"))
+
+        loadHXP("ajaxLoadRoom",$("select[name='wrRoomNumber']"),"roomNumber","roomNumber");
+        loadHXP("ajaxLoadOperator",$("select[name='wrOId']"),"oId","oName");
+
+    })
+
+
+
+    // 增加操作
+    function insertOperatorForm() {
+        var wrRoomNumber = $("select[name='wrRoomNumber']").val();
+
+        if(wrRoomNumber==-1){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+        var wrId = $("select[name='wrOId']").val();
+        if(wrId==-1){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+        var wrDetail = $("textarea[name='wrDetail']").val();
+        if(wrDetail==""){
+            $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            $("#alertModel").modal("show");
+            return;
+        }
+
+
+        var data = $("#insertOperatorForm").serialize();
+        $.post("ajaxInsertWR",data,function (resutl) {
+            if(resutl){
+                $("#alerttishi").html("<font color='green'>操作成功！</font>");
+            }else{
+                $("#alerttishi").html("<font color='red'>操作错误！</font>");
+            }
+            $("#alertModel").modal("show");
+        })
+
+
+
+    }
+
+
+
+
+</script>
+
+
+</body>
+</html>

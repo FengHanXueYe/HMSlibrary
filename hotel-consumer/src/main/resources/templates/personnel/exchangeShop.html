@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>exchangeShop</title>
+    <div th:include="base::base"></div>
+    <style type="text/css">
+        div .row{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" >
+        <div class="page-header">
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 会员 <small>积分兑换</small></h1>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 col-md-4" th:each="item : ${map.listOne}">
+                <div class="thumbnail">
+                    <img th:src="${item.ldImg}" alt="加载中">
+                    <div class="caption">
+                        <h3 th:text="${item.ldName}"></h3>
+                        <p>兑换积分: <span th:text="${item.ldShopIntegral}"></span></p>
+                        <p><a href="#" th:no="${item.ldId}" th:data="${item.ldName}" class="btn btn-info" role="button">兑换</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-sm-6 col-md-4" th:each="item : ${map.listTwo}">
+                <div class="thumbnail">
+                    <img th:src="${item.ldImg}" alt="...">
+                    <div class="caption">
+                        <h3 th:text="${item.ldName}"></h3>
+                        <p>兑换积分: <span th:text="${item.ldShopIntegral}"></span></p>
+                        <p><a href="#" th:no="${item.ldId}" th:data="${item.ldName}" class="btn btn-info" role="button">兑换</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="eShop">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="mtkTS">兑换会员搜索</h4>
+                </div>
+                <div class="modal-body" id="eShops">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-9">
+                                    <input type="text" oninput="selectNumber()" class="form-control" name="mNumber" id="inputEmail3" placeholder="会员编号">
+                                    <input type="hidden" name="hiddenName"  >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="htmlLM"></div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" id="exchanges">兑换</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--alert弹框样式-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="alertModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body" id="alerttishi">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<script type="text/javascript">
+    $(function () {
+        $("a[no]").click(function () {
+            var ldId = $(this).attr("no");
+            var ldName = $(this).attr("data");
+            $("input[name='hiddenName']").val(ldId);
+            $("#mtkTS").html("兑换<strong>"+ldName+"*1</strong>会员搜索");
+            // $.post("","mNumber="+ldId)
+            // alert(ldId);
+            $("#htmlLM").html("");
+            $("input[name='mNumber']").val("");
+            $("#eShop").modal("show");
+        })
+        
+        // 点击兑换物品
+        $("#exchanges").click(function () {
+            var data = $("#exchangeForm").serialize();
+            $.post("ajaxExchangShop",data,function (result) {
+                if(result){
+                    $("#alerttishi").html("<h4 style='color: green'>兑换成功！</h4>");
+
+                }else{
+                    $("#alerttishi").html("<h4 style='color: red'>兑换失败，请检查该会员积分是否充足！</h4>");
+                }
+                $("#eShop").modal("hide");
+                $("#alertModel").modal("show");
+            })
+
+
+        })
+        
+    })
+    // 获取输入的会员编号
+    function selectNumber() {
+        var number = $("input[name='mNumber']").val();
+        if(number!=""){
+            $.post("ajaxQueryAllGtIOO","mNumber="+number,function (result) {
+                var ldId = $("input[name='hiddenName']").val();
+                if(result!=""){
+                    $.each(result,function (index,item) {
+                        var html = "<form class='form-horizontal' id='exchangeForm'>"
+                                        +"<div class='form-group'>"
+                                            +"<label for='inputEmail31' class='col-sm-2 col-xs-offset-2 control-label'>会员姓名：</label>"
+                                            +"<div class='col-sm-7'>"
+                                                +"<input type='text' class='form-control' readonly id='inputEmail31' value='"+item.mssMId.mName+"'><input type='hidden' name='esMId' value='"+item.mssMId.mId+"'><input type='hidden' value='"+ldId +"' name='esLdId'><input type='hidden' value='1' name='esNum'>"
+                                            +"</div>"
+                                        +"</div>"
+                                        +"<div class='form-group'>"
+                                            +"<label for='inputPassword32' class='col-sm-2 col-xs-offset-2 control-label'>会员等级：</label>"
+                                            +"<div class='col-sm-7'>"
+                                                +"<input type='text' readonly class='form-control' id='inputPassword32' value='"+item.mMSR+"' >"
+                                            +"</div>"
+                                        +"</div>"
+                                        +"<div class='form-group'>"
+                                            +"<label for='inputPassword33' class='col-sm-2 col-xs-offset-2 control-label'>身份证号：</label>"
+                                            +"<div class='col-sm-7'>"
+                                                +"<input type='text' readonly class='form-control' id='inputPassword33' value='"+item.mssMId.mSFZ+"' >"
+                                            +"</div>"
+                                        +"</div>"
+                                        +"<div class='form-group'>"
+                                            +"<label for='inputPassword34' class='col-sm-2 col-xs-offset-2 control-label'>会员积分：</label>"
+                                            +"<div class='col-sm-7'>"
+                                                +"<input type='text' readonly class='form-control' id='inputPassword34' value='"+item.mssIntegral+"' >"
+                                            +"</div>"
+                                        +"</div>"
+                                    +"</form>";
+                        $("#htmlLM").html(html);
+                    })
+                }else{
+                    $("#htmlLM").html("<h3 align='center' style='color: red'><span class='glyphicon glyphicon-alert' aria-hidden='true'></span> 没有该会员信息！</h3>")
+                }
+            })
+        }else{
+            $("#htmlLM").html("");
+        }
+        // $("#htmlLM").html(number);
+
+        // console.log(number);
+    }
+</script>
+</body>
+</html>

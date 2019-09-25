@@ -44,6 +44,7 @@ public class IsStockController {
     @RequestMapping("toAddInstock")
     public String toAddInstock(Integer materialsId, ActualsStockVO actualsStockVO, Model model) {
         WZXMaterialsInfo wzxMaterialsInfo = materialsInfoService.queryMaterialsInfoByMaterialsId(materialsId);
+        System.out.println("actualsStockVO:"+actualsStockVO);
         model.addAttribute("wzxMaterialsInfo", wzxMaterialsInfo);
         model.addAttribute("actualsStockvo", actualsStockVO);
         model.addAttribute("stockInfos", stockInfoService.queryAllStockInfo());

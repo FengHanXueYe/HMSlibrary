@@ -172,16 +172,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="../graphs.html">库存管理</a>
+                                <a th:href="@{/actuals/queryAll}">库存管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">入库管理</a>
+                                <a th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">出库管理</a>
+                                <a th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">物品管理</a>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{/actuals/queryAll}">订单提醒</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -197,91 +209,97 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="col_1">
 
                 <div class="box">
-                    <hr class="line">物品信息<hr class="line">
+                    <span class="input-group-addon">物品信息</span>
                 </div>
 
-                    <table width="100%" border="1">
+                    <table width="100%"  border="1">
                         <tr>
-                            <td>物品名称</td>
+                            <td class="input-group-addon">物品名称</td>
                             <td>
-                                <input type="text" name="materialsName" th:value="${wzxMaterialsInfo.materialsName}">
+                                <input type="text" name="materialsName" class="form-control" th:value="${wzxMaterialsInfo.materialsName}">
                             </td>
-                            <td>当前库存数量</td>
+                            <td class="input-group-addon">当前库存数量</td>
                             <td >
-                                <input type="text" name="materialss" th:value="${actualsStockvo.materialss}">
+                                <input type="text" name="materialss" class="form-control" th:value="${actualsStockvo.materialss}">
                             </td>
 
                         </tr>
                         <tr>
-                            <td>产地</td>
-                            <td><input type="text" name="materialsProducts" th:value="${wzxMaterialsInfo.materialsProducts}"></td>
-                            <td>供应商：</td>
+                            <td class="input-group-addon">产地</td>
+                            <td><input type="text" name="materialsProducts" class="form-control" th:value="${wzxMaterialsInfo.materialsProducts}"></td>
+                            <td class="input-group-addon">供应商：</td>
                             <td>
-                                <select name="supplierNumber" id="supplierNumber" th:each="supplier:${suppliers}">
+                                <select name="supplierNumber" id="supplierNumber" th:each="supplier:${suppliers}" class="form-control">
                                     <option value="-1">--请选择--</option>
                                     <option th:value="${supplier.supplierNumber}" th:text="${supplier.supplierDepartmentName}" th:field="${wzxMaterialsInfo.supplierNumber}"></option>
                                 </select>
                             </td>
-                            <td>单价：</td>
-                            <td><input type="text" name="materialsUnitPrice" th:value="${wzxMaterialsInfo.materialsUnitPrice}"></td>
+                            <td class="input-group-addon">单价：</td>
+                            <td><input type="text" name="materialsUnitPrice" class="form-control" th:value="${wzxMaterialsInfo.materialsUnitPrice}"></td>
                         </tr>
                         <tr>
-                            <td>成本价：</td>
-                            <td><input type="text" name="materialsPrices" th:value="${wzxMaterialsInfo.materialsPrices}"></td>
-                            <td>生产日期：</td>
-                            <td><input type="text" name="materialsStartDate" th:value="${#dates.format(wzxMaterialsInfo.materialsStartDate,'yyyy年MM月dd日 HH:mm:sss')}"></td>
-                            <td>过期日期：</td>
-                            <td><input type="text" name="materialsEndDate" th:value="${#dates.format(wzxMaterialsInfo.materialsEndDate,'yyyy年MM月dd日 HH:mm:sss')}"></td>
+                            <td class="input-group-addon">成本价：</td>
+                            <td ><input type="text" name="materialsPrices" class="form-control" th:value="${wzxMaterialsInfo.materialsPrices}"></td>
+                            <td class="input-group-addon">生产日期：</td>
+                            <td><input type="text" name="materialsStartDate" class="form-control" th:value="${#dates.format(wzxMaterialsInfo.materialsStartDate,'yyyy年MM月dd日 HH:mm:sss')}"></td>
+                            <td class="input-group-addon">过期日期：</td>
+                            <td><input type="text" name="materialsEndDate" class="form-control" th:value="${#dates.format(wzxMaterialsInfo.materialsEndDate,'yyyy年MM月dd日 HH:mm:sss')}"></td>
                         </tr>
                     </table>
-                    入库信息
+                    <span class="input-group-addon">入库信息</span>
                 <form action="/instock/doAddInstock" method="post">
                     <table width="100%" border="1">
                         <tr>
-                            <td>入库单号:</td>
-                            <td>
-                                <input type="text" name="isNumber">
-                                <input type="hidden" name="materialsId" th:value="${wzxMaterialsInfo.materialsId}">
+                            <td class="input-group-addon">入库单号:</td>
+                            <td >
+                                <input type="text" class="form-control" name="isNumber">
+                                <input type="hidden" name="materialsId"  th:value="${wzxMaterialsInfo.materialsId}">
                                 <input type="hidden" name="materialsNumber" th:value="${wzxMaterialsInfo.materialsNumber}">
                             </td>
-                            <td>成本价：</td>
-                            <td><input type="text" name="materialsPrices"></td>
-                            <td>入库数量：</td>
-                            <td><input type="text" name="materialsCount"></td>
+                            <td class="input-group-addon">成本价：</td>
+                            <td><input type="text" name="materialsPrices" class="form-control"></td>
+                            <td class="input-group-addon">入库数量：</td>
+                            <td><input type="text" name="materialsCount" class="form-control"></td>
 
                         </tr>
                         <tr>
-                            <td>入库金额：</td>
-                            <td><input type="text" name="materialsUnitPrice" onchange="MyDigtUtilsMane(this)"></td>
-                            <td>入库金额大写：</td>
-                            <td><input type="text" name="isMoneyCapitalization"></td>
-                            <td>条形码：</td>
-                            <td><input type="text" name="materialsBarCode"></td>
+                            <td class="input-group-addon">入库金额：</td>
+                            <td><input type="text" name="materialsUnitPrice" class="form-control" onchange="MyDigtUtilsMane(this)"></td>
+                            <td class="input-group-addon">入库金额大写：</td>
+                            <td><input type="text" name="isMoneyCapitalization" class="form-control" placeholder="自动生成"></td>
+                            <td class="input-group-addon">条形码：</td>
+                            <td><input type="text" name="materialsBarCode" class="form-control"></td>
 
                         </tr>
                         <tr>
 
-                            <td>入库日期：</td>
-                            <td><input type="text" name="isTime"></td>
-                            <td>仓库：</td>
+                            <td class="input-group-addon">入库日期：</td>
                             <td>
-                                <select name="stockNumber" id="stockNumber" th:each="stockInfo:${stockInfos}">
+                                <input type="date" class="form-control1 ng-invalid ng-invalid-required" ng-model="model.date" placeholder="格式：yyyy-MM-dd" required=""  name="isTime">
+                            </td>
+                            <td class="input-group-addon">仓库：</td>
+                            <td>
+                                <select name="stockNumber" id="stockNumber" th:each="stockInfo:${stockInfos}" class="form-control">
                                     <option th:value="${stockInfo.stockId}" th:text="${stockInfo.stockName}"></option>
                                 </select>
                             </td>
 
                         </tr>
                         <tr>
-                            <td>出库人：</td>
-                            <td><input type="text" name="isPerson"></td>
-                            <td>备注</td>
-                            <td colspan="3"><textarea style="width: 100%;height: 100%" name="remark"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><button type="submit">添加</button></td>
-                            <td colspan="3"><button type="reset">取消</button></td>
+                            <td class="input-group-addon" >出库人：</td>
+                            <td><input type="text" name="isPerson" class="form-control"></td>
+                            <td class="input-group-addon">备注</td>
+                            <td colspan="3"><textarea style="width: 100%;height: 100%" name="remark" class="form-control"></textarea></td>
                         </tr>
                     </table>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-5">
+                                <button type="submit"  class="btn btn-primary">添加</button>
+                                <button type="button" onclick="toWarehousing()"  class="btn btn-primary">取消</button>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <div class="clearfix"> </div>
             </div>
@@ -300,6 +318,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div id="chart_container">
 
                         <script>
+
+                            function toWarehousing() {
+                                location.href="/actuals/queryAll";
+                            }
                             function MyDigtUtilsMane(obj){
                                 var num = $(obj).val();
                                 $.ajax({
