@@ -23,7 +23,7 @@
     </select>
 
     <select id="queryByNumber" resultType="cn.hotel.vo.RoomVO" parameterType="String">
-         SELECT r.*,sta.valueName AS roomTypeName FROM `room` AS r,`datastatus` AS sta WHERE r.roomType = sta.valueId AND sta.typeCode = 'ROMM_TYPE' AND r.roomNumber = #{no}
+        SELECT r.*,sta.valueName AS roomTypeName,stb.valueName as roomStatusName FROM `room` AS r,`datastatus` AS sta,datastatus as stb  WHERE r.roomType = sta.valueId AND sta.typeCode = 'ROMM_TYPE' AND r.roomType = stb.valueId and stb.typeCode = 'ROOM_STATUS' and r.roomNumber = #{no}
     </select>
     
     <update id="updateStatus" parameterType="Room">
@@ -32,5 +32,8 @@
 
     <select id="queryRoomAllNumber" resultType="Room">
         select * from `room` where roomStatus = 1
+    </select>
+    <select id="queryRoomAllMake" resultType="cn.hotel.entity.Room">
+        select * from `room` where roomStatus = 5
     </select>
 </mapper>

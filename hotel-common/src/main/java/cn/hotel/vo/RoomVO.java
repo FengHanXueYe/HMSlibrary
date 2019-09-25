@@ -5,31 +5,15 @@ import java.io.Serializable;
 public class RoomVO implements Serializable {
     private Integer id;
     private String roomNumber;
-    private String roomNumberValue; //状态展示图片
     private Integer roomType;
     private String roomTypeName; //客房类型名称
     private Integer roomStatus;
-    private String roomStatusRisorse; //状态展示图片
+    private String roomStatusName; // 客房状态名称
+    private String roomStatusRisorse; //客房状态展示图片
     private double roomPrice;
     private Integer roomBed;
     private double roomDeposit;
 
-
-    public String getRoomTypeName() {
-        return roomTypeName;
-    }
-
-    public void setRoomTypeName(String roomTypeName) {
-        this.roomTypeName = roomTypeName;
-    }
-
-    public String getRoomNumberValue() {
-        return roomNumberValue;
-    }
-
-    public void setRoomNumberValue(String roomNumberValue) {
-        this.roomNumberValue = roomNumberValue;
-    }
 
     public Integer getId() {
         return id;
@@ -55,12 +39,28 @@ public class RoomVO implements Serializable {
         this.roomType = roomType;
     }
 
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
+    }
+
     public Integer getRoomStatus() {
         return roomStatus;
     }
 
     public void setRoomStatus(Integer roomStatus) {
         this.roomStatus = roomStatus;
+    }
+
+    public String getRoomStatusName() {
+        return roomStatusName;
+    }
+
+    public void setRoomStatusName(String roomStatusName) {
+        this.roomStatusName = roomStatusName;
     }
 
     public String getRoomStatusRisorse() {

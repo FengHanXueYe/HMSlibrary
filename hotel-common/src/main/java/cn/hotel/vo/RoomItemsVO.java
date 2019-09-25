@@ -1,15 +1,15 @@
-package cn.hotel.entity;
+package cn.hotel.vo;
 
 import java.io.Serializable;
 
-public class RoomItems implements Serializable {
+public class RoomItemsVO implements Serializable {
     private Integer id;
     private String goodsName;
     private Integer goodsNumber;
     private double goodsPrice;
     private Integer goodsStatus;
+    private String goodsStatusName; //物品状态名称
     private String roomCode;
-
 
     public Integer getId() {
         return id;
@@ -49,6 +49,14 @@ public class RoomItems implements Serializable {
 
     public void setGoodsStatus(Integer goodsStatus) {
         this.goodsStatus = goodsStatus;
+    }
+
+    public String getGoodsStatusName() {
+        return goodsStatusName;
+    }
+
+    public void setGoodsStatusName(String goodsStatusName) {
+        this.goodsStatusName = goodsStatusName;
     }
 
     public String getRoomCode() {

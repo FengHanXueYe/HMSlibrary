@@ -1,6 +1,5 @@
 package cn.hotel.service;
 
-import cn.hotel.entity.DataStatus;
 import cn.hotel.entity.Room;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.RoomLiveinVO;
@@ -24,4 +23,6 @@ public interface RoomService {
     //查询所有房间号
     List<Room> queryRoomAllNumber();
 
+    //查询已预约的房间
+    List<Room> queryRoomAllMake();
 }

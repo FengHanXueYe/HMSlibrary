@@ -13,6 +13,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hotel.service.OperatorService;
+import cn.hotel.vo.OperatorVO;
+import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+
+
 @Configuration
 @EnableScheduling
 public class QuartzConfig {
@@ -157,3 +165,4 @@ public class QuartzConfig {
 
 
 }
+

@@ -14,7 +14,7 @@
 				<li><a class="nav-item nav-active" href="/toFoods">首页</a></li>
 				<li><a class="nav-item" href="/topinpai">品牌故事</a></li>
 				<li><a class="nav-item" href="/tomeishi">美食系列</a></li>
-				<li><a class="nav-item" href="/toshop">店面展示</a></li>
+				<li><a class="nav-item" href="/toshop">套餐系利</a></li>
 				<li><a class="nav-item" href="/tonews">新闻资讯</a></li>
 				<li><a class="nav-item" href="/toaboutus">关于我们</a></li>
 			</ul>
@@ -97,40 +97,24 @@
 			</div>
 		</div>
 
+		<!--查看模态框-->
+		<div class="modal fade" tabindex="-1" role="dialog" id="detailDelicious">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">食品详情</h4>
+					</div>
+					<div class="modal-body" id="detailDeliciouss">
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</body>
-	<!--jq调用-->
-	<script src="js/jquery-1.11.0.js" type="text/javascript"></script>
-
-	<script type="text/javascript">
-		//导航当前项切换	
-		$(".nav-item").click(function(){
-			$(this).parent("li").siblings().children().removeClass("nav-active");		
-			//点击对象的父级（li）的兄弟级（li）的子集（a）移除类
-			$(this).addClass("nav-active");												
-			//给点击对象添加类
-		});
-		//美食系列当前项切换
-		$(".table-item").click(function(){
-			$(this).siblings().removeClass("table-active");
-			$(this).addClass("table-active");
-		});
-	    //美食系列table切换
-	    var oSpan = document.getElementById("tab-span");
-			var spans = oSpan.querySelectorAll("span");
-			var oDiv  = document.getElementById("table-div");
-			var divs = oDiv.querySelectorAll("div");
-			var last=spans[0];
-			for(var i=0;i<spans.length;i++){
-					spans[i].index=i;  //给每一个按钮添加一个自定义属性，存储的是他们对应的索引值；
-					spans[i].onclick=function(){
-						divs[last.index].style.display="none"; //上一个对应的div，让他隐藏
-						divs[this.index].style.display="block"; //当前点击按钮对应的div显示			
-						last=this; 	//把上一次点击的对象更新成当前点击的对象
-					};
-				};
-	</script>
-
-
 	<script type="text/javascript">
         $(function () {
             operatorLoad(-1);
@@ -184,7 +168,7 @@
                 html +=  "<ul>";
                 $.each(list,function (index,item) {
                    html+="<li>"
-					+"<a href='/tomeishicon' class='ms-wrap ms-right'>"
+					+"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")' class='ms-wrap ms-right'>"
 					+"<span class='ms-pic'><img src='"+item.foodimgone+"' alt='' width='300px' height='300px'/>'</span>"
 					+"<h2 class='ms-tit'>"+item.foodname+"</h2>"
 					+"<p class='ms-txt'>价格:"+item.foodprice+"</p></a>"
@@ -193,6 +177,42 @@
                 html += "</ul>";
                 $("#hahahahahah").html(html);
             })
+        }
+
+        // 查看食品详情
+        function detailDelicious(id) {
+            $("#detailDelicious").modal("show");
+            $.post("DetailDelicious","id="+id,function (result) {
+                $("#detailDeliciouss").html("");
+                var html = "";
+                html="<table class='table table-striped'>"
+                    +"<tr class=''>"
+                    +"<th>食品名称</th>"
+                    +"<td>"+result.foodname+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                    +"<th>食品图片</th>"
+                    +"<td><img src='"+result.foodimgone+"' alt='找不到图片路径' class='img-circle'></td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                    +"<th>食品类型</th>"
+                    +"<td>"+result.foodtypes+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                    +"<th>价格</th>"
+                    +"<td>"+result.foodprice+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                    +"<th>食品状态</th>"
+                    +"<td>"+result.foodstat+"</td>"
+                    +"</tr>"
+                    +"<tr class=''>"
+                    +"<th>菜品详情</th>"
+                    +"<td>"+result.foodDetail+"</td>"
+                    +"</tr></table>";
+                $("#detailDeliciouss").html(html);
+            })
+
         }
 
 	</script>

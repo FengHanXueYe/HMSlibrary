@@ -21,7 +21,7 @@ public interface FoodOrderMapper {
     Integer addFoodOrder(FoodOrder foodOrder);
 
     //修改订单信息
-    @Update("UPDATE `foodorder`(`userName`,`userPhone`,`foodsid`,`shopnumber`,`setmealid`,`orderRoom`,`orderprice`,`orderid`) SET userName=#{userName},userPhone=#{userPhone},foodsid=#{foodsid},shopnumber=#{shopnumber},setmealid=#{setmealid},orderRoom=#{orderRoom},orderprice=#{orderprice} where orderid=#{orderid}")
+    @Update("UPDATE `foodorder` SET foodsid=#{foodsid},shopnumber=#{shopnumber},setmealid=#{setmealid},orderRoom=#{orderRoom},userName=#{userName},userPhone=#{userPhone},orderprice=#{orderprice} where orderid=#{orderid}")
     Integer updateFoodOrder(FoodOrder foodOrder);
 
     //查看单个订单信息

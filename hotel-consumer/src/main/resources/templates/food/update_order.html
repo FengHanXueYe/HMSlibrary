@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>添加订单</title>
+    <title>修改订单信息</title>
     <div th:include="base::base"></div>
     <style>
         input::-webkit-outer-spin-button,
@@ -16,20 +16,21 @@
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 增加 <small>订单信息 </small></h1>
+            <h1><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a> 修改 <small>订单信息 </small></h1>
         </div>
-        <form class="form-horizontal" action="/doAddFoodOrder">
+        <form class="form-horizontal" action="/doUpdateOrder">
             <div class="form-group">
                 <label  class="col-sm-4 control-label">食品：</label>
                 <div class="col-sm-6">
                     <select class="form-control" name="foodsid" id="foodsid"></select>
+                    <input type="hidden" id="foodsids" th:value="${order.foodsid}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label">食品数量：<span></span></label>
                 <div class="col-sm-6">
                     <!--<input type="text" name="shopnumber" class="form-control"  placeholder="食品数量">-->
-                    <select class="form-control" name="shopnumber">
+                    <select class="form-control" name="shopnumber" th:field="${order.shopnumber}">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -42,41 +43,38 @@
                 <label  class="col-sm-4 control-label">套餐：</label>
                 <div class="col-sm-6">
                     <select class="form-control" name="setmealid" id="setmealid"></select>
+                    <input type="hidden" id="setmealids" th:value="${order.setmealid}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label">房间号：</label>
                 <div class="col-sm-6">
                     <select class="form-control" name="orderRoom" id="orderRoom"></select>
+                    <input type="hidden" id="orderRooms" th:value="${order.orderRoom}">
                 </div>
             </div>
             <div class="form-group">
                 <label  class="col-sm-4 control-label">用户名称：</label>
                 <div class="col-sm-6">
-                    <input type="text" name="userName" class="form-control"   placeholder="用户名称">
+                    <input type="text" name="userName" class="form-control"   placeholder="用户名称" th:value="${order.userName}">
                 </div>
             </div>
             <div class="form-group">
                 <label  class="col-sm-4 control-label">用户电话：</label>
                 <div class="col-sm-6">
-                    <input type="text" name="userPhone" class="form-control"   placeholder="用户电话">
+                    <input type="text" name="userPhone" class="form-control"   placeholder="用户电话" th:value="${order.userPhone}">
                 </div>
             </div>
             <div class="form-group">
-                <label  class="col-sm-4 control-label">备注：</label>
+                <label  class="col-sm-4 control-label">支付金额：</label>
                 <div class="col-sm-6">
-                    <input type="text" name="remarks"   class="form-control"  placeholder="备注">
-                </div>
-            </div>
-            <div class="form-group">
-                <label  class="col-sm-4 control-label">价格：</label>
-                <div class="col-sm-6">
-                    <input type="text" name="orderprice" class="form-control"   placeholder="价格">
+                    <input type="text" name="orderprice" class="form-control"   placeholder="支付金额" th:value="${order.orderprice}">
+                    <input type="hidden" name="orderid" th:value="${order.orderid}">
                 </div>
             </div>
             <div class="col-sm-10 control-label">
                 <button type="submit" class="btn btn-info">
-                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 添加
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> 修改
                 </button>
             </div>
         </form>
@@ -89,29 +87,47 @@
         setMealSelect($("#setmealid"));
     });
     function loadSelect(e) {
-        e.append("<option value='-1'>请选择</option>");
         $.get("queryAllRoom",function (result) {
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
             $.each(result,function (index,d) {
-                e.append("<option value='"+d.id+"'>"+d.roomNumber+"</option>")
+                html+="<option value='"+d.id+"'>"+d.roomNumber+"</option>";
             });
+            $("select[id='orderRoom']").html(html);
+            var orderRooms=$("#orderRooms").val();
+            if(null!=orderRooms&&orderRooms!=''){
+                $("#orderRoom").val(orderRooms);
+            }
         });
     }
 
     function foodSelect(e) {
-        e.append("<option value='-1'>请选择</option>");
         $.get("queryAllDelicious",function (result) {
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
             $.each(result,function (index,d) {
-                e.append("<option value='"+d.foodid+"'>"+d.foodname+"</option>")
+                html+="<option value='"+d.foodid+"'>"+d.foodname+"</option>";
             });
+            $("select[id='foodsid']").html(html);
+            var foodsid=$("#foodsids").val();
+            if(null!=foodsid&&foodsid!=''){
+                $("#foodsid").val(foodsid);
+            }
         });
     }
 
     function setMealSelect(e) {
-        e.append("<option value='-1'>请选择</option>");
         $.get("queryAllSetMeal",function (result) {
+            var html = "";
+            html+= "<option value='-1'>--请选择--</option>";
             $.each(result,function (index,d) {
-                e.append("<option value='"+d.mealid+"'>"+d.mealname+"</option>")
+                html+="<option value='"+d.mealid+"'>"+d.mealname+"</option>";
             });
+            $("select[id='setmealid']").html(html);
+            var setmealid=$("#setmealids").val();
+            if(null!=setmealid&&setmealid!=''){
+                $("#setmealid").val(setmealid);
+            }
         });
     }
 </script>

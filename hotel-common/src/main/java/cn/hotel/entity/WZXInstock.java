@@ -92,12 +92,12 @@ public class WZXInstock implements Serializable {
     }
 
     public void setIsTime(String isTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd ");
-        Date date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
+        Date date = null;;
         try {
             date = sdf.parse(isTime);
         } catch (Exception e) {
-            date = null;
+            e.printStackTrace();
         }
         this.isTime = date;
     }

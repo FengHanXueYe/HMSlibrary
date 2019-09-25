@@ -1,7 +1,6 @@
 package cn.hotel.hms.service;
 
 import cn.hotel.entity.ConsumptionRecord;
-import cn.hotel.entity.DataStatus;
 import cn.hotel.entity.Room;
 import cn.hotel.hms.mapper.ConsumptionRecordMapper;
 import cn.hotel.hms.mapper.RoomLiveinMapper;
@@ -107,6 +106,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> queryRoomAllNumber() {
         return roomMapper.queryRoomAllNumber();
+    }
+
+    @Override
+    public List<Room> queryRoomAllMake() {
+        return roomMapper.queryRoomAllMake();
     }
 
 

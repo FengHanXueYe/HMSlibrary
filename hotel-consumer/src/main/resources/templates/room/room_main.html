@@ -24,6 +24,7 @@
             /*初始化内容*/
             queryByCode("ROMM_TYPE",$("select[name='roomType']"));
             queryByCode("ROOM_STATUS",$("select[name='roomStatus']"));
+
             //查询按钮的点击事件
             $(".btn-queryall").click(function () {
                 queryAll($(this));
@@ -38,6 +39,54 @@
             //显示客房详情模态框
             $(".div-info").click(function () {
                 $('#room-info').modal('show')
+                //获取房间号
+                var code = $(this).attr("code");
+                //查询房间内的物品
+                $.get("/room/queryItemsByCode",{"code":code},function (result) {
+                    $(".ajaxRoomItemsTable").empty();
+                    var trTitle = "<tr>" +
+                        "<td>物品名称</td>" +
+                        "<td>物品数量</td>" +
+                        "<td>物品价格</td>" +
+                        "<td>物品状态</td>" +
+                        "</tr>"
+                    $(".ajaxRoomItemsTable").append(trTitle);
+                    $.each(result,function (i,d) {
+                        var tr = "<tr>" +
+                            "<td>"+d.goodsName+"</td>" +
+                        "<td>"+d.goodsNumber+"</td>" +
+                        "<td>"+d.goodsPrice+"</td>" +
+                        "<td>"+d.goodsStatusName+"</td>" +
+                        "/tr>"
+                        $(".ajaxRoomItemsTable").append(tr);
+                    })
+
+                })
+                //查询房间的详细信息
+                $.get("/room/queryRoomInfo",{"no":code},function (result) {
+                    $(".ajaxRoomInfoTable").empty();
+                    var tr = "<tr>" +
+                        "<td>客房号</td>" +
+                        "<td>"+result.roomNumber+"</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>客房类型</td>" +
+                        "<td>"+result.roomTypeName+"</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>客房状态</td>" +
+                        "<td>"+result.roomStatusName+"</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>客房价格</td>" +
+                        "<td>"+result.roomPrice+"</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                        "<td>床位数</td>" +
+                        "<td>"+result.roomBed+"</td>" +
+                        "</tr>"
+                    $(".ajaxRoomInfoTable").append(tr);
+                })
             })
 
             //客房窗体内容按钮显示
@@ -198,11 +247,11 @@
         <div class="row">
 
             <div th:each="room,userStat:${pageUtil.list}" class="col-xs-2" th:object="${room}">
-                <div class="div-info">
+                <div class="div-info" th:code="*{roomNumber}">
                     <div class="div-zhuangtai">
                         <img th:src="*{roomStatusRisorse}" height="50px" width="50px">
                         <p style="margin-top: 10px" th:text="*{roomNumber}"></p>
-                        <p style="margin-top: 10px" th:text="*{roomNumberValue}"></p>
+                        <p style="margin-top: 10px" th:text="*{roomTypeName}"></p>
                     </div>
                     <div class="div-caozuo" hidden>
                         <p><button type="button" class="btn btn-info btn-ruzhu" th:status="*{roomStatus}" th:number="*{roomNumber}">入住</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger btn-tuifang" th:status="*{roomStatus}" th:number="*{roomNumber}">退房</button></p>
@@ -268,28 +317,12 @@
                     <h4 class="modal-title" id="myModalLabel">客房详情</h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>客房号</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>客房类型</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>客房状态</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>客房价格</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>床位数</td>
-                            <td></td>
-                        </tr>
+                    <table class="table table-bordered ajaxRoomInfoTable">
                     </table>
+                    <div>
+                        <table class="table table-bordered table-striped ajaxRoomItemsTable">
+                        </table>
+                    </div>
                     <div>
                         客房实景:
                         <div>
