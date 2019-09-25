@@ -49,7 +49,7 @@ public class OutStockController {
         model.addAttribute("StockInfo",wzxStockInfos);
         model.addAttribute("Materials",info);
         model.addAttribute("actualStock",stockId);
-        return "storageroom_addoutstock";
+        return "/receptionroom/storageroom_addOutStock";
     }
 
     @RequestMapping(value = "doAddOutStock",method = RequestMethod.POST)
@@ -58,7 +58,7 @@ public class OutStockController {
         if(outStock>0){
             return "redirect:/actuals/queryAll";
         }else{
-            return "storageroom_addoutstock";
+            return "/receptionroom/storageroom_addoutstock";
         }
     }
 
