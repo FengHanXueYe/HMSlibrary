@@ -41,4 +41,9 @@ public class ConsumptionRecordServiceImpl implements ConsumptionRecordService {
         return consumptionRecordMapper.repaceRoomNo(no,replaceNo);
     }
 
+    @Override
+    public ConsumptionRecord queryConsumptionRecordCount() {
+        return consumptionRecordMapper.queryConsumptionRecordCount();
+    }
+
 }

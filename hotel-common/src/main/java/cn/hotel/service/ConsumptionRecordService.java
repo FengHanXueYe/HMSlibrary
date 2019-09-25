@@ -14,4 +14,7 @@ public interface ConsumptionRecordService {
 
     //换房-更新消费记录信息
     Integer repaceRoomNo(String no, String replaceNo);
+
+    //查询所有当天营业额、入住人数
+    ConsumptionRecord   queryConsumptionRecordCount();
 }

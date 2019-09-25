@@ -167,16 +167,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="../graphs.html">库存管理</a>
+                                <a th:href="@{/actuals/queryAll}">库存管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">入库管理</a>
+                                <a th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">出库管理</a>
+                                <a th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
                             </li>
                             <li>
-                                <a href="../typography.html">物品管理</a>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{/actuals/queryAll}">订单提醒</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -191,47 +203,44 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="graphs">
             <div class="col_1">
                 <form action="">
-                <table>
-                    <tr>
-                        <td>出库单编号</td>
-                        <td><input type="text" name="osNumber" th:value="${outStockVO.osNumber}"></td>
-                    </tr>
-                    <tr>
-                        <td>源库房编号</td>
-                        <td>
-                            <select name="outStockNumber" id="outStockNumber">
-                                <option th:each="stockInf:${stockInfos}" th:value="${stockInf.stockId}" th:text="${stockInf.stockName}" th:field="${outStockVO.stockInfo.stockId}"></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>物品名称</td>
-                        <td>
-                            <input type="text" name="materialsId" th:value="${outStockVO.wzxMaterialsInfo.materialsName}" onchange="materialsName(this)">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>领用人</td>
-                        <td><input type="text" name="receivePerson" th:value="${outStockVO.receivePerson}"></td>
-                    </tr>
-                    <tr>
-                        <td>出库时间</td>
-                        <td><input type="text" name="osTime" th:value="${#dates.format(outStockVO.osTime,'yyyy-MM-dd HH:mm:sss')}"></td>
-                    </tr>
-                    <tr>
-                        <td>出库数量</td>
-                        <td><input type="text" name="materialsCount" th:value="${outStockVO.materialsCount}"></td>
-                    </tr>
-                    <tr>
-                        <td>备注</td>
-                        <td><textarea type="text" name="osRemark" th:text="${outStockVO.osRemark}"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" value="修改"></td>
-                        <td><button type="button" onclick="toOutStockList()">返回</button></td>
-                    </tr>
-                </table>
+                    <div class="row">
+                        <div class="col-xs-12 inbox_right">
+                            <div class="Compose-Message">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        出库单修改
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="alert alert-info">
+                                            <!-- Please fill details to send a new message-->
+                                        </div>
+                                        <hr>
+                                        <label>出库单编号 : </label>
+                                        <input type="text" name="osNumber" th:value="${outStockVO.osNumber}" class="form-control1 control3">
+                                        <label>源库房编号 :  </label>
+                                        <select name="outStockNumber" id="outStockNumber" class="form-control1 control3">
+                                            <option th:each="stockInf:${stockInfos}" th:value="${stockInf.stockId}" th:text="${stockInf.stockName}" th:field="${outStockVO.stockInfo.stockId}"></option>
+                                        </select>
+                                        <label>物品名称 : </label>
+                                        <input type="text" name="materialsId"  class="form-control1 control3" th:value="${outStockVO.wzxMaterialsInfo.materialsName}" onchange="materialsName(this)">
+                                        <label>领用人 : </label>
+                                        <input type="text" name="receivePerson" class="form-control1 control3" th:value="${outStockVO.receivePerson}">
+                                        <label>出库时间 : </label>
+                                        <input type="text" name="osTime" class="form-control1 control3" th:value="${#dates.format(outStockVO.osTime,'yyyy-MM-dd HH:mm:sss')}">
+                                        <label>出库数量 : </label>
+                                        <input type="text" name="materialsCount" class="form-control1 control3" th:value="${outStockVO.materialsCount}">
+                                        <label>备注 : </label>
+                                        <textarea type="text" name="osRemark" class="form-control1 control3" th:text="${outStockVO.osRemark}"></textarea>
+                                        <hr>
+                                        <input type="submit" class="btn btn-warning btn-warng1" value="修改">&nbsp;
+                                        <button type="button" class="btn btn-success btn-warng1" onclick="toOutStockList()">返回</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
+
             </div>
             <div class="span_11">
                 <div class="col-md-6 col_4">

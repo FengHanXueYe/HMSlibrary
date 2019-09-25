@@ -167,16 +167,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/graphs.html">库存管理</a>
+                                <a th:href="@{/actuals/queryAll}">库存管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">入库管理</a>
+                                <a th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">出库管理</a>
+                                <a th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">物品管理</a>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{/actuals/queryAll}">订单提醒</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -190,66 +202,71 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div id="page-wrapper">
         <div class="graphs">
             <div class="col_1">
-                <form action="/instock/doUpdateInstock" method="get">
-                    <table>
-                        <tr>
-                            <td>编号：</td>
-                            <td>
-                                <input type="text" name="isNumber" th:value="${Instock.isNumber}">
-                                <input type="hidden" name="isId" th:value="${Instock.isId}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>物品名称：</td>
-                            <td>
-                                <input type="text" name="materialsName" th:value="${Instock.wzxMaterialsInfo.materialsName}">
-                                <input type="hidden" name="materialsId" th:value="${Instock.wzxMaterialsInfo.materialsId}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>位置：</td>
-                            <td>
-                                <select name="stockNumber" id="stockNumber">
-                                    <option th:each="stockInfo:${stockInfos}" th:value="${stockInfo.stockId}" th:text="${stockInfo.stockName}"></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>物品数量：</td>
-                            <td><input type="text" name="materialsCount" th:value="${Instock.materialsCount}"></td>
-                        </tr>
-                        <tr>
-                            <td>入库人：</td>
-                            <td><input type="text" name="isPerson" th:value="${Instock.isPerson}"></td>
-                        </tr>
-                        <tr>
-                            <td>入库时间：</td>
-                            <td>
-                                <input type="text" name="isTime" th:value="${#dates.format(Instock.isTime,'yyyy-MM-dd HH:mm:sss')}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>入库总金额：</td>
-                            <td><input type="text" name="isMoney" onchange="MyDigtUtilsMane(this)" th:value="${Instock.isMoney}"></td>
-                        </tr>
-                        <tr>
-                            <td>入库总金额大写：</td>
-                            <td><input type="text" name="isMoneyCapitalization" th:value="${Instock.isMoneyCapitalization}"></td>
-                        </tr>
-                        <tr>
-                            <td>备注：</td>
-                            <td>
-                                <textarea name="remark" th:text="${Instock.remark}"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td >
-                                <input type="submit" value="修改">
-                            </td>
-                            <td><button>返回</button></td>
-                        </tr>
-                    </table>
-                </form>
+                <div class="row">
+                    <div class="col-xs-12">
+                    <form action="/instock/doUpdateInstock" method="get" class="form-inline">
+                        <span  class="input-group-addon">入库单修改</span>
+                        <table width="100%">
+
+                            <tr>
+                                <td class="input-group-addon">编号：</td>
+                                <td>
+                                    <input type="text" name="isNumber" class="form-control" th:value="${Instock.isNumber}">
+                                    <input type="hidden" name="isId"  th:value="${Instock.isId}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">物品名称：</td>
+                                <td>
+                                    <input type="text" name="materialsName" class="form-control"  th:value="${Instock.wzxMaterialsInfo.materialsName}">
+                                    <input type="hidden" name="materialsId" th:value="${Instock.wzxMaterialsInfo.materialsId}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">位置：</td>
+                                <td>
+                                    <select name="stockNumber" id="stockNumber" class="form-control">
+                                        <option th:each="stockInfo:${stockInfos}" class="form-control" th:value="${stockInfo.stockId}" th:text="${stockInfo.stockName}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">物品数量：</td>
+                                <td><input type="text" name="materialsCount" class="form-control" th:value="${Instock.materialsCount}"></td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon"> 入库人：</td>
+                                <td><input type="text" name="isPerson" class="form-control" th:value="${Instock.isPerson}"></td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">入库时间：</td>
+                                <td>
+                                    <input type="text" name="isTime" class="form-control" th:value="${#dates.format(Instock.isTime,'yyyy-MM-dd HH:mm:sss')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">入库总金额：</td>
+                                <td><input type="text" name="isMoney" class="form-control" onchange="MyDigtUtilsMane(this)" th:value="${Instock.isMoney}"></td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">入库总金额大写：</td>
+                                <td><input type="text" name="isMoneyCapitalization" class="form-control" th:value="${Instock.isMoneyCapitalization}"></td>
+                            </tr>
+                            <tr>
+                                <td class="input-group-addon">备注：</td>
+                                <td>
+                                    <textarea name="remark" class="form-control" th:text="${Instock.remark}"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <button type="submit" class="btn btn-primary">修改</button>
+                                    <button class="btn btn-primary">返回</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                    </div>
+                </div>
             </div>
             <div class="span_11">
                 <div class="col-md-6 col_4">
@@ -266,6 +283,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div id="chart_container">
 
                         <script>
+                            $("input").css({"width":"100%","height":"100%"});
+                            $("select").css({"width":"100%","height":"100%"});
+                            $("textarea").css({"width":"100%","height":"100%"});
                             function MyDigtUtilsMane(obj){
                                 var num = $(obj).val();
                                 $.ajax({

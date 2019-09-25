@@ -2,8 +2,19 @@ package cn.hotel.hms.controller;
 
 import cn.hotel.dto.Img;
 import cn.hotel.dto.UploadResponseData;
+import cn.hotel.entity.ConsumptionRecord;
+import cn.hotel.entity.DataStatus;
+import cn.hotel.entity.Operator;
+import cn.hotel.entity.Room;
+import cn.hotel.service.ConsumptionRecordService;
+import cn.hotel.service.DataStatusService;
+import cn.hotel.service.OperatorService;
+import cn.hotel.service.RoomService;
+import cn.hotel.vo.OperatorVO;
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +27,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,6 +38,18 @@ import java.util.Random;
 @Controller
 @RequestMapping("common")
 public class CommonController {
+
+    @Reference
+    private OperatorService operatorService;
+
+    @Reference
+    private RoomService roomService;
+
+    @Reference
+    private ConsumptionRecordService consumptionRecordService;
+
+    @Reference
+    private DataStatusService dataStatusService;
 
     //fileinput 其实每次只会上传一个文件  多图上传也是分多次请求,每次上传一个文件 所以不需要循环
     //@RequestParam("images") 这里的images对应表单中name 然后MultipartFile 参数名就可以任意了
@@ -64,5 +88,39 @@ public class CommonController {
     @RequestMapping("todemoTwo")
     public String todemoTwo(){
         return "/receptionroom/demoTwo";
+    }
+
+    @RequestMapping("toLogin")
+    public String toLogin(){
+        return "/testHtml/login";
+    }
+
+    @RequestMapping("doLogin")
+    public String doLogin(Operator operator, Model model)
+    {
+        OperatorVO operatorVO = operatorService.loginUser(operator);
+        if(operatorVO!=null){
+            List<Room> rooms = roomService.queryRoomAllNumber();
+            //已预约客房
+            List<Room> roomListYu=roomService.queryRoomAllMake();
+            Room room=null;
+            //闲置客房
+            Integer roomNum=0;
+            for (int i = 0; i <rooms.size() ; i++) {
+                    roomNum+=1;
+            }
+            //客房状态
+            List<DataStatus> room_status = dataStatusService.queryByCode("ROMM_TYPE");
+            //查询当日营业额、当日入住人数
+            ConsumptionRecord consumptionRecord = consumptionRecordService.queryConsumptionRecordCount();
+            model.addAttribute("consumptionRecord",consumptionRecord);
+            model.addAttribute("roomListYu",roomListYu);
+            model.addAttribute("roomNum",roomNum);
+            model.addAttribute("User",operatorVO);
+            model.addAttribute("room_status",room_status);
+            return "/receptionroom/reception";
+        }
+
+        return "/testHtml/login";
     }
 }

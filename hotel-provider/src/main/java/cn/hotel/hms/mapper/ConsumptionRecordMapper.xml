@@ -10,8 +10,12 @@
     <select id="queryAll" parameterType="ConsumptionRecord" resultType="cn.hotel.vo.ConsumptionRecordVO">
         SELECT con.*,sta.valueName AS conTypeName,sta.valueName AS billstatusName,op.oName AS billConfirmerName FROM `consumptionRecord` AS con,`datastatus` AS sta,`datastatus` AS stb,`operator` AS op WHERE con.conType = sta.valueId AND con.billstatus = stb.valueId AND sta.typeCode = 'CONSUMPTION_TYPE' AND stb.typeCode = 'BILL_STATUS' AND con.billConfirmer = op.oId AND con.roomNumber = #{roomNumber}
     </select>
-    
+
     <update id="repaceRoomNo">
         update `consumptionRecord` set  roomNumber = #{replaceNo} where roomNumber = #{no}
     </update>
+
+    <select id="queryConsumptionRecordCount" resultType="cn.hotel.entity.ConsumptionRecord">
+        SELECT SUM(conPrice) AS conPrice ,COUNT(*) AS conType  FROM consumptionRecord  WHERE TO_DAYS(conTime) = TO_DAYS(NOW())
+    </select>
 </mapper>

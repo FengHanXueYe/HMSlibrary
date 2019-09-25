@@ -167,16 +167,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/graphs.html">库存管理</a>
+                                <a th:href="@{/actuals/queryAll}">库存管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">入库管理</a>
+                                <a th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">出库管理</a>
+                                <a th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
                             </li>
                             <li>
-                                <a href="/typography.html">物品管理</a>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a th:href="@{/actuals/queryAll}">订单提醒</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -190,64 +202,64 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div id="page-wrapper">
         <div class="graphs">
             <div class="col_1">
-                <form action="/instock/queryInStockByInstockVO">
+                <form action="/instock/queryInStockByInstockVO"  class="form-inline">
                     <div class="row">
-                        <div class="col-md-10">
-                            <table border="1" width="100%">
+                        <div class="col-xs-10">
+                            <table  width="100%">
                                 <tr>
-                                    <td colspan="2" style="background-color: #00aaf1">
-                                        <h1 align="center">物品详细信息</h1>
+                                    <td colspan="2" class="input-group-addon">
+                                        物品详细信息
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>编号：</td>
-                                    <td><input type="text" name="isNumber" th:value="${Instock.isNumber}"></td>
+                                    <td class="input-group-addon">编号：</td>
+                                    <td><input type="text" name="isNumber" class="form-control"  th:value="${Instock.isNumber}"></td>
                                 </tr>
                                 <tr>
-                                    <td>物品编号</td>
-                                    <td><input type="text" name="wzxMaterialsInfo.materialsNumber" th:value="${Instock.wzxMaterialsInfo.materialsNumber}"></td>
+                                    <td class="input-group-addon">物品编号</td>
+                                    <td><input type="text" class="form-control"  name="wzxMaterialsInfo.materialsNumber" th:value="${Instock.wzxMaterialsInfo.materialsNumber}"></td>
                                 </tr>
 
                                 <tr>
-                                    <td>物品名称：</td>
+                                    <td class="input-group-addon">物品名称：</td>
                                     <td>
-                                        <input type="text" name="wzxMaterialsInfo.materialsName" th:value="${Instock.wzxMaterialsInfo.materialsName}">
+                                        <input type="text" class="form-control"  name="wzxMaterialsInfo.materialsName" th:value="${Instock.wzxMaterialsInfo.materialsName}">
                                         <input type="hidden" name="materialsId">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>位置：</td>
+                                    <td class="input-group-addon">位置：</td>
                                     <td>
-                                        <select name="wzxStockInfo.stockId" id="stockId">
+                                        <select name="wzxStockInfo.stockId" id="stockId" class="form-control" >
                                             <option th:each="stockInfo:${stockInfos}" th:object="${stockInfo}" th:value="*{stockId}" th:text="*{stockName}" th:field="${Instock.wzxStockInfo.stockId}"></option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>物品数量：</td>
-                                    <td><input type="text" name="materialsCount" th:value="${Instock.materialsCount}"></td>
+                                    <td class="input-group-addon">物品数量：</td>
+                                    <td><input type="text" class="form-control"  name="materialsCount" th:value="${Instock.materialsCount}"></td>
                                 </tr>
                                 <tr>
-                                    <td>入库人：</td>
-                                    <td><input type="text" name="isPerson" th:value="${Instock.isPerson}"></td>
+                                    <td class="input-group-addon">入库人：</td>
+                                    <td><input type="text" name="isPerson" class="form-control"  th:value="${Instock.isPerson}"></td>
                                 </tr>
                                 <tr>
-                                    <td>入库时间：</td>
+                                    <td class="input-group-addon">入库时间：</td>
                                     <td>
-                                        <input type="text" name="isTime" th:value="${#dates.format(Instock.isTime,'yyyy年MM月dd日 HH时mm分sss')}">
+                                        <input type="text" name="isTime" class="form-control"  th:value="${#dates.format(Instock.isTime,'yyyy年MM月dd日 HH时mm分sss')}">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>入库总金额：</td>
-                                    <td><input type="text" name="isMoney" th:value="${Instock.isMoney}"></td>
+                                    <td class="input-group-addon">入库总金额：</td>
+                                    <td><input type="text" name="isMoney" class="form-control"  th:value="${Instock.isMoney}"></td>
                                 </tr>
                                 <tr>
-                                    <td>备注：</td>
-                                    <td><textarea name="remark" th:text="${Instock.isPerson}" style="width: 100%;height: 100%"></textarea></td>
+                                    <td class="input-group-addon">备注：</td>
+                                    <td><textarea name="remark" class="form-control"  th:text="${Instock.isPerson}" style="width: 100%;height: 100%"></textarea></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <input type="submit" value="返回">
+                                        <button type="submit"  class="btn btn-primary">返回</button>
                                     </td>
                                 </tr>
                             </table>
@@ -257,7 +269,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"> </div>
             </div>
             <div class="span_11">
-                <div class="col-md-6 col_4">
+                <div class="col-xs-6 col_4">
 
                     <!----Calender -------->
                     <link rel="stylesheet" href="/css/clndr.css" type="text/css" />
@@ -267,7 +279,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <script src="/js/site.js" type="text/javascript"></script>
                     <!----End Calender -------->
                 </div>
-                <div class="col-md-6 col_5">
+                <div class="col-xs-6 col_5">
                     <div id="chart_container">
 
                         <script>
@@ -335,8 +347,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <script type="text/javascript" src="/clock/js/clock-1.1.0.min.js"></script>
                     <script>
 
-                        $("td:odd").css("backgroundColor","#D0BA91");
-                        $("td:odd").attr("align","center");
 
                         var clock = $("#clock").clock(),
                             data = clock.data('clock');
