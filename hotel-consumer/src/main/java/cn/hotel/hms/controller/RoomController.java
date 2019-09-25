@@ -1,18 +1,15 @@
 package cn.hotel.hms.controller;
 
 
-import cn.hotel.entity.ConsumptionRecord;
-import cn.hotel.entity.Member;
-import cn.hotel.entity.MembershipRank;
-import cn.hotel.entity.Room;
+import cn.hotel.entity.*;
 import cn.hotel.service.*;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.ConsumptionRecordVO;
+import cn.hotel.vo.RoomItemsVO;
 import cn.hotel.vo.RoomLiveinVO;
 import cn.hotel.vo.RoomVO;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import org.apache.zookeeper.data.Id;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +36,12 @@ public class RoomController {
 
     @Reference
     private RoomLiveinService roomLiveinService;
+
+    @Reference
+    private RoomItemsService roomItemsService;
+
+    @Reference
+    private DataStatusService dataStatusService;
 
     //客房首页查询
     @RequestMapping(value = "queryAll")
@@ -134,11 +137,73 @@ public class RoomController {
         return "room/room_replace";
     }
 
-    @RequestMapping(value = "queryRommNumber",method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    //换房 查询空闲状态的房间
+    @RequestMapping(value = "queryRommNumber",method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String queryRommNumber(){
+        System.out.println(">>>>>>>>>>>>>>>>>>>进来了");
         List<Room> rooms = roomService.queryRoomAllNumber();
+        System.out.println(">>>>>>>>>>>>>"+rooms);
         return JSON.toJSONString(rooms);
     }
+
+    //换房查询房间的详细信息
+    @RequestMapping(value = "queryRoomInfo",method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String queryRoomInfo(String no){
+        RoomVO roomVO = roomService.queryByNumber(no);
+        return JSON.toJSONString(roomVO);
+    }
+
+
+    //换房操作
+    @RequestMapping(value = "repalceRomm",method = RequestMethod.POST)
+    @ResponseBody
+    public String repalceRomm(String no,String replaceNo){
+        RoomVO roomVO = roomService.queryByNumber(replaceNo);
+        if(roomVO.getRoomStatus() != 1){
+            return "error";
+        }
+
+        Integer integer = consumptionRecordService.repaceRoomNo(no, replaceNo);
+        Integer integer1 = roomLiveinService.replaceRoomNo(no, replaceNo);
+
+        Room roomNo =new Room();
+        Room roomReplace =new Room();
+        //创建原客房room信息
+        roomNo.setRoomStatus(1);
+        roomNo.setRoomNumber(no);
+        //创建新客房room信息
+        roomReplace.setRoomStatus(2);
+        roomReplace.setRoomNumber(replaceNo);
+
+        //更改对应客房状态
+        roomService.updateStatus(roomNo);
+        roomService.updateStatus(roomReplace);
+
+
+        return "ok";
+    }
+
+
+    /*根据房间号查询房间所有物品*/
+    @RequestMapping(value = "queryItemsByCode",method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public String queryItemsByCode(String code){
+        List<RoomItemsVO> roomItems = roomItemsService.queryAllByNumber(code);
+        return JSON.toJSONString(roomItems);
+    }
+
+    @RequestMapping(value = "toRoomUpdate")
+    public String toRoomUpdate(String no,Model model){
+        RoomVO roomVO = roomService.queryByNumber(no);
+        List<RoomItemsVO> roomItems = roomItemsService.queryAllByNumber(no);
+        List<DataStatus> goodsStatus = dataStatusService.queryByCode("GOODS_STATUS");
+        model.addAttribute("room",roomVO);
+        model.addAttribute("roomItems",roomItems);
+        model.addAttribute("goodsStatus",goodsStatus);
+        return "room/room_update";
+    }
+
 
 }

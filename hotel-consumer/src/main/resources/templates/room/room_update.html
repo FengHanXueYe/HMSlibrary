@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>客房信息修改</title>
+    <div th:replace="base::base"></div>
+    <script type="text/javascript">
+        
+        $(function () {
+            /*初始化内容*/
+            queryByCode("ROMM_TYPE",$("select[name='roomType']"));
+            queryByCode("ROOM_STATUS",$("select[name='roomStatus']"));
+        })
+        
+        //获取类型方法
+        function queryByCode(code,ele) {
+
+            $.get("/dataStatus/queryByCode",{"code":code},function (result) {
+                /*清除子标签*/
+                $(ele).empty();
+                /*追加默认选项*/
+                ele.append("<option value='-1'>请选择</option>");
+                var codea;
+                /*判断是哪个下拉框并获取相对应的值*/
+                switch (code){
+                    case 'ROMM_TYPE':codea = [[${room.roomType}]];break;
+                    case 'ROOM_STATUS':codea = [[${room.roomStatus}]];break;
+                    default:break;
+                }
+                $.each(result,function (i,e) {
+                    var tr = "<option value='"+e.valueId+"'>"+e.valueName+"</option>";
+                    if(codea == e.valueId){
+                        tr = "<option selected value='"+e.valueId+"'>"+e.valueName+"</option>";
+                    }
+                    ele.append(tr);
+                })
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-bordered ajaxRoomInfoTable">
+                <tr>
+                    <td>客房号</td>
+                    <td><input class="form-control" th:value="${room.roomNumber}" name="roomNumber"></td>
+                </tr>
+                <tr>
+                    <td>客房类型</td>
+                    <td>
+                        <select class="form-control" name="roomType">
+                            <option value="-1">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>客房状态</td>
+                    <td>
+                        <select class="form-control" name="roomStatus">
+                            <option value="-1">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>客房价格</td>
+                    <td><input class="form-control" th:value="${room.roomPrice}" name="roomPrice"></td>
+                </tr>
+                <tr>
+                    <td>床位数</td>
+                    <td><input class="form-control" th:value="${room.roomBed}" name="roomBed"></td>
+                </tr>
+            </table>
+            <!--<table class="table table-bordered table-striped ajaxRoomItemsTable">
+                <tr>
+                    <td>物品名称</td>
+                    <td>物品数量</td>
+                    <td>物品价格</td>
+                    <td>物品状态</td>
+                </tr>
+                <tr th:each="roomItems:${roomItems}" th:object="${roomItems}">
+                    <td><input class="form-control" th:value="*{goodsName}" name="goodsName"></td>
+                    <td><input class="form-control" th:value="*{goodsNumber}" name="goodsNumber"></td>
+                    <td><input class="form-control" th:value="*{goodsPrice}" name="goodsPrice"></td>
+                    <td>
+                        <select class="form-control" name="goodsStatus">
+                            <option value="-1">请选择</option>
+                            <option th:each="goodsStatus:${goodsStatus}" th:selected="*{goodsStatus==valueId}" th:object="${goodsStatus}" th:value="*{valueId}" th:text="*{valueName}"></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>-->
+            <div>
+                客房实景:
+                <div>
+                    <img src="#">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

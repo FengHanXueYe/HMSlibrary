@@ -4,14 +4,40 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <div th:replace="base::base"></div>
-    <script type="text/javascript">
-
+    <script type="text/javascript" th:inline="javascript">
         /*初始化内容*/
         $(function () {
-            $.post("romm/queryRommNumber",function (result) {
+            $.get("/room/queryRommNumber",function (result) {
                 $("select[name='roomNo']").empty();
+                $("select[name='roomNo']").append("<option value='-1'>请选择</option>")
                 $.each(result,function (i,d) {
+                    $("select[name='roomNo']").append("<option value='"+d.roomNumber+"'>"+d.roomNumber+"</option>")
+                })
+            })
 
+            $("select[name='roomNo']").change(function () {
+                var no = $(this).val();
+                $.get("/room/queryRoomInfo",{"no":no},function (result) {
+                    $(".room-type").empty();
+                    $(".room-price").empty();
+                    $(".room-number").empty();
+                    $(".room-type").append("<h4>"+result.roomTypeName+"</h4>")
+                    $(".room-price").append("<h4>"+result.roomPrice+"</h4>")
+                    $(".room-number").append("<h4>"+result.roomBed+"</h4>")
+
+                })
+            })
+
+            $(".btn-replace").click(function () {
+                var no = [[${roomLivein.roomNo}]];
+                var replaceNo = $("select[name='roomNo']").val();
+                $.post("/room/repalceRomm",{"no":no,"replaceNo":replaceNo},function (result) {
+                    if(result == "ok"){
+                       alert("换房成功");
+                        location.href="/room/queryAll";
+                        return false;
+                    }
+                    alert("换房失败");
                 })
             })
         })
@@ -34,6 +60,18 @@
                             <select class="form-control" name="roomNo">
                             </select>
                         </td>
+                    </tr>
+                    <tr align="center">
+                        <td>客房类型</td>
+                        <td class="room-type"></td>
+                    </tr>
+                    <tr align="center">
+                        <td>客房价格</td>
+                        <td class="room-price"></td>
+                    </tr>
+                    <tr align="center">
+                        <td>客房床位</td>
+                        <td class="room-number"></td>
                     </tr>
                 </table>
             </form>
@@ -64,7 +102,7 @@
                     <td><h4 th:text="${roomLivein.rIphone}"></h4></td>
                 </tr>
             </table>
-            <button type="button" class="btn btn-info">更换</button>
+            <button type="button" class="btn btn-info btn-replace">更换</button>
             <button onclick="window.history.go(-1)" type="button" class="btn btn-info">返回</button>
         </div>
     </div>

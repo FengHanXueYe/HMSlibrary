@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>客房类型</title>
+    <div th:replace="base::base"></div>
+    <script type="text/javascript">
+        $(function () {
+            $(".roomType-add-a").click(function () {
+                $("#roomTypeAddModel").modal("show");
+            })
+            
+            $(".roomType-add-btn").click(function () {
+                var data = $("#roomType-add-form").serialize();
+                $.post("/dataStatus/saveRoomType",data,function (result) {
+                    if(result == "ok"){
+                        location.href="/dataStatus/queryRoomType";
+                        alert("添加成功");
+                        return false;
+                    }
+                    alert("添加失败");
+                })
+            })
+
+            $(".btn-roomType-query").click(function () {
+                var data = $("#form-queryall").serialize();
+                location.href="/dataStatus/queryRoomType?"+data;
+            })
+
+            $("a[no]").click(function () {
+                var data = $("#form-queryall").serialize();
+                var no = $(this).attr("no");
+                location.href="/dataStatus/queryRoomType?"+data+"&pageNo="+no;
+            })
+            
+            $(".toomType-Update-a").click(function () {
+                $("#roomTypeUpdayeModel").modal("show");
+                var id = $(this).attr("id");
+                $.get("/dataStatus/queryById",{"id":id},function (result) {
+                    $(".in-update-typeCode").val(result.typeCode);
+                    $(".in-update-typeName").val(result.typeName);
+                    $(".in-update-valueId").val(result.valueId);
+                    $(".in-update-valueName").val(result.valueName);
+                })
+
+            })
+
+            $(".roomType-update-btn").click(function () {
+                var data = $("#roomType-update-form").serialize();
+                $.post("/dataStatus/updateRoomType",data,function (result) {
+                    if(result == "ok"){
+                        alert("修改成功");
+                        location.href="/dataStatus/queryRoomType";
+                        return false;
+                    }
+                    alert("修改失败");
+                })
+            })
+
+            $(".toomType-del-a").click(function () {
+                var fag = confirm("确定要删除吗？");
+                if(fag == false){
+                    return false;
+                }
+                var id = $(this).attr("id");
+                $.post("/dataStatus/delRoomTypeById",{"id":id},function (result) {
+                    if(result == "ok"){
+                        alert("删除成功");
+                        location.href="/dataStatus/queryRoomType";
+                        return false;
+                    }
+
+                    alert("删除失败");
+                })
+            })
+
+        })
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form id="form-queryall" class="form-inline">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-info roomType-add-a">新增</button>
+                        <div class="input-group">
+                            <div class="input-group-addon">类型编码</div>
+                            <input type="text" th:value="${status.typeCode}" class="form-control" id="typeCode" placeholder="类型编码" name="typeCode">
+                        </div>
+                        <button type="submit" class="btn btn-info btn-roomType-query">查询</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table table-bordered table-striped">
+                    <tr align="center">
+                        <td>类型编码</td>
+                        <td>类型名称</td>
+                        <td>类型值ID</td>
+                        <td>类型值Name</td>
+                        <td>创建者</td>
+                        <td>创建时间</td>
+                        <td>更新者</td>
+                        <td>最新更新时间</td>
+                        <td>操作</td>
+                    </tr>
+                    <tr align="center" th:each="status:${pageUtil.list}" th:object="${status}">
+                        <td th:text="*{typeCode}"></td>
+                        <td th:text="*{typeName}"></td>
+                        <td th:text="*{valueId}"></td>
+                        <td th:text="*{valueName}"></td>
+                        <td th:text="*{createdBy}"></td>
+                        <td th:text="*{#dates.format(creationDate,'yyyy-MM-dd')}"></td>
+                        <td th:text="*{modifyBy}"></td>
+                        <td th:text="*{#dates.format(modifyDate,'yyyy-MM-dd')}"></td>
+                        <td><a th:id="*{id}" class="glyphicon glyphicon-remove  toomType-del-a" aria-hidden="true"></a>&nbsp;&nbsp;<a th:id="*{id}" class="glyphicon glyphicon-file toomType-Update-a" aria-hidden="true"></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <!--分页标签-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a th:no="${pageUtil.pageNo-1 <= 0 ? 1 : pageUtil.pageNo-1}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="pae:${pageUtil.navigatepageNums}"><a th:no="${pae}" th:text="${pae}"></a></li>
+                        <li>
+                            <a th:no="${pageUtil.pageNo+1 >= pageUtil.totalPageCount ? pageUtil.totalPageCount : pageUtil.pageNo+1}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- 客房类型添加模态框 -->
+    <div class="modal fade" id="roomTypeAddModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">客房类型添加</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" id="roomType-add-form">
+                        <table class="table table-bordered">
+                            <tr align="center">
+                                <td>类型编码</td>
+                                <td><input type="text" class="form-control" name="typeCode"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型名称</td>
+                                <td><input type="text" class="form-control" name="typeName"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型值ID</td>
+                                <td><input type="text" class="form-control" name="valueId"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型值Name</td>
+                                <td><input type="text" class="form-control" name="valueName"></td>
+                            </tr>
+                        </table>
+                        <button type="button" class="btn btn-info roomType-add-btn">提交</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 客房类型修改模态框 -->
+    <div class="modal fade" id="roomTypeUpdayeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModaTypeUpdate">客房类型修改</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" id="roomType-update-form">
+                        <table class="table table-bordered table-updateRoomType">
+                            <tr align="center">
+                                <td>类型编码</td>
+                                <td><input type="text" class="form-control in-update-typeCode" name="typeCode"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型名称</td>
+                                <td><input type="text" class="form-control in-update-typeName" name="typeName"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型值ID</td>
+                                <td><input type="text" class="form-control in-update-valueId" name="valueId"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>类型值Name</td>
+                                <td><input type="text" class="form-control in-update-valueName" name="valueName"></td>
+                            </tr>
+                        </table>
+                        <button type="button" class="btn btn-info roomType-update-btn">修改</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
