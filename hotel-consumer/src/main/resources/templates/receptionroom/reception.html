@@ -156,16 +156,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <a href="#"><i class="fa fa-sitemap fa-fw nav_icon"></i>人员管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="../media.html">操作人员管理</a>
+                                    <a target="my_iframe" th:href="@{/operator/toOperator}">操作人员管理</a>
                                 </li>
                                 <li>
-                                    <a href="../login.html">会员管理</a>
+                                    <a target="my_iframe" th:href="@{/member/toMember}">会员管理</a>
                                 </li>
 								<li>
-                                    <a th:href="@{/toIindividualTravelers}">散客管理</a>
+                                    <a target="my_iframe" th:href="@{/iddtl/toIindividualTravelers}">散客管理</a>
                                 </li>
 								<li>
-                                    <a href="../login.html">查房情况管理</a>
+                                    <a target="my_iframe" th:href="@{/wardr/toWardRound}">查房情况管理</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -174,19 +174,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#"><i class="fa fa-indent nav_icon"></i>库房管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li>
-									<a th:href="@{/actuals/queryAll}">库存管理</a>
+									<a target="my_iframe" th:href="@{/actuals/queryAll}">库存管理</a>
 								</li>
 								<li>
-									<a th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
+									<a target="my_iframe" th:href="@{/instock/queryInStockByInstockVO}">入库管理</a>
 								</li>
 								<li>
-									<a th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
+									<a target="my_iframe" th:href="@{/outStock/queryAllOutStockVO}">出库管理</a>
 								</li>
 								<li>
-									<a th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
+									<a target="my_iframe" th:href="@{/materials/queryMaterialsInfoAll}">物品管理</a>
 								</li>
 								<li>
-									<a th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
+									<a target="my_iframe" th:href="@{/materials/queryMaterialsInfoAll}">库房管理</a>
 								</li>
 							</ul>
 							<!-- /.nav-second-level -->
@@ -195,7 +195,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li>
-									<a th:href="@{/actuals/queryAll}">订单提醒</a>
+									<a target="my_iframe" th:href="@{/actuals/queryAll}">订单提醒</a>
+								</li>
+							</ul>
+							<!-- /.nav-second-level -->
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-indent nav_icon"></i>客房管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a target="my_iframe" th:href="@{/room/queryAll}">客房</a>
+								</li>
+							</ul>
+							<!-- /.nav-second-level -->
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-indent nav_icon"></i>餐厅管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a target="my_iframe" th:href="@{/room/queryAll}">客房</a>
 								</li>
 							</ul>
 							<!-- /.nav-second-level -->
@@ -251,7 +269,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
         	<div class="clearfix"> </div>
       </div>
+		<!--跳转-->
       <div class="col_1">
+          <iframe name="my_iframe" id="my_frame" src="/test/homepage" width="100%" height="530px" frameborder="no" border="0" marginwidth="0" marginheight="0" allowtransparency="yes"></iframe>
+      </div>
+      <!--<div class="col_1">
 		    <div class="col-md-4 span_7">
 				<div class="wrapper clearfix show">
 					<div class="clock" id="clock"></div>
@@ -298,7 +320,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
             </div>
             <div class="clearfix"> </div>
-	  </div>
+	  </div>-->
 	  <div class="span_11">
 		<div class="col-md-6 col_4">
 
@@ -314,7 +336,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		  <div id="chart_container">
 
 <script>
+    $(document).ready(function(){
 
+        window.frames['my_frame'].location.href = "/common/toHome";
+
+    })
 var seriesData = [ [], [], [], [], [] ];
 var random = new Rickshaw.Fixtures.RandomData(50);
 

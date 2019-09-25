@@ -101,26 +101,36 @@ public class CommonController {
         OperatorVO operatorVO = operatorService.loginUser(operator);
         if(operatorVO!=null){
             List<Room> rooms = roomService.queryRoomAllNumber();
-            //已预约客房
-            List<Room> roomListYu=roomService.queryRoomAllMake();
+
             Room room=null;
             //闲置客房
             Integer roomNum=0;
             for (int i = 0; i <rooms.size() ; i++) {
                     roomNum+=1;
             }
-            //客房状态
-            List<DataStatus> room_status = dataStatusService.queryByCode("ROMM_TYPE");
+
             //查询当日营业额、当日入住人数
             ConsumptionRecord consumptionRecord = consumptionRecordService.queryConsumptionRecordCount();
             model.addAttribute("consumptionRecord",consumptionRecord);
-            model.addAttribute("roomListYu",roomListYu);
+
             model.addAttribute("roomNum",roomNum);
             model.addAttribute("User",operatorVO);
-            model.addAttribute("room_status",room_status);
+
             return "/receptionroom/reception";
         }
 
         return "/testHtml/login";
+    }
+
+    @RequestMapping("toHome")
+    public String toHome(Model model){
+        //已预约客房
+        List<Room> roomListYu=roomService.queryRoomAllMake();
+        //客房状态
+        List<DataStatus> room_status = dataStatusService.queryByCode("ROMM_TYPE");
+
+        model.addAttribute("roomListYu",roomListYu);
+        model.addAttribute("room_status",room_status);
+        return "index";
     }
 }
