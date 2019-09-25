@@ -63,7 +63,7 @@ public class ActualsStockController {
      */
     @RequestMapping("toreception")
     public String toreception(){
-        return "receptionroom/reception";
+        return "reception2";
     }
 
     /**
