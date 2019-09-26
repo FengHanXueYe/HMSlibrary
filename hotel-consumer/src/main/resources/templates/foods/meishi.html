@@ -6,6 +6,13 @@
 		<link rel="stylesheet" type="text/css" href="/css/common.css"/>
 		<link rel="stylesheet" type="text/css" href="/css/styles.css"/>
 		<div th:include="base::base"></div>
+		<style>
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+				-webkit-appearance: none !important;
+				margin: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<form class="form-inline text-center">
@@ -14,7 +21,8 @@
 					<label for="exampleInputName2">食品名称:</label>
 					<input type="text" class="form-control" id="exampleInputName2" placeholder="请输入食品名称" name="foodname">
 				</div>
-				<button type="button" id="submitForm" class="btn btn-default">查询</button>
+				<button type="button" id="submitForm" class="btn btn-info">查询</button>
+				<button type="button" id="meiShiDanDian" class="btn btn-default">订餐</button>
 		</div>
 		</form>
 		<div id="table-div">
@@ -47,6 +55,53 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+
+		<!--我的套餐模态框-->
+		<div class="modal fade" tabindex="-1" role="dialog" id="danDianMeiShi">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">已点食品</h4>
+					</div>
+					<div class="modal-body" >
+						<div id="danDianMeiShis"></div>
+						<div class="container-fluid">
+							<br>
+							<div class="form-group">
+								<label for="inputEmail1" class="col-sm-2 control-label">下单人</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="userName" id="inputEmail1" placeholder="下单人姓名">
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<label for="inputEmail2" class="col-sm-2 control-label">房间号</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="roomNumber" id="inputEmail2" placeholder="房间号">
+								</div>
+							</div>
+							<br>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">电话</label>
+								<div class="col-sm-10">
+									<input type="number" class="form-control" name="userTel" id="inputEmail3" placeholder="订餐人电话">
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" id="submitMeiShi" >提交订单 <span id="zPriceMoney"></span> ￥</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
 	</body>
 	<script type="text/javascript">
         $(function () {
@@ -54,6 +109,78 @@
             $("button[id='submitForm']").click(function () {
                 operatorLoad(-1);
             })
+
+			// 查看我的订单
+            $("#meiShiDanDian").click(function () {
+                var html = $("#danDianMeiShis").html();
+                console.log(">>>>"+html+"<<<<")
+                if(html!="") {
+                    $("#danDianMeiShi").modal("show");
+                }else{
+                    alert("请先点餐");
+                    return;
+				}
+                var z = $(".qunMoney");
+                var num = 0;
+                for(var i = 0; i<z.length; i++){
+                    var s = $(".qunMoney").eq(i).html();
+                    num = Number(num)+Number(s);
+				}
+                var ssss = "<div class='form-group'>"
+                	+"<label for='inputEmail3' class='col-sm-2 control-label'>Email</label>"
+					+"<div class='col-sm-10'>"
+					+"<input type='email' class='form-control' id='inputEmail3' placeholder='Email'>"
+					+"</div>"
+                +"</div>"
+                +"<div class='form-group'>"
+                	+"<label for='inputPassword3' class='col-sm-2 control-label'>Password</label>"
+					+"<div class='col-sm-10'>"
+						+"<input type='password' class='form-control' id='inputPassword3' placeholder='Password'>"
+					+"</div>"
+                +"</div>";
+				$("#zPriceMoney").html(num);
+                //$("#danDianMeiShis").append(ssss);
+            });
+
+			// 提交订单
+			$("#submitMeiShi").click(function () {
+				var szFoodName = $(".szFoodName");
+				var str = "订单详情：\n";
+				for(var a = 0; a<szFoodName.length; a++){
+					var s = $(".szFoodName").eq(a).html();
+					var x = $(".szFoodName").eq(a).next().children("span").eq(1).html();
+					var z = $(".szFoodName").eq(a).next().children("span").eq(3).html();
+					var r = s+"*"+x+"价格："+z+"￥\n";
+					str += r;
+				}
+				console.log(str);
+				var q = $("#zPriceMoney").html();
+
+				var name = $("input[name='userName']").val();
+				var number = $("input[name='roomNumber']").val();
+				var tel = $("input[name='userTel']").val();
+				if(q==""||name==""||tel==""||tel.length!=11){
+				    alert("请正确填写信息！");
+				    return;
+				}
+				$.post("ajaxInsertCAndFood",{"name":name,"str":str,"tel":tel,"roomNumber":number,"money":q},function (result) {
+					if(result){
+                        $("#danDianMeiShi").modal("hide");
+                        alert("您的订单已交付制作中！");
+                        $("#zPriceMoney").html("0");
+                        $("#danDianMeiShis").html("");
+                        $("input[name='userName']").val("");
+                        $("input[name='roomNumber']").val("");
+                        $("input[name='userTel']").val("");
+					}else{
+						alert("系统繁忙请稍后重试！");
+					}
+                })
+
+            })
+
+
+
         });
         function clickPage(pageNum) {
             operatorLoad(pageNum);
@@ -88,6 +215,66 @@
 
         }
 
+        // 点餐
+        function addFood(fid,foodprice,foodName) {
+            // 定义总价
+			var price = 0;
+			price = Number(foodprice)+Number(price);
+			console.log(fid+"---------"+foodName+"======"+foodprice);
+			var z = $("#foodId"+fid);
+			console.log(z);
+			if(z.length<=0){
+                $("#danDianMeiShis").append("<center><p><span class='szFoodName'>"+foodName+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 数量:&nbsp;&nbsp;&nbsp;<strong><span onclick='thisDelete("+foodprice+","+fid+",\""+foodName+"\")' style='cursor: pointer;'>-</span>&nbsp;&nbsp;&nbsp;<span id='foodId"+fid+"'>1</span>&nbsp;&nbsp;&nbsp;<span onclick='thisAdd("+foodprice+","+fid+",\""+foodName+"\")' style='cursor: pointer;'>+</span>&nbsp;&nbsp;&nbsp;价格:&nbsp;&nbsp;&nbsp;<span id='priceFood"+fid+"' class='qunMoney'>"+foodprice+"</span>￥</strong></p></center>");
+			}else{
+                var num = $("span[id='foodId"+fid+"']").html();
+                var price = $("span[id='priceFood"+fid+"']").html();
+                num = Number(num)+Number(1);
+                price = Number(price)+Number(price);
+                $("span[id='foodId"+fid+"']").html(num);
+                $("span[id='priceFood"+fid+"']").html(price);
+			}
+        }
+
+        // 数量价钱减
+        function thisDelete(p,fid,name) {
+            console.log("asdasd")
+            var num = $("span[id='foodId"+fid+"']").html();
+            // 获取价钱
+            var price = $("span[id='priceFood"+fid+"']").html();
+            if(num<=1){
+                num = 1;
+			}else{
+                num = Number(num)-Number(1);
+                price = Number(price)-Number(p);
+                $("span[id='foodId"+fid+"']").html(num);
+                $("span[id='priceFood"+fid+"']").html(price);
+                var zongjia = $("#zPriceMoney").html();
+                zongjia = Number(zongjia)-Number(p);
+                $("#zPriceMoney").html(zongjia);
+            }
+
+            console.log("-------"+num)
+        }
+        // 数量价钱加
+        function thisAdd(p,fid,name) {
+            console.log("asdasd")
+            var num = $("span[id='foodId"+fid+"']").html();
+            // 获取价钱
+            var price = $("span[id='priceFood"+fid+"']").html();
+            num = Number(num)+Number(1);
+            price = Number(price)+Number(p);
+            $("span[id='foodId"+fid+"']").html(num);
+            $("span[id='priceFood"+fid+"']").html(price);
+            var zongjia = $("#zPriceMoney").html();
+            zongjia = Number(zongjia)+Number(p);
+            $("#zPriceMoney").html(zongjia);
+        }
+
+
+
+
+
+
         function operatorLoad(pageNum){
 
             // 表单序列化
@@ -101,9 +288,9 @@
                 html +=  "<ul>";
                 $.each(list,function (index,item) {
                    html+="<li>"
-					+"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")' class='ms-wrap ms-right'>"
-					+"<span class='ms-pic'><img src='"+item.foodimgone+"' alt='' width='300px' height='300px'/>'</span>"
-					+"<h2 class='ms-tit'>"+item.foodname+"</h2>"
+					+"<a href='javascript:void(0)' class='ms-wrap ms-right'>"
+					+"<span class='ms-pic'><img src='"+item.foodimgone+"' alt='' onclick='detailDelicious("+item.foodid+")' width='300px' height='300px'/>'</span>"
+					+"<h2 class='ms-tit' >"+item.foodname+" <span class='glyphicon glyphicon-plus' onclick='addFood("+item.foodid+","+item.foodprice+",\""+item.foodname+"\")' title='添加这个食物到我的订单' onclick='' aria-hidden='true'></span></h2>"
 					+"<p class='ms-txt'>价格:"+item.foodprice+"</p></a>"
 					+"</li>"
                 })
