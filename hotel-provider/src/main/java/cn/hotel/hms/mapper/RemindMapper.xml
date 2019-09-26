@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hotel.hms.mapper.RemindMapper">
+
+    <insert id="addRemind">
+        INSERT INTO roomdb.remind
+	(reId,
+	rdConTime,
+	rdRoomNumber,
+	rdSeeIs,
+	rdPosition,
+	rdText,
+	rdConType
+	)
+	VALUES
+	(NULL,
+	#{rdConTime},
+	#{rdRoomNumber},
+	#{rdSeeIs},
+	#{rdPosition},
+	#{rdText}
+	#{rdConType}
+	);
+    </insert>
+    <update id="updateRemind">
+        update roomdb.remind
+	set
+	<if test="rdConTime!=null">
+        rdConTime = #{rdConTime} ,
+    </if>
+	<if test="rdSeeIs!=null">
+        rdSeeIs = #{rdSeeIs} ,
+    </if>
+	<if test="rdText!=null and rdText!=''">
+        rdText = #{rdText}
+    </if>
+        where
+        reId = #{reId} ;
+    </update>
+    <delete id="delRemind">
+        delete from roomdb.remind  where reId = #{reId} ;
+    </delete>
+    <select id="queryRemindAll" resultType="cn.hotel.entity.Remind">
+        select 	* from roomdb.remind where rdPosition=#{rdPosition} and rdConType=#{rdConType}
+    </select>
+    <select id="queryRemindByReId" resultType="cn.hotel.entity.Remind">
+        select 	* from roomdb.remind where reId = #{reId} ;
+    </select>
+</mapper>
