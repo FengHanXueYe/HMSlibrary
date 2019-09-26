@@ -1,12 +1,13 @@
 package cn.hotel.hms.controller;
 
-import cn.hotel.entity.DeliciousFood;
-import cn.hotel.entity.FoodOrder;
-import cn.hotel.entity.Room;
-import cn.hotel.entity.SetMeal;
+import cn.hotel.entity.*;
+import cn.hotel.service.ConsumptionRecordService;
 import cn.hotel.service.FoodOrderService;
+import cn.hotel.service.RoomService;
+import cn.hotel.utils.CreateNumber;
 import cn.hotel.utils.PageUtil;
 import cn.hotel.vo.FoodOrderVo;
+import cn.hotel.vo.RoomVO;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,12 @@ public class FoodOrderController {
 
     @Reference
     private FoodOrderService foodOrderService;
+
+    @Reference
+    private ConsumptionRecordService consumptionRecordService;
+
+    @Reference
+    private RoomService roomService;
 
     @RequestMapping("toqueryAllFoodOrder")
     public String toFoodOrder(){
@@ -107,5 +114,65 @@ public class FoodOrderController {
         this.foodOrderService.updateFoodOrder(foodOrder);
         return "redirect:toqueryAllFoodOrder";
     }
+
+    // 增加订单
+    @ResponseBody
+    @RequestMapping(value = "ajaxInsertCAndFood", method = RequestMethod.POST)
+    public boolean ajaxInsertCAndFood(String str, String name, String tel, String roomNumber, double money){
+        System.out.println(str+"---"+name+"---"+tel+"---"+roomNumber);
+        RoomVO roomVO = roomService.queryByNumber(roomNumber);
+        // 增加订单
+        FoodOrder foodOrder = new FoodOrder();
+        foodOrder.setRemarks(str);
+        foodOrder.setFoodsid(1);
+        foodOrder.setOrderprice(money);
+        foodOrder.setOrderstatus(4);
+        foodOrder.setOrderRoom(roomVO.getId()+"");
+        foodOrder.setUserName(name);
+        foodOrder.setUserPhone(tel);
+        foodOrder.setShopnumber(1);
+        foodOrder.setSetmealid(1);
+        Integer integer = foodOrderService.addFoodOrder(foodOrder);
+        // 增加消费记录
+//        ConsumptionRecord consumptionRecord = new ConsumptionRecord();
+//        consumptionRecord.setConType(1);
+//        consumptionRecord.setConScene("订餐");
+//        consumptionRecord.setConContent("订餐");
+//        consumptionRecord.setConPrice(money);
+//        consumptionRecord.setConName(name);
+//        consumptionRecord.setConRemarks(str);
+//        // 操作人
+//        consumptionRecord.setBillConfirmer(1);
+//        consumptionRecord.setBillstatus(1);
+//        consumptionRecord.setConBillNumber(CreateNumber.createNo("gk",null));
+//        consumptionRecord.setRoomNumber(roomNumber);
+
+        ConsumptionRecord con =new ConsumptionRecord();
+        //消费类型（客房）
+        con.setConType(1);
+        //消费场景
+        con.setConScene("订餐");
+        con.setConContent("订餐");
+        //客房编号
+        con.setRoomNumber(roomNumber);
+        //消费金额
+        con.setConPrice(money);
+        //消费客户名称
+        con.setConName(name);
+        //备注
+        con.setConRemarks(str);
+        //操作人
+        con.setBillConfirmer(1);
+        //客房类型
+        con.setBillstatus(1);
+        //账单编号
+        con.setConBillNumber(CreateNumber.createNo("kg",null));
+        Integer save = consumptionRecordService.save(con);
+        return integer>0&&save>0?true:false;
+    }
+
+
+
+
 
 }
