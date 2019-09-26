@@ -202,6 +202,28 @@
 
 
     })
+    //
+    function loadToken() {
+        //token=pcsadfsa-dsadfas-dsdf;userid=1;userCode=sdfas
+        //评论，
+        //获取cookie中的token内容
+        var cookieStr=document.cookie;
+        var cookieArray=cookieStr.split("; ");
+        var token="";
+        if(cookieArray.length>0) {
+            for(var i=0;i<cookieArray.length;i++) {
+                var key=cookieArray[i].split("=")[0];//等号左边
+                var value=cookieArray[i].split("=")[1];//等号右边
+                if(key=='token'){
+                    token=value;
+                }
+            }
+        }
+
+    }
+
+
+
 
     // 加载事件
     function loadScheduling() {

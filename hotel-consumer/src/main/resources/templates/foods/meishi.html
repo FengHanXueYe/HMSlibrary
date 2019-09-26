@@ -23,6 +23,8 @@
 				</div>
 				<button type="button" id="submitForm" class="btn btn-info">查询</button>
 				<button type="button" id="meiShiDanDian" class="btn btn-default">订餐</button>
+				<button type="button" class="btn btn-info" id="cleanFood" >清空订单</button>
+
 		</div>
 		</form>
 		<div id="table-div">
@@ -110,6 +112,15 @@
                 operatorLoad(-1);
             })
 
+			$("#cleanFood").click(function () {
+                $("#zPriceMoney").html("0");
+                $("#danDianMeiShis").html("");
+                $("input[name='userName']").val("");
+                $("input[name='roomNumber']").val("");
+                $("input[name='userTel']").val("");
+                alert("订单已清空！");
+            })
+			
 			// 查看我的订单
             $("#meiShiDanDian").click(function () {
                 var html = $("#danDianMeiShis").html();
