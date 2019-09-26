@@ -176,6 +176,7 @@
                 +"<th>食品类型</th>"
                 +"<th>价格</th>"
                 +"<th>食品状态</th>"
+                +"<th>制作时间</th>"
                 +"<th>操作</th>"
                 +"</tr>";
             $.each(list,function (index,item) {
@@ -189,6 +190,7 @@
                     +"<td>"+item.foodtypes+"</td>"
                     +"<td>"+item.foodprice+" ￥</td>"
                     +"<td>"+item.foodstat+"</td>"
+                    +"<td>"+item.foodProduction+" （分钟）</td>"
                     +"<td class='col-md-1 '>"
                     +"<a href='javascript:void(0)' onclick='detailDelicious("+item.foodid+")'><span class='glyphicon glyphicon-eye-open ' title='查看' aria-hidden='true'></span></a> "
                     +"<a href='javascript:void(0)' onclick='updateDelicious("+item.foodid+")'><span class='glyphicon glyphicon-pencil ' title='编辑' aria-hidden='true'></span></a> "

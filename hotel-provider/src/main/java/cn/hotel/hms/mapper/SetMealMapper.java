@@ -18,11 +18,11 @@ public interface SetMealMapper {
     Integer deleteSetMeal(Integer id);
 
     //修改套餐信息
-    @Update("UPDATE `setmeal` SET `mealname`=#{mealname},`mealprice`=#{mealprice},`mealstatus`=#{mealstatus},`mealDetail`=#{mealDetail},mealOne=#{mealOne} where `mealid`=#{mealid}")
+    @Update("UPDATE `setmeal` SET `mealname`=#{mealname},`mealprice`=#{mealprice},`mealstatus`=#{mealstatus},`mealDetail`=#{mealDetail},mealOne=#{mealOne},mealProduction=#{mealProduction} where `mealid`=#{mealid}")
     Integer updateSetMeal(SetMeal setMeal);
 
     //增加套餐信息
-    @Insert("INSERT INTO `setmeal`(`mealname`,`mealprice`,`mealstatus`,`mealDetail`,`mealOne`)VALUES(#{mealname},#{mealprice},#{mealstatus},#{mealDetail},#{mealOne})")
+    @Insert("INSERT INTO `setmeal`(`mealname`,`mealprice`,`mealstatus`,`mealDetail`,`mealOne`,mealProduction)VALUES(#{mealname},#{mealprice},#{mealstatus},#{mealDetail},#{mealOne},#{mealProduction})")
     Integer addSetMeal(SetMeal setMeal);
 
     //查看单个套餐信息

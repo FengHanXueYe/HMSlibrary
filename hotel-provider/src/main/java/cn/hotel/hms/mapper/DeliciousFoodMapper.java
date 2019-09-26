@@ -14,7 +14,7 @@ public interface DeliciousFoodMapper {
     List<DeliciousFoodVo> queryAllFood(DeliciousFood deliciousFood);
 
     //增加食品信息
-    @Insert("INSERT INTO `deliciousfood`(`foodname`,`foodimgone`,`foodtype`,`foodprice`,`foodstatus`,`foodDetail`)VALUES(#{foodname},#{foodimgone},#{foodtype},#{foodprice},#{foodstatus},#{foodDetail})")
+    @Insert("INSERT INTO `deliciousfood`(`foodname`,`foodimgone`,`foodtype`,`foodprice`,`foodstatus`,`foodDetail`,foodProduction)VALUES(#{foodname},#{foodimgone},#{foodtype},#{foodprice},#{foodstatus},#{foodDetail},#{foodProduction})")
     Integer addDeliciousFood(DeliciousFood deliciousFood);
 
     //删除食品信息
@@ -25,7 +25,7 @@ public interface DeliciousFoodMapper {
     DeliciousFoodVo detailDeliciousFood(Integer id);
 
     //修改食品信息
-    @Update("UPDATE `deliciousfood` SET `foodname`=#{foodname},`foodimgone`=#{foodimgone},`foodtype`=#{foodtype},`foodprice`=#{foodprice},`foodstatus`=#{foodstatus},`foodDetail`=#{foodDetail} where `foodid`=#{foodid}")
+    @Update("UPDATE `deliciousfood` SET `foodname`=#{foodname},`foodimgone`=#{foodimgone},`foodtype`=#{foodtype},`foodprice`=#{foodprice},`foodstatus`=#{foodstatus},`foodDetail`=#{foodDetail},foodProduction=#{foodProduction} where `foodid`=#{foodid}")
     Integer updateDeliciousFood(DeliciousFood deliciousFood);
 
     //查看食品信息（修改时候用到）
