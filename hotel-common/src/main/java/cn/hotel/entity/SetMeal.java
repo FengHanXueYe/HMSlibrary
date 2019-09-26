@@ -9,6 +9,15 @@ public class SetMeal implements Serializable {
     private Integer mealstatus; //套餐状态（1.充足，2.缺少 3.暂无）
     private String mealDetail;//套餐详情
     private String mealOne;//套餐图片
+    private Integer mealProduction;//制作时间
+
+    public Integer getMealProduction() {
+        return mealProduction;
+    }
+
+    public void setMealProduction(Integer mealProduction) {
+        this.mealProduction = mealProduction;
+    }
 
     public String getMealOne() {
         return mealOne;

@@ -16,4 +16,5 @@ public class SetMealVO implements Serializable {
     private String mealstatus; //套餐状态
     private String mealDetail;//套餐详情
     private String mealOne;//套餐图片
+    private Integer mealProduction;//制作时间
 }

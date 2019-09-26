@@ -10,7 +10,7 @@
     <select id="queryAllSetMeal" resultMap="setMealMap" parameterType="cn.hotel.entity.SetMeal">
         SELECT mealid,`mealname`,`mealprice`,
 	(SELECT `valueName` FROM `datastatus` WHERE `typeCode`='MEAL_STATUS' AND `valueId`=`mealstatus`)`mealstatus`,
-	`mealDetail`,`mealOne`
+	`mealDetail`,`mealOne`,mealProduction
 	FROM `setmeal`
 	<where>
         <if test="mealname!=null and mealname!=''">

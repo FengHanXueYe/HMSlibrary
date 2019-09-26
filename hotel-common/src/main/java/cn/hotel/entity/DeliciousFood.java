@@ -10,6 +10,15 @@ public class DeliciousFood implements Serializable {
     private double foodprice; //价格
     private Integer foodstatus;//菜品状态（1.充足，2.缺少 3.暂无）
     private String foodDetail;//菜品详情
+    private Integer foodProduction;//制作时间
+
+    public Integer getFoodProduction() {
+        return foodProduction;
+    }
+
+    public void setFoodProduction(Integer foodProduction) {
+        this.foodProduction = foodProduction;
+    }
 
     public Integer getFoodid() {
         return foodid;

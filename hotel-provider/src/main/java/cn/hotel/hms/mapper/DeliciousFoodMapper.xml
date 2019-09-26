@@ -11,7 +11,7 @@
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_TYPE' AND `valueId`=`foodtype`) `foodtypes`,
         foodstatus,
        (SELECT `valueName` FROM `datastatus` WHERE `typeCode`='FOOD_STATUS' AND `valueId`=`foodstatus`) foodstat,
-       `foodprice`,`foodDetail`
+       `foodprice`,`foodDetail`,foodProduction
        FROM `deliciousfood`
        <where>
             <if test="foodname!=null and foodname!=''">
