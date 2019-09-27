@@ -209,6 +209,7 @@
     function updateDelicious(id) {
         location.href="toUpdateOrder?id="+id;
     }
+
     // 查看订单详情
     function detailDelicious(id) {
         $("#detailDelicious").modal("show");
@@ -226,7 +227,7 @@
                 +"</tr>"
                 +"<tr class=''>"
                 +"<th>订单创建时间</th>"
-                +"<td>"+result.ordertime+"</td>"
+                +"<td>"+getDateTime(result.ordertime,2)+"</td>"
                 +"</tr>"
                 +"<tr class=''>"
                 +"<th>订单房间</th>"
