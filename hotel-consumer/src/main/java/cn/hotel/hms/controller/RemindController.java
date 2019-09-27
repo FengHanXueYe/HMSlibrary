@@ -130,11 +130,14 @@ public class RemindController {
     @RequestMapping(value = "queryRemindByReId",method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject queryRemindByReId(String rdRoomNumber){
+    public JSONObject queryRemindByReId(String rdRoomNumber,Integer reId){
 
         JSONObject json=new JSONObject();
         ConsumptionRecord consumptionRecord = consumptionRecordService.queryConsumptionRecordByconBillNumber(rdRoomNumber);
-
+        Remind remind=new Remind();
+        remind.setReId(reId);
+        remind.setRdSeeIs(1);
+        remindService.updateRemind(remind);
         json.put("consumptionRecord",consumptionRecord);
 
         return json;

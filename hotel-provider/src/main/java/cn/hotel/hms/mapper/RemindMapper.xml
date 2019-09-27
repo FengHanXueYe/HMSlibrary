@@ -27,14 +27,8 @@
     <update id="updateRemind">
         update roomdb.remind
 	set
-	<if test="rdConTime!=null">
-        rdConTime = #{rdConTime} ,
-    </if>
 	<if test="rdSeeIs!=null">
-        rdSeeIs = #{rdSeeIs} ,
-    </if>
-	<if test="rdText!=null and rdText!=''">
-        rdText = #{rdText}
+        rdSeeIs = #{rdSeeIs}
     </if>
         where
         reId = #{reId} ;
