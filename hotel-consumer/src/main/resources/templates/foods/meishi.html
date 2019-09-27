@@ -23,6 +23,8 @@
 				</div>
 				<button type="button" id="submitForm" class="btn btn-info">查询</button>
 				<button type="button" id="meiShiDanDian" class="btn btn-default">订餐</button>
+				<button type="button" class="btn btn-info" id="cleanFood" >清空订单</button>
+
 		</div>
 		</form>
 		<div id="table-div">
@@ -76,9 +78,9 @@
 							</div>
 							<br>
 							<div class="form-group">
-								<label for="inputEmail2" class="col-sm-2 control-label">房间号</label>
+								<label for="roomNumber" class="col-sm-2 control-label">房间号</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name="roomNumber" id="inputEmail2" placeholder="房间号">
+									<select class="form-control" name="roomNumber" id="roomNumber"></select>
 								</div>
 							</div>
 							<br>
@@ -104,12 +106,32 @@
 
 	</body>
 	<script type="text/javascript">
+
+        function loadSelect(e) {
+            e.append("<option value=''>请选择</option>");
+            $.get("queryAllRoom",function (result) {
+                $.each(result,function (index,d) {
+                    e.append("<option value='"+d.roomNumber+"'>"+d.roomNumber+"</option>")
+                });
+            });
+        }
         $(function () {
             operatorLoad(-1);
+            loadSelect($("#roomNumber"));
             $("button[id='submitForm']").click(function () {
                 operatorLoad(-1);
             })
 
+
+			$("#cleanFood").click(function () {
+                $("#zPriceMoney").html("0");
+                $("#danDianMeiShis").html("");
+                $("input[name='userName']").val("");
+                $("select[name='roomNumber']").val("");
+                $("input[name='userTel']").val("");
+                alert("订单已清空！");
+            })
+			
 			// 查看我的订单
             $("#meiShiDanDian").click(function () {
                 var html = $("#danDianMeiShis").html();
@@ -157,7 +179,7 @@
 				var q = $("#zPriceMoney").html();
 
 				var name = $("input[name='userName']").val();
-				var number = $("input[name='roomNumber']").val();
+				var number = $("select[name='roomNumber']").val();
 				var tel = $("input[name='userTel']").val();
 				if(q==""||name==""||tel==""||tel.length!=11){
 				    alert("请正确填写信息！");
@@ -170,7 +192,7 @@
                         $("#zPriceMoney").html("0");
                         $("#danDianMeiShis").html("");
                         $("input[name='userName']").val("");
-                        $("input[name='roomNumber']").val("");
+                        $("select[name='roomNumber']").val("");
                         $("input[name='userTel']").val("");
 					}else{
 						alert("系统繁忙请稍后重试！");
