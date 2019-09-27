@@ -3,6 +3,7 @@ package cn.hotel.hms.service;
 import cn.hotel.entity.Remind;
 import cn.hotel.hms.mapper.RemindMapper;
 import cn.hotel.service.RemindService;
+import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author: 汪志雄
  * @date: 2019-09-26 14:51
  */
+@Service
 public class RemindServiceImpl implements RemindService {
 
     @Autowired

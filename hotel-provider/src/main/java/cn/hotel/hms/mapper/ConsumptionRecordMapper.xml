@@ -18,4 +18,22 @@
     <select id="queryConsumptionRecordCount" resultType="cn.hotel.entity.ConsumptionRecord">
         SELECT SUM(conPrice) AS conPrice ,COUNT(*) AS conType  FROM consumptionRecord  WHERE TO_DAYS(conTime) = TO_DAYS(NOW())
     </select>
+    <select id="queryAllByConsumptionRecore" resultType="cn.hotel.entity.ConsumptionRecord">
+        SELECT * FROM consumptionRecord WHERE 1=1
+        <if test="conType!=null">
+          and   conType=#{conType}
+        </if>
+        <if test="conBillNumber!=null">
+            AND conBillNumber=#{conBillNumber}
+        </if>
+        <if test="toConTime!=null">
+            AND  DATE_FORMAT(conTime,'%Y-%m-%d') BETWEEN #{toConTime} AND #{doConTime}
+        </if>
+        <if test="conPrice!=null">
+            AND conPrice<![CDATA[>=]]>#{conPrice}
+        </if>
+    </select>
+    <select id="queryConsumptionRecordByconBillNumber" resultType="cn.hotel.entity.ConsumptionRecord">
+        SELECT * FROM consumptionRecord WHERE conBillNumber=#{conBillNumber}
+    </select>
 </mapper>

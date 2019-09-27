@@ -1,5 +1,6 @@
 package cn.hotel.hms.mapper;
 
+import cn.hotel.dto.ConsumptionRecordDto;
 import cn.hotel.entity.ConsumptionRecord;
 import cn.hotel.vo.ConsumptionRecordVO;
 import org.apache.ibatis.annotations.Param;
@@ -18,4 +19,10 @@ public interface ConsumptionRecordMapper {
 
     //查询所有当天营业额、入住人数
     ConsumptionRecord   queryConsumptionRecordCount();
+
+    //查询所有记录
+    List<ConsumptionRecord> queryAllByConsumptionRecore(ConsumptionRecordDto consumptionRecord);
+
+    //根据账单编号查询指定消息
+    ConsumptionRecord  queryConsumptionRecordByconBillNumber(String conBillNumber);
 }
