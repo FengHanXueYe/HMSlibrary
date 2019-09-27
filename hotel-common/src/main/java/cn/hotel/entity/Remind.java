@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Remind implements Serializable {
-    private Integer reId,rdSeeIs,rdPosition;
+    private Integer reId,rdSeeIs,rdPosition,rdConType;
     private String rdRoomNumber,rdText;
     private Date rdConTime;
 
@@ -27,14 +24,7 @@ public class Remind implements Serializable {
         return rdConTime;
     }
 
-    public void setRdConTime(String rdConTime) {
-        Date date=null;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = df.parse(rdConTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.rdConTime = date;
+    public void setRdConTime(Date rdConTime) {
+        this.rdConTime = rdConTime;
     }
 }
