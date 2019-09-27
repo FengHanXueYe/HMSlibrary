@@ -20,7 +20,7 @@
 	#{rdRoomNumber},
 	#{rdSeeIs},
 	#{rdPosition},
-	#{rdText}
+	#{rdText},
 	#{rdConType}
 	);
     </insert>

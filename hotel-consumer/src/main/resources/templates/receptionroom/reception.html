@@ -195,7 +195,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#"><i class="fa fa-indent nav_icon"></i>服务提醒<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li>
-									<a target="my_iframe" th:href="@{/actuals/queryAll}">订单提醒</a>
+									<a target="my_iframe" th:href="@{/remind/queryAllConSumptionRecord}">订单提醒</a>
 								</li>
 							</ul>
 							<!-- /.nav-second-level -->
@@ -226,6 +226,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</li>
 								<li>
 									<a target="my_iframe" th:href="@{/toshop}">套餐</a>
+								</li>
+								<li>
+									<a target="my_iframe" th:href="@{/remind/queryAllRemind(rdPosition=2,rdConType=2)}">餐厅通知</a>
 								</li>
 							</ul>
 							<!-- /.nav-second-level -->

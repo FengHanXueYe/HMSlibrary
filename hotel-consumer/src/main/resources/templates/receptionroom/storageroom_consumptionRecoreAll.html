@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Modern Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css' />
+    <!-- Graph CSS -->
+    <link href="../css/lines.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <!-- jQuery -->
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <!--时钟-->
+    <link rel="stylesheet" href="../clock/css/demo.css"/>
+    <!---//webfonts--->
+    <!-- Nav CSS -->
+    <link href="../css/custom.css" rel="stylesheet">
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../js/metisMenu.min.js"></script>
+    <script src="../js/custom.js"></script>
+    <!-- Graph JavaScript -->
+    <script src="../js/d3.v3.js"></script>
+    <script src="../js/rickshaw.js"></script>
+</head>
+<body>
+<div id="wrapper">
+    <div>
+        <div class="graphs">
+            <div class="col_1">
+                <div class="row">
+                    <form action="/remind/queryAllConSumptionRecord" class="form-inline">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">消费类型：</div>
+                                    <select name="conType" id="conType" class="form-control">
+                                        <option value="">--请选择--</option>
+                                        <option th:each="csts:${ConSumptions}" th:value="${csts.valueId}" th:text="${csts.valueName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">账单编号：</div>
+                                    <input type="text" name="conBillNumber" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">账单 从：</div>
+                                    <input type="date" class="form-control1 ng-invalid ng-invalid-required" ng-model="model.date" required=""  name="toConTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"> 到：</div>
+                                    <input type="date" class="form-control1 ng-invalid ng-invalid-required" ng-model="model.date" required=""  name="doConTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">消费金额：</div>
+                                    <input type="text" name="conPrice">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="submit" value="查询" class="btn btn-primary">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="reset" value="重置" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-xs-12">
+
+
+                        <table  class="table table-bordered"  width="800px" align="cneter">
+                            <thead>
+                            <tr>
+                                <th>账单编号</th>
+                                <th>消费类型</th>
+                                <th>消费场景</th>
+                                <th>消费内容</th>
+                                <th>消费金额</th>
+                                <th>消费人姓名</th>
+                                <th>消费时间</th>
+                                <th>账单操作人</th>
+                                <th>账单状态</th>
+                                <th>客房编号</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="con:${consumptionRecords.list}">
+                                <th scope="row" th:text="${con.conBillNumber}"></th>
+                                <td th:each="cs:${ConSumptions}" th:if="${cs.valueId==con.conType}" th:text="${cs.valueName}" ></td>
+                                <td th:text="${con.conScene}"></td>
+                                <td th:text="${con.conContent}"></td>
+                                <td th:text="${con.conPrice}">
+                                </td>
+                                <td th:text="${con.conName}"></td>
+                                <td th:text="${#dates.format(con.conTime,'yyyy年MM月dd日 HH:mm:sss')}"></td>
+                                <td th:text="${con.billConfirmer}"></td>
+                                <td th:each="bill:${bill_status}" th:if="${bill.valueId==con.billstatus}" th:text="${bill.valueName}"></td>
+                                <td>
+                    <span th:if="${con.roomNumber!=''}" th:text="${con.roomNumber}">
+
+                    </span>
+                                    <span th:if="${con.roomNumber==''}"></span>
+                                </td>
+                                <td th:text="${con.conRemarks}"></td>
+                                <td class="col-xs-1 ">
+                                    <button class="btn btn-primary" th:conBillNumber="${con.conBillNumber}" th:conType="${con.conType}" onclick="doRemind(this)">提醒</button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-8 col-xs-offset-4">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination ">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+<!--                            <div class="modal-header">
+
+                                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+                            </div>-->
+                            <div class="modal-body">
+
+                                <div class="col-md-12 graphs">
+                                    <div class="xs">
+                                        <h3>消息编辑</h3>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <div class="well1 white">
+                                            <form id="addRemind"  class="form-floating ng-pristine ng-invalid ng-invalid-required ng-valid-email ng-valid-url ng-valid-pattern" novalidate="novalidate" ng-submit="submit()">
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <label class="control-label">账单编号</label>
+                                                        <input type="text" name="rdRoomNumber" class="form-control1 ng-invalid ng-invalid-required ng-touched" ng-model="model.name" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">所属</label>
+                                                        <select name="rdPosition" id="rdPosition" class="form-control1 ng-invalid ng-invalid-required" ng-model="model.select" required=""><option value="? undefined:undefined ?"></option>
+                                                            <option value="1">前台</option>
+                                                            <option value="2">后台</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">消费类型</label>
+                                                        <select id="testId" name="rdConType" class="form-control1 ng-invalid ng-invalid-required" ng-model="model.select" required=""><option value="? undefined:undefined ?"></option>
+                                                            <option th:each="csts:${ConSumptions}" th:value="${csts.valueId}" th:text="${csts.valueName}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">原因</label>
+                                                        <textarea class="form-control1" name="rdText"></textarea>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary" onclick="addRemind()">发送</button>
+                                                        <button type="reset" class="btn btn-default">重置</button>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+            <div class="span_11">
+                <div class="col-md-6 col_4">
+
+                    <!----Calender -------->
+                    <link rel="stylesheet" href="../css/clndr.css" type="text/css" />
+                    <script src="../js/underscore-min.js" type="text/javascript"></script>
+                    <script src= "../js/moment-2.2.1.js" type="text/javascript"></script>
+                    <script src="../js/clndr.js" type="text/javascript"></script>
+                    <script src="../js/site.js" type="text/javascript"></script>
+                    <!----End Calender -------->
+                </div>
+                <div class="col-md-6 col_5">
+                    <div id="chart_container">
+
+                        <script>
+                            function addRemind() {
+                                var rdRoomNumber=$("input[name='rdRoomNumber']").val();
+                                var rdPosition=$("select[name='rdPosition']").val();
+                                var rdConType=$("select[name='rdConType']").val();
+                                var rdText=$("textarea[name='rdText']").val();
+                                var rdConTime=new Date();
+                                $.ajax({
+                                    type:"POST",
+                                    url:"/remind/doAddRemind",
+                                    data: {"rdRoomNumber":rdRoomNumber,"rdConTime":rdConTime,"rdSeeIs":0,"rdPosition":rdPosition,"rdConType":rdConType,"rdText":rdText},
+                                    success: function (returnData) {
+                                        var returnD=eval(returnData);
+                                        if(returnD.code=1){
+                                            alert(returnD.msg);
+                                        }
+                                        if(returnD.code=0){
+                                            alert(returnD.msg);
+                                        }
+                                    },
+                                    dataType: 'json'
+                                })
+                            }
+                            function doRemind(obj) {
+                                var conBillNumber=$(obj).attr("conBillNumber");
+                                var conType=$(obj).attr("conType");
+                                $("input[name='rdRoomNumber']").val(conBillNumber);
+                                $("#testId option").each(function() {
+                                    if($(this).val() == conType) {
+                                        $(this).attr("selected","selected");
+                                    }else {
+                                        $(this).removeAttr("selected")
+                                    }
+                                })
+                                $('#myModal').modal('show');
+                            }
+                            var seriesData = [ [], [], [], [], [] ];
+                            var random = new Rickshaw.Fixtures.RandomData(50);
+
+                            for (var i = 0; i < 75; i++) {
+                                random.addData(seriesData);
+                            }
+
+                            var graph = new Rickshaw.Graph( {
+                                element: document.getElementById("chart"),
+                                renderer: 'multi',
+
+                                dotSize: 5,
+                                series: [
+                                    {
+                                        name: 'temperature',
+                                        data: seriesData.shift(),
+                                        color: '#AFE9FF',
+                                        renderer: 'stack'
+                                    }, {
+                                        name: 'heat index',
+                                        data: seriesData.shift(),
+                                        color: '#FFCAC0',
+                                        renderer: 'stack'
+                                    }, {
+                                        name: 'dewpoint',
+                                        data: seriesData.shift(),
+                                        color: '#555',
+                                        renderer: 'scatterplot'
+                                    }, {
+                                        name: 'pop',
+                                        data: seriesData.shift().map(function(d) { return { x: d.x, y: d.y / 4 } }),
+                                        color: '#555',
+                                        renderer: 'bar'
+                                    }, {
+                                        name: 'humidity',
+                                        data: seriesData.shift().map(function(d) { return { x: d.x, y: d.y * 1.5 } }),
+                                        renderer: 'line',
+                                        color: '#ef553a'
+                                    }
+                                ]
+                            } );
+
+
+                            graph.render();
+
+                            var detail = new Rickshaw.Graph.HoverDetail({
+                                graph: graph
+                            });
+                        </script>
+                    </div>
+                    <!-- map -->
+                    <link href="../css/jqvmap.css" rel='stylesheet' type='text/css' />
+                    <script src="../js/jquery.vmap.js"></script>
+                    <script src="../js/jquery.vmap.sampledata.js" type="text/javascript"></script>
+                    <script src="../js/jquery.vmap.world.js" type="text/javascript"></script>
+                    <script type="text/javascript" src="../clock/js/clock-1.1.0.min.js"></script>
+                    <script>
+
+                        var clock = $("#clock").clock(),
+                            data = clock.data('clock');
+
+                        // data.pause();
+                        // data.start();
+                        // data.setTime(new Date());
+
+                        var d = new Date();
+                        d.setHours(9);
+                        d.setMinutes(51);
+                        d.setSeconds(20);
+
+                        var clock1 = $("#clock1").clock({
+                            width: 210,
+                            height: 305,
+                            theme: 't2',
+                            date: d
+                        });
+
+                        var clock2 = $("#clock2").clock({
+                            width: 150,
+                            height: 220,
+                            theme: 't3'
+                        });
+
+                    </script>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            jQuery('#vmap').vectorMap({
+                                map: 'world_en',
+                                backgroundColor: '#333333',
+                                color: '#ffffff',
+                                hoverOpacity: 0.7,
+                                selectedColor: '#666666',
+                                enableZoom: true,
+                                showTooltip: true,
+                                values: sample_data,
+                                scaleColors: ['#C8EEFF', '#006491'],
+                                normalizeFunction: 'polynomial'
+                            });
+                        });
+                    </script>
+                    <!-- //map -->
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="content_bottom">
+
+                <div class="clearfix"> </div>
+            </div>
+            <div class="copy">
+                <p>Copyright &copy; 2015 </p>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<!-- Bootstrap Core JavaScript -->
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package cn.hotel.hms.service;
 
+import cn.hotel.dto.ConsumptionRecordDto;
 import cn.hotel.entity.ConsumptionRecord;
 import cn.hotel.hms.mapper.ConsumptionRecordMapper;
 import cn.hotel.service.ConsumptionRecordService;
@@ -45,5 +46,30 @@ public class ConsumptionRecordServiceImpl implements ConsumptionRecordService {
     public ConsumptionRecord queryConsumptionRecordCount() {
         return consumptionRecordMapper.queryConsumptionRecordCount();
     }
+
+    @Override
+    public PageUtil<ConsumptionRecord> queryAllByConsumptionRecore(ConsumptionRecordDto consumptionRecord, Integer pageNo, Integer pageSize) {
+        if(pageNo==null){
+            pageNo=1;
+        }
+        if(pageSize==null){
+            pageSize=5;
+        }
+        PageHelper.startPage(pageNo,pageSize);
+        List<ConsumptionRecord> list = consumptionRecordMapper.queryAllByConsumptionRecore(consumptionRecord);
+        PageInfo<ConsumptionRecord> pageInfo=new PageInfo<>(list);
+        PageUtil<ConsumptionRecord> pageUtil=new PageUtil<>();
+        pageUtil.setPageNo(pageInfo.getPageNum());
+        pageUtil.setPageSize(pageInfo.getPageSize());
+        pageUtil.setNavigatepageNums(pageInfo.getNavigatepageNums());
+        pageUtil.setList(pageInfo.getList());
+        return pageUtil;
+    }
+
+    @Override
+    public ConsumptionRecord queryConsumptionRecordByconBillNumber(String conBillNumber) {
+        return consumptionRecordMapper.queryConsumptionRecordByconBillNumber(conBillNumber);
+    }
+
 
 }
